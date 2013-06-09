@@ -8,9 +8,9 @@ class Logger
   private:
 
   public:
-    static void WriteInfo(string s);
-    static void WriteWarn(string s);
-    static void WriteError(string s);
+    static void Info(string s);
+    static void Warn(string s);
+    static void Error(string s);
 
 };
 

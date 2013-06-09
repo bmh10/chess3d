@@ -7,8 +7,6 @@
  * Chess3D main entry point
  */
 
-#define DEBUG 0
-
 enum State { MenuState, GameState };
 State state;
 
@@ -18,7 +16,7 @@ Game *game;
 void Init() 
 {
   glClearColor (0.0, 0.0, 0.0, 0.0);
-  // Logger.WriteInfo("Initialising...");
+  Logger::Info("Initialising...");
   
   menuManager = new MenuManager();
   game = new Game();
@@ -47,7 +45,7 @@ void Display()
 
 void Reshape (int w, int h)
 {
-  cout << "reshape" << endl;
+  Logger::Info("Reshape...");
   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
   
   // Setup perspective
@@ -99,7 +97,7 @@ int main(int argc, char** argv)
   // Use double buffering and depth testing
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
 
-  glutInitWindowSize (512, 512); 
+  glutInitWindowSize (1024, 1024); 
   glutInitWindowPosition (0, 0);
   glutCreateWindow ("Chess3D");
 

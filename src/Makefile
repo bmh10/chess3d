@@ -14,7 +14,7 @@ COMPILE = $(CC) $(CFLAGS) $< -o $@
 all: chess
 
 chess: $(OBJS)
-	$(LD) $(OBJS) -o chess $(LDFLAGS)
+	$(LD) $(OBJS) -o $@ $(LDFLAGS)
 
 chess.o: chess.cpp $(INCS) ; $(COMPILE)
 
@@ -29,7 +29,7 @@ menuManager.o: menuManager.cpp menuManager.h $(INCS); $(COMPILE)
 piece.o: piece.cpp piece.h $(INCS); $(COMPILE)
 
 clean:
-	rm -rf $(OBJS) chess
+	rm -rf $(OBJS) chess *~
 
 
 

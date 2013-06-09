@@ -1,6 +1,8 @@
 #ifndef _BOARD_H
 #define _BOARD_H
 
+#define SQUARE_SIZE 0.02
+
 #include "headers.h"
 #include "board.h"
 #include "piece.h"
