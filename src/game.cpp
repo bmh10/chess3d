@@ -12,6 +12,14 @@ Game::~Game()
 
 void Game::Init()
 {
+  lightPos[0] = 0.36;
+  lightPos[1] = -0.1448;
+  lightPos[2] = -0.010616;
+
+  centreBoard[0] = 0.0;
+  centreBoard[0] = 0.0;
+  centreBoard[0] = 0.0;
+
   glShadeModel (GL_SMOOTH);
   GLfloat LightAmbient[] = {0.0, 0.0, 0.0, 1.0};
   GLfloat LightDiffuse[] = {1.0, 1.0, 1.0, 1.0};
@@ -43,9 +51,7 @@ void Game::Init()
   
   // Set initial camera position relative to centre point of model
   for (int i=0; i < 3; i++)
-    cameraPos[i] = avgVertex[i];
-  cameraPos[0] += 0.025;
-  cameraPos[2] -= 0.1;
+    cameraPos[i] = centreBoard[i];
 
   // Initialise game components
   board = new Board();
@@ -60,12 +66,17 @@ void Game::Update()
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
   gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2],
-    avgVertex[0], avgVertex[1], avgVertex[2], 0.0f, 1.0f,  0.0f);
+    centreBoard[0], centreBoard[1], centreBoard[2], 0.0f, 1.0f,  0.0f);
   Draw();
 
 }
 
-void Game::KeyboardPress()
+void Game::Draw()
+{
+
+}
+
+void Game::KeyboardPress(unsigned char key)
 {
   if (key == 'q') cameraPos[0] += 0.01;
   else if (key == 'a') cameraPos[0] -= 0.01;

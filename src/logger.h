@@ -1,6 +1,8 @@
 #ifndef _LOGGER_H
 #define _LOGGER_H
 
+#include "headers.h"
+
 class Logger
 {
   private:

@@ -1,11 +1,14 @@
 #ifndef _BOARD_H
-
 #define _BOARD_H
+
+#include "headers.h"
+#include "board.h"
+#include "piece.h"
 
 class Board
 {
   private:
-    Piece[32] pieces;
+    Piece pieces[32];
 
   public:
     Board();

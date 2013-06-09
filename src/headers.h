@@ -1,6 +1,5 @@
-#ifndef _CHESS_H
-
-#define _CHESS_H
+#ifndef _HEADERS_H
+#define _HEADERS_H
 
 #include <GL/glut.h>
 #include <stdlib.h>
@@ -13,5 +12,18 @@ using namespace std;
 
 #include <fstream>
 #include <iostream>
+
+
+/*
+#include "logger.h"
+#include "piece.h"
+#include "board.h"
+
+
+#include "menuManager.h"
+#include "game.h"
+*/
+
+
 
 #endif
