@@ -12,13 +12,22 @@ Game::~Game()
 void Game::Init()
 {
   Logger::Info("Initializing game...");
-  lightPos[0] = 0.36;
-  lightPos[1] = -0.1448;
-  lightPos[2] = -0.010616;
 
-  centreBoard[0] = 0.0;
+  centreBoard[0] = 0.02*4;
   centreBoard[1] = 0.0;
   centreBoard[2] = 0.0;
+
+  // Set initial camera position relative to centre of board
+  for (int i=0; i < 3; i++)
+    cameraPos[i] = centreBoard[i];
+
+  cameraPos[0] += 0;
+  cameraPos[1] -= 0.05;
+  cameraPos[2] += 0.05;
+
+  // Put light in same place as camera
+  for (int i=0; i < 3; i++)
+    lightPos[i] = cameraPos[i];
 
   glShadeModel (GL_SMOOTH);
   GLfloat LightAmbient[] = {0.0, 0.0, 0.0, 1.0};
@@ -49,13 +58,7 @@ void Game::Init()
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
   
-  // Set initial camera position relative to centre point of model
-  for (int i=0; i < 3; i++)
-    cameraPos[i] = centreBoard[i];
-
-  cameraPos[0] += 0.05;
-  cameraPos[1] -= 0.05;
-  cameraPos[2] += 0.05;
+  
 
   // Initialise game components
   board = new Board();
