@@ -12,11 +12,13 @@ class Game
     GLfloat centreBoard[3];
     Board *board;
 
+    void Init();
+
   public:
     Game();
     ~Game();
 
-    void Init();
+    
     void Update();
     void Draw();
     void KeyboardPress(unsigned char key);

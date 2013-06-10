@@ -7,7 +7,7 @@ LDFLAGS = -L/usr/X11R6/lib -lglut -lGLU -lGL -lXt -lXext -lX11 -lSM -lICE -lm # 
 
 INCS = headers.h
 
-OBJS = logger.o menuManager.o piece.o board.o game.o chess.o
+OBJS = logger.o menuManager.o model.o modelManager.o piece.o board.o game.o chess.o
 
 COMPILE = $(CC) $(CFLAGS) $< -o $@
 
@@ -25,6 +25,10 @@ game.o: game.cpp game.h $(INCS); $(COMPILE)
 logger.o: logger.cpp logger.h $(INCS); $(COMPILE)
 
 menuManager.o: menuManager.cpp menuManager.h $(INCS); $(COMPILE)
+
+model.o: model.cpp model.h $(INCS); $(COMPILE)
+
+modelManager.o: modelManager.cpp modelManager.h $(INCS); $(COMPILE)
 
 piece.o: piece.cpp piece.h $(INCS); $(COMPILE)
 

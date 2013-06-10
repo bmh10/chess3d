@@ -7,11 +7,13 @@ class MenuManager
 {
   private:
 
+    void Init();
+
   public:
     MenuManager();
     ~MenuManager();
 
-    void Init();
+    
     void Update();
     void Draw();
     void KeyboardPress(unsigned char key);

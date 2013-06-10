@@ -4,19 +4,21 @@
 #define SQUARE_SIZE 0.02
 
 #include "headers.h"
-#include "board.h"
 #include "piece.h"
+#include "modelManager.h"
 
 class Board
 {
   private:
-    Piece pieces[32];
+    Piece* pieces[8][8];
+    ModelManager* modelManager;
+
+    void Init();
 
   public:
     Board();
     ~Board();
 
-    void Init();
     //void Update();
     void Draw();
 };

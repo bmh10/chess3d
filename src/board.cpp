@@ -11,8 +11,18 @@ Board::~Board()
 
 void Board::Init()
 {
-  // Initialize pieces
+  modelManager = new ModelManager();
+  modelManager->LoadAllModels();
   
+  // Initialize pieces
+  int i, j;
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      pieces[i][j] = new Piece(PAWN);
+    }
+  }
 }
 
 void Board::Draw()
@@ -20,6 +30,7 @@ void Board::Draw()
   GLfloat red[] = {1.0, 0.0, 0.0}; // Make static?
   GLfloat blue[] = {0.0, 0.0, 1.0};
   GLfloat *col = red;
+  int i, j;
   
   // Draw board base
   glBegin(GL_POLYGON);
@@ -31,9 +42,9 @@ void Board::Draw()
   glEnd();
 
   // Draw squares
-  for (int i = 0; i < 8; i++)
+  for (i = 0; i < 8; i++)
   {
-    for (int j = 0; j < 8; j++)
+    for (j = 0; j < 8; j++)
     {
       glBegin(GL_POLYGON);
         col = ((i+j)%2 == 0) ? red : blue;
@@ -47,5 +58,12 @@ void Board::Draw()
   }
 
   // Draw pieces
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      //pieces[i][j]->Draw();
+    }
+  }
 
 }
