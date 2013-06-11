@@ -2,22 +2,23 @@
 #define _PIECE_H
 
 #include "headers.h"
+#include "model.h"
 
-enum PieceType { PAWN, KNIGHT, BISHOP, CASTLE, QUEE, KING };
+enum PieceType { EMPTY, PAWN, KNIGHT, BISHOP, CASTLE, QUEE, KING };
 
 class Piece
 {
   private:
-    
     PieceType type;
+    Model* model;
 
     void Init();
 
   public:
-    Piece(PieceType type);
+    Piece(PieceType type, Model* model);
     ~Piece();
     
-    void Draw();
+    void Draw(int i, int j);
     
 
 };

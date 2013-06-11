@@ -64,7 +64,9 @@ void Update()
     case GameState:
       game->Update();
       break;
-  }  
+  }
+
+  Display();
 }
 
 /*
@@ -83,11 +85,11 @@ void Keyboard(unsigned char key, int x, int y)
     case MenuState:
       menuManager->KeyboardPress(key);
     break;
-
     case GameState:
       game->KeyboardPress(key);
     break;
   }
+
 }
 
 int main(int argc, char** argv)

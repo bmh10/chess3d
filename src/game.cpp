@@ -13,17 +13,17 @@ void Game::Init()
 {
   Logger::Info("Initializing game...");
 
-  centreBoard[0] = 0.02*4;
-  centreBoard[1] = 0.0;
-  centreBoard[2] = 0.0;
+  centreBoard[0] = 0.02f*4.0f;
+  centreBoard[1] = 0.0f;
+  centreBoard[2] = 0.0f;
 
   // Set initial camera position relative to centre of board
   for (int i=0; i < 3; i++)
     cameraPos[i] = centreBoard[i];
 
-  cameraPos[0] += 0;
-  cameraPos[1] -= 0.05;
-  cameraPos[2] += 0.05;
+  cameraPos[0] += 0.0f;
+  cameraPos[1] -= 0.05f;
+  cameraPos[2] += 0.05f;
 
   // Put light in same place as camera
   for (int i=0; i < 3; i++)
@@ -55,11 +55,9 @@ void Game::Init()
   glEnable(GL_DEPTH_TEST);
   
   // Cull back faces of polygons
-  glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
+  //glEnable(GL_CULL_FACE);
+  //glCullFace(GL_BACK);
   
-  
-
   // Initialise game components
   board = new Board();
 }
@@ -74,13 +72,12 @@ void Game::Update()
   glLoadIdentity();
   gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2],
     centreBoard[0], centreBoard[1], centreBoard[2], 0.0f, 0.0f, 1.0f);
-  Draw();
-
 }
 
 void Game::Draw()
 {
-  
+
+/*
   if (DEBUG)
   {
     // Draw triangle at light source
@@ -91,6 +88,7 @@ void Game::Draw()
     glVertex3f(lightPos[0], lightPos[1]+0.1, lightPos[2]+0.1);
     glEnd();
   }
+*/
   
 /*
   if (textureOn)
@@ -112,7 +110,6 @@ void Game::Draw()
     glVertex3f(0.0, 0.0, 0.0); glVertex3f(-100.0, 0.0, 0.0);
     glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, -100.0, 0.0);
     glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, 0.0, -100.0);
-    glDisable(GL_LINE_STIPPLE);
     glEnd();
 
     board->Draw();
@@ -120,12 +117,12 @@ void Game::Draw()
 
 void Game::KeyboardPress(unsigned char key)
 {
-  if (key == 'q') {cameraPos[0] += 1.0; }
-  else if (key == 'a') cameraPos[0] -= 0.05;
-  else if (key == 'w') cameraPos[1] += 0.05;
-  else if (key == 's') cameraPos[1] -= 0.05;
-  else if (key == 'e') cameraPos[2] += 0.05;
-  else if (key == 'd') cameraPos[2] -= 0.05;
+  if (key == 'q') cameraPos[0] += 0.01;
+  else if (key == 'a') cameraPos[0] -= 0.01;
+  else if (key == 'w') cameraPos[1] += 0.01;
+  else if (key == 's') cameraPos[1] -= 0.01;
+  else if (key == 'e') cameraPos[2] += 0.01;
+  else if (key == 'd') cameraPos[2] -= 0.01;
   
   else if (key == 'u') lightPos[0] += 0.01;
   else if (key == 'j') lightPos[0] -= 0.01;

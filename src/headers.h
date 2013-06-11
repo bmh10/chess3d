@@ -3,6 +3,8 @@
 
 #define DEBUG 1
 
+#define SQUARE_SIZE 0.02
+
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
