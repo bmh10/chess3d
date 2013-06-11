@@ -15,21 +15,47 @@ void Board::Init()
   modelManager->LoadAllModels();
   
   // Initialize pieces
-  //TODO
-  int i, j;
-  for (i = 0; i < 8; i++)
+  int x, y;
+  // Pawns and empty squares.
+  for (x = 0; x < 8; x++)
   {
-    for (j = 0; j < 8; j++)
+    pieces[x][1] = new Piece(PAWN, WHITE, modelManager);
+    pieces[x][6] = new Piece(PAWN, BLACK, modelManager);
+    for (y = 2; y < 6; y++)
     {
-      pieces[i][j] = new Piece(EMPTY, NULL);
+      pieces[x][y] = new Piece(EMPTY);
     }
   }
-  pieces[4][4] = new Piece(PAWN, modelManager->GetModel("pawn"));
+  
+  // Back rows.
+  for (x = 0; x < 8; x++)
+  {
+    if (x == 0 || x == 7)
+    {
+      pieces[x][0] = new Piece(CASTLE, WHITE, modelManager);
+      pieces[x][7] = new Piece(CASTLE, BLACK, modelManager);
+    }
+    else if (x == 1 || x == 6)
+    {
+      pieces[x][0] = new Piece(KNIGHT, WHITE, modelManager);
+      pieces[x][7] = new Piece(KNIGHT, BLACK, modelManager);
+    }
+    else if (x == 2 || x == 5)
+    {
+      pieces[x][0] = new Piece(BISHOP, WHITE, modelManager);
+      pieces[x][7] = new Piece(BISHOP, BLACK, modelManager);
+    }
+  }
+
+  pieces[3][0] = new Piece(KING, WHITE, modelManager);
+  pieces[3][7] = new Piece(KING, BLACK, modelManager);
+  pieces[4][0] = new Piece(QUEEN, WHITE, modelManager);
+  pieces[4][7] = new Piece(QUEEN, BLACK, modelManager);
+
 }
 
 void Board::Draw()
 {
-
   GLfloat red[] = {1.0, 0.0, 0.0}; // Make static?
   GLfloat blue[] = {0.0, 0.0, 1.0};
   GLfloat *col = red;
@@ -68,5 +94,4 @@ void Board::Draw()
       pieces[i][j]->Draw(i, j);
     }
   }
-
 }

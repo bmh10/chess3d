@@ -34,7 +34,7 @@ class Model
     Face *faceData;
 
     void PrintData();
-    void DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale);
+    void DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, GLfloat* colour);
 };
 
 #endif

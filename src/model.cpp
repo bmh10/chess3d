@@ -43,12 +43,12 @@ void Model::PrintData()
   }
 }
 
-void Model::DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale)
+void Model::DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, GLfloat* colour)
 {
   //Draw all vertices for each polygon, setting texture coords and vertex normals
   int a, b;
   Vertex v;
-  glColor3f(0.5, 0.5, 0.5);
+  glColor3fv(colour);
   for (a=0; a < numFaces; a++)
   {
     glBegin(GL_POLYGON);
