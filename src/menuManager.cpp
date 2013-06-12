@@ -24,3 +24,7 @@ void MenuManager::Draw()
 void MenuManager::KeyboardPress(unsigned char key)
 {
 }
+
+void MenuManager::MousePress(int button, int state, int x, int y)
+{
+}

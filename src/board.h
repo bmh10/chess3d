@@ -19,6 +19,7 @@ class Board
 
     //void Update();
     void Draw();
+    void SelectSquareAt(int x, int y);
 };
 
 #endif

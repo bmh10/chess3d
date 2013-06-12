@@ -17,6 +17,7 @@ class Piece
     PieceType type;
     PieceColour colour;
     Model* model;
+    bool selectionMode;
 
     void LoadModel(ModelManager* modelManager);
 

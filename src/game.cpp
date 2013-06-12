@@ -131,3 +131,16 @@ void Game::KeyboardPress(unsigned char key)
   else if (key == 'o') lightPos[2] += 0.01;
   else if (key == 'l') lightPos[2] -= 0.01;
 }
+
+void Game::MousePress(int button, int state, int x, int y)
+{
+  switch(button)
+  {
+    case GLUT_LEFT_BUTTON:
+      if (state == GLUT_UP)
+      {
+        board->SelectSquareAt(x, y);
+      }
+    break;
+  }
+}

@@ -89,7 +89,19 @@ void Keyboard(unsigned char key, int x, int y)
       game->KeyboardPress(key);
     break;
   }
+}
 
+void Mouse(int button, int state, int x, int y)
+{
+  switch (state)
+  {
+    case MenuState:
+      menuManager->MousePress(button, state, x, y);
+    break;
+    case GameState:
+      game->MousePress(button, state, x, y);
+    break;
+  }
 }
 
 int main(int argc, char** argv)
@@ -111,6 +123,7 @@ int main(int argc, char** argv)
   glutIdleFunc(Update); 
   glutReshapeFunc(Reshape);
   glutKeyboardFunc(Keyboard);
+  glutMouseFunc(Mouse);
 
   // Start rendering 
   glutMainLoop();

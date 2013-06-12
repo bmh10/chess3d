@@ -71,6 +71,7 @@ void Board::Draw()
   glEnd();
 
   // Draw squares
+  /*
   for (i = 0; i < 8; i++)
   {
     for (j = 0; j < 8; j++)
@@ -85,8 +86,9 @@ void Board::Draw()
       glEnd();
     }
   }
+  */
 
-  // Draw pieces
+  // Draw pieces and squares
   for (i = 0; i < 8; i++)
   {
     for (j = 0; j < 8; j++)
@@ -94,4 +96,13 @@ void Board::Draw()
       pieces[i][j]->Draw(i, j);
     }
   }
+}
+
+void Board::SelectSquareAt(int x, int y)
+{
+  cout << x << ", " << y << endl;
+  GLfloat rgba[4];
+  glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+  cout << rgba[0] << ", " << rgba[1] << ", " << rgba[2] << ", " << rgba[3] << endl;
+
 }
