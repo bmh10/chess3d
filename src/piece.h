@@ -17,7 +17,10 @@ class Piece
     PieceType type;
     PieceColour colour;
     Model* model;
+
     bool selectionMode;
+    GLfloat selectedColour[3];
+    bool selected;
 
     void LoadModel(ModelManager* modelManager);
 
@@ -26,6 +29,8 @@ class Piece
     Piece(PieceType type, PieceColour colour, ModelManager* modelManager);
     ~Piece();
     
+    void EnableSelectionMode(bool enable, int i, int j);
+    bool CheckIfSelected(GLfloat* rgba);
     void Draw(int i, int j);
     
 

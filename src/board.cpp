@@ -100,9 +100,48 @@ void Board::Draw()
 
 void Board::SelectSquareAt(int x, int y)
 {
+  int i, j;
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      pieces[i][j]->EnableSelectionMode(true, i, j);
+    }
+  }
+
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
   cout << x << ", " << y << endl;
-  GLfloat rgba[4];
-  glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
-  cout << rgba[0] << ", " << rgba[1] << ", " << rgba[2] << ", " << rgba[3] << endl;
+  //GLfloat *rgb = new GLfloat[3];
+  //glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, rgb);
+
+  unsigned char pixels[3];
+  glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixels);
+
+  cout << (GLfloat)pixels[0]/50.0 << ", " << (GLfloat)pixels[1]/50.0 << ", " << (GLfloat)pixels[2]/50.0 << endl;
+
+  GLfloat rgb[3];
+  for (i = 0; i < 8; i++)
+  {
+    rgb[i] = (GLfloat)pixels[i]/50.0;
+  }
+
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 1; j++)
+    {
+      if (pieces[i][j]->CheckIfSelected(rgb))
+        goto end_loop;
+    }
+  }
+
+end_loop:
+
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      //pieces[i][j]->EnableSelectionMode(false);
+    }
+  }
 
 }

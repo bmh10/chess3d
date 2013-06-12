@@ -7,6 +7,9 @@
  * Chess3D main entry point
  */
 
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 1024
+
 enum State { MenuState, GameState };
 State state;
 
@@ -96,10 +99,10 @@ void Mouse(int button, int state, int x, int y)
   switch (state)
   {
     case MenuState:
-      menuManager->MousePress(button, state, x, y);
+      menuManager->MousePress(button, state, x, WINDOW_HEIGHT-y);
     break;
     case GameState:
-      game->MousePress(button, state, x, y);
+      game->MousePress(button, state, x, WINDOW_HEIGHT-y);
     break;
   }
 }
@@ -111,7 +114,7 @@ int main(int argc, char** argv)
   // Use double buffering and depth testing
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
 
-  glutInitWindowSize (1024, 1024); 
+  glutInitWindowSize (WINDOW_WIDTH, WINDOW_HEIGHT);
   glutInitWindowPosition (0, 0);
   glutCreateWindow ("Chess3D");
 
