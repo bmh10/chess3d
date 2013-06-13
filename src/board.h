@@ -12,6 +12,7 @@ class Board
     ModelManager* modelManager;
 
     void Init();
+    void EnableSelectionMode(bool enable);
 
   public:
     Board();
@@ -20,6 +21,7 @@ class Board
     //void Update();
     void Draw();
     void SelectSquareAt(int x, int y);
+   
 };
 
 #endif

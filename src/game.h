@@ -23,7 +23,6 @@ class Game
     void Draw();
     void KeyboardPress(unsigned char key);
     void MousePress(int button, int state, int x, int y);
-
 };
 
 #endif

@@ -27,7 +27,7 @@ void Piece::EnableSelectionMode(bool enable, int i, int j)
   selectedColour[1] = (GLfloat)j/8.0;
   selectedColour[2] = 0.5;
   selectedColour[3] = 1.0;
-  if (j==0) cout << "selcol[" << selectedColour[0] << ", " << selectedColour[1] << ", " << selectedColour[2] << "] ";
+  Draw(i, j);
 }
 
 bool Piece::CheckIfSelected(GLfloat* rgba)
@@ -35,13 +35,11 @@ bool Piece::CheckIfSelected(GLfloat* rgba)
   bool selected = true;
   GLfloat sa = selectedColour[3];
   GLfloat a = rgba[3];
-  //cout << "CHECK" << endl;
+
   for (int i=0; i < 3; i++)
   {
-    //cout << selectedColour[i] << " == " << rgba[i] << endl;
     selected &= Match(selectedColour[i]*sa, rgba[i]*a);
   }
-  //cout << endl;
 
   if (selected)
   {
@@ -53,7 +51,6 @@ bool Piece::CheckIfSelected(GLfloat* rgba)
 
 bool Piece::Match(GLfloat a, GLfloat b)
 {
-  cout << "H: " << a << ", " << b << ", " << a-b << endl;
   GLfloat diff = a-b;
   return (diff < 0.005 && diff > -0.005);
 }
@@ -73,15 +70,17 @@ void Piece::Draw(int i, int j)
     col = selectedColour;
   }
   
-  if (selected)
+  else if (selected)
   {
     col = white;
   }
-
-  // Draw square under this piece
-  if (!selectionMode && !selected) col = ((i+j)%2 == 0) ? red : blue;
-  glColor4fv(col);
+  else
+  {
+    col = ((i+j)%2 == 0) ? red : blue;
+  }
   
+  // Draw square under this piece
+  glColor4fv(col);
   glBegin(GL_POLYGON);  
     glVertex3f(i*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
     glVertex3f((i+1)*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
