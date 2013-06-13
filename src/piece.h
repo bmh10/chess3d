@@ -19,10 +19,11 @@ class Piece
     Model* model;
 
     bool selectionMode;
-    GLfloat selectedColour[3];
+    GLfloat selectedColour[4];
     bool selected;
 
     void LoadModel(ModelManager* modelManager);
+    bool Match(GLfloat a, GLfloat b);
 
   public:
     Piece(PieceType type);

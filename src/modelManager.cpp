@@ -36,12 +36,12 @@ void ModelManager::LoadAllModels()
       if (f == "vertex")
       {
         in >> numVerticies;
-        cout << "Number of verticies is: " << numVerticies << endl;
+        // cout << "Number of verticies is: " << numVerticies << endl;
       }
       else if (f == "face")
       {
         in >> numFaces;
-        cout << "Number of faces is: " << numFaces << endl;
+        // cout << "Number of faces is: " << numFaces << endl;
       }
     }
     else if (f == "end_header")
@@ -70,7 +70,7 @@ void ModelManager::LoadAllModels()
         }
       }
 
-      pawnModel->PrintData();
+      //pawnModel->PrintData();
     }
     
       /*vertexData = new Vertex[VERTEX_DATA_SIZE];

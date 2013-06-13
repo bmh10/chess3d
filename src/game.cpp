@@ -37,8 +37,8 @@ void Game::Init()
   GLfloat MaterialShininess[] = {128};
   
   // Enable lighting
-  glEnable (GL_LIGHTING);
-  glEnable (GL_LIGHT0);
+  //glEnable (GL_LIGHTING);
+  //glEnable (GL_LIGHT0);
   glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
   glLightfv(GL_LIGHT0, GL_AMBIENT,  LightAmbient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE,  LightDiffuse);
@@ -98,6 +98,7 @@ void Game::Draw()
 */
 
     // Draw axis
+
     glBegin(GL_LINES);
     glColor3f(1.0, 0.0, 0.0);
     glVertex3f(0.0, 0.0, 0.0); glVertex3f(100.0, 0.0, 0.0);

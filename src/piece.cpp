@@ -26,22 +26,22 @@ void Piece::EnableSelectionMode(bool enable, int i, int j)
   selectedColour[0] = (GLfloat)i/8.0;
   selectedColour[1] = (GLfloat)j/8.0;
   selectedColour[2] = 0.5;
-for (int i=0; i < 3; i++)
-  {
-  cout << "SELCOL: " << selectedColour[i] << endl;
-}
+  selectedColour[3] = 1.0;
+  if (j==0) cout << "selcol[" << selectedColour[0] << ", " << selectedColour[1] << ", " << selectedColour[2] << "] ";
 }
 
 bool Piece::CheckIfSelected(GLfloat* rgba)
 {
   bool selected = true;
-  cout << "CHECK" << endl;
+  GLfloat sa = selectedColour[3];
+  GLfloat a = rgba[3];
+  //cout << "CHECK" << endl;
   for (int i=0; i < 3; i++)
   {
-    cout << selectedColour[i] << " == " << rgba[i] << endl;
-    selected &= (selectedColour[i] == rgba[i]);
+    //cout << selectedColour[i] << " == " << rgba[i] << endl;
+    selected &= Match(selectedColour[i]*sa, rgba[i]*a);
   }
-  cout << endl;
+  //cout << endl;
 
   if (selected)
   {
@@ -51,13 +51,20 @@ bool Piece::CheckIfSelected(GLfloat* rgba)
   return selected;
 }
 
+bool Piece::Match(GLfloat a, GLfloat b)
+{
+  cout << "H: " << a << ", " << b << ", " << a-b << endl;
+  GLfloat diff = a-b;
+  return (diff < 0.005 && diff > -0.005);
+}
+
 void Piece::Draw(int i, int j)
 {
   assert(model != NULL);
-  GLfloat red[] = {1.0, 0.0, 0.0}; // Make static?
-  GLfloat blue[] = {0.0, 0.0, 1.0};
-  GLfloat white[] = {1.0, 1.0, 0.0}; // Make static?
-  GLfloat black[] = {0.0, 1.0, 1.0};
+  GLfloat red[] = {1.0, 0.0, 0.0, 1.0}; // Make static?
+  GLfloat blue[] = {0.0, 0.0, 1.0, 1.0};
+  GLfloat white[] = {1.0, 1.0, 0.0, 1.0}; // Make static?
+  GLfloat black[] = {0.0, 1.0, 1.0, 1.0};
   
   GLfloat* col = NULL;
 
@@ -72,9 +79,10 @@ void Piece::Draw(int i, int j)
   }
 
   // Draw square under this piece
-  glBegin(GL_POLYGON);
-    if (!selectionMode && !selected) col = ((i+j)%2 == 0) ? red : blue;
-    glColor3fv(col);
+  if (!selectionMode && !selected) col = ((i+j)%2 == 0) ? red : blue;
+  glColor4fv(col);
+  
+  glBegin(GL_POLYGON);  
     glVertex3f(i*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
     glVertex3f((i+1)*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
     glVertex3f((i+1)*SQUARE_SIZE, (j+1)*SQUARE_SIZE, 0.0);

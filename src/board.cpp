@@ -109,25 +109,28 @@ void Board::SelectSquareAt(int x, int y)
     }
   }
 
-  glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
+  //glPixelStorei(GL_PACK_ALIGNMENT, 1);
   cout << x << ", " << y << endl;
   //GLfloat *rgb = new GLfloat[3];
   //glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, rgb);
 
-  unsigned char pixels[3];
-  glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixels);
+  //unsigned char pixels[3];
+  GLfloat rgb[4];
+  glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, rgb);
 
-  cout << (GLfloat)pixels[0]/50.0 << ", " << (GLfloat)pixels[1]/50.0 << ", " << (GLfloat)pixels[2]/50.0 << endl;
+  //cout << (GLfloat)pixels[0]/50.0 << ", " << (GLfloat)pixels[1]/50.0 << ", " << (GLfloat)pixels[2]/50.0 << endl;
 
-  GLfloat rgb[3];
+  cout << "{" << rgb[0]<< ", " << rgb[1] << ", " << rgb[2] << ", " << rgb[3] << "}" << endl;
+  //GLfloat rgb[3];
+  //for (i = 0; i < 8; i++)
+  //{
+   // rgb[i] = (GLfloat)pixels[i]/50.0;
+  //}
+
   for (i = 0; i < 8; i++)
   {
-    rgb[i] = (GLfloat)pixels[i]/50.0;
-  }
-
-  for (i = 0; i < 8; i++)
-  {
-    for (j = 0; j < 1; j++)
+    for (j = 0; j < 8; j++)
     {
       if (pieces[i][j]->CheckIfSelected(rgb))
         goto end_loop;
