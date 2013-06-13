@@ -13,6 +13,7 @@ void Board::Init()
 {
   modelManager = new ModelManager();
   modelManager->LoadAllModels();
+  selectedPiece = NULL;
   
   // Initialize pieces
   int x, y;
@@ -111,6 +112,19 @@ void Board::EnableSelectionMode(bool enable)
   }
 }
 
+void Board::SetSelectedPiece(int i, int j)
+{
+  // Can only have one selected piece at one time.
+  if (selectedPiece != NULL)
+  {
+    selectedPiece->SetSelected(false);
+  }
+  
+  selectedPiece = pieces[i][j];
+  selCoord[0] = i;
+  selCoord[1] = j;
+}
+
 void Board::SelectSquareAt(int x, int y)
 {
   GLfloat rgb[4];
@@ -125,9 +139,32 @@ void Board::SelectSquareAt(int x, int y)
     for (j = 0; j < 8; j++)
     {
       if (pieces[i][j]->CheckIfSelected(rgb))
+      {
+        SetSelectedPiece(i, j);
         goto end_loop;
+      }
     }
   }
   end_loop:
-    EnableSelectionMode(false);
+  EnableSelectionMode(false);
+  
+  // TODO: insert logic here depending on current selection state of board.
+  DisplayPossibleMoves();
 }
+
+void Board::DisplayPossibleMoves()
+{
+  int x = selCoord[0];
+  int y = selCoord[1];
+  switch (selectedPiece->GetType())
+  {
+    // TODO: finish this taking into account colour of piece and edges of board.
+    case EMPTY: return;
+    case PAWN:
+      pieces[x][y+1]->SetHighlighted(true);
+      break;
+    default: return;
+  }
+}
+
+

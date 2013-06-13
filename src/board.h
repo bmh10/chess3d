@@ -10,9 +10,12 @@ class Board
   private:
     Piece* pieces[8][8];
     ModelManager* modelManager;
+    Piece* selectedPiece;
+    int selCoord[2];
 
     void Init();
     void EnableSelectionMode(bool enable);
+    void SetSelectedPiece(int i, int j);
 
   public:
     Board();
@@ -21,6 +24,7 @@ class Board
     //void Update();
     void Draw();
     void SelectSquareAt(int x, int y);
+    void DisplayPossibleMoves();
    
 };
 

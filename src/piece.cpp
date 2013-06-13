@@ -4,7 +4,7 @@ Piece::Piece(PieceType type)
 {
   this->type = type;
   selectionMode = false;
-  selected = false;
+  state = NORMAL;
 }
 
 Piece::Piece(PieceType type, PieceColour colour, ModelManager* modelManager)
@@ -13,11 +13,26 @@ Piece::Piece(PieceType type, PieceColour colour, ModelManager* modelManager)
   this->colour = colour;
   LoadModel(modelManager);
   selectionMode = false;
-  selected = false;
+  state = NORMAL;
 }
 
 Piece::~Piece()
 {
+}
+
+PieceType Piece::GetType()
+{
+  return type;
+}
+
+void Piece::SetSelected(bool selected)
+{
+  this->state = (selected) ? SELECTED : NORMAL;
+}
+
+void Piece::SetHighlighted(bool highlight)
+{
+  this->state = (highlight) ? HIGHLIGHTED : NORMAL;
 }
 
 void Piece::EnableSelectionMode(bool enable, int i, int j)
@@ -43,7 +58,7 @@ bool Piece::CheckIfSelected(GLfloat* rgba)
 
   if (selected)
   {
-    this->selected = true;
+    this->state = SELECTED;
   }
 
   return selected;
@@ -57,7 +72,6 @@ bool Piece::Match(GLfloat a, GLfloat b)
 
 void Piece::Draw(int i, int j)
 {
-  assert(model != NULL);
   GLfloat red[] = {1.0, 0.0, 0.0, 1.0}; // Make static?
   GLfloat blue[] = {0.0, 0.0, 1.0, 1.0};
   GLfloat white[] = {1.0, 1.0, 0.0, 1.0}; // Make static?
@@ -69,14 +83,19 @@ void Piece::Draw(int i, int j)
   {
     col = selectedColour;
   }
-  
-  else if (selected)
-  {
-    col = white;
-  }
   else
   {
-    col = ((i+j)%2 == 0) ? red : blue;
+    switch (state)
+    {
+      case SELECTED:
+        col = white;
+        break;
+     case HIGHLIGHTED:
+        col = black;
+        break;
+     default:
+       col = ((i+j)%2 == 0) ? red : blue;
+    }
   }
   
   // Draw square under this piece
