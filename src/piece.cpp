@@ -25,6 +25,11 @@ PieceType Piece::GetType()
   return type;
 }
 
+PieceColour Piece::GetColour()
+{
+  return colour;
+}
+
 void Piece::SetSelected(bool selected)
 {
   this->state = (selected) ? SELECTED : NORMAL;

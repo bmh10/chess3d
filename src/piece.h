@@ -18,7 +18,7 @@ class Piece
   private:
     PieceType type;
     PieceColour colour;
-        PieceState state;
+    PieceState state;
     Model* model;
 
     bool selectionMode;
@@ -33,6 +33,7 @@ class Piece
     ~Piece();
 
     PieceType GetType();
+    PieceColour GetColour();
     
     void SetSelected(bool selected);
     void SetHighlighted(bool highlight);

@@ -16,6 +16,8 @@ class Board
     void Init();
     void EnableSelectionMode(bool enable);
     void SetSelectedPiece(int i, int j);
+    void SafeHighlightPiece(int i, int j);
+    void UnhighlightPieces();
 
   public:
     Board();

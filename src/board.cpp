@@ -120,9 +120,16 @@ void Board::SetSelectedPiece(int i, int j)
     selectedPiece->SetSelected(false);
   }
   
-  selectedPiece = pieces[i][j];
-  selCoord[0] = i;
-  selCoord[1] = j;
+  if (selectedPiece == pieces[i][j])
+  {
+    selectedPiece = NULL;
+  }
+  else
+  {
+    selectedPiece = pieces[i][j];
+    selCoord[0] = i;
+    selCoord[1] = j;
+  }
 }
 
 void Board::SelectSquareAt(int x, int y)
@@ -133,6 +140,7 @@ void Board::SelectSquareAt(int x, int y)
   glReadBuffer(GL_BACK);
   glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, rgb);
   cout << "{" << rgb[0]<< ", " << rgb[1] << ", " << rgb[2] << ", " << rgb[3] << "}" << endl;
+  UnhighlightPieces();
 
   for (i = 0; i < 8; i++)
   {
@@ -145,6 +153,10 @@ void Board::SelectSquareAt(int x, int y)
       }
     }
   }
+  // If click did not select a piece/square then return.
+  EnableSelectionMode(false);
+  return;
+
   end_loop:
   EnableSelectionMode(false);
   
@@ -154,16 +166,96 @@ void Board::SelectSquareAt(int x, int y)
 
 void Board::DisplayPossibleMoves()
 {
+  if (selectedPiece == NULL) return;
+
   int x = selCoord[0];
   int y = selCoord[1];
+  PieceColour col = selectedPiece->GetColour();
+  int i = (col == WHITE) ? 1 : -1;
   switch (selectedPiece->GetType())
   {
-    // TODO: finish this taking into account colour of piece and edges of board.
     case EMPTY: return;
     case PAWN:
-      pieces[x][y+1]->SetHighlighted(true);
+      SafeHighlightPiece(x, y+i);
+      // Pawns can move 2 squares from start position
+      if ((y == 1 && col == WHITE) || (y == 6 && col == BLACK))
+      {
+        SafeHighlightPiece(x, y+2*i);
+      }
+      //TODO: en passent case
+      break;
+    case KNIGHT:
+      SafeHighlightPiece(x+1, y+2);
+      SafeHighlightPiece(x+1, y-2);
+      SafeHighlightPiece(x-1, y+2);
+      SafeHighlightPiece(x-1, y-2);
+      break;
+    case BISHOP:
+      for (int n=1; n < 8; n++)
+      {
+        SafeHighlightPiece(x+n, y+n);
+        SafeHighlightPiece(x+n, y-n);
+        SafeHighlightPiece(x-n, y+n);
+        SafeHighlightPiece(x-n, y-n);
+      }
+      break;
+    case CASTLE:
+      for (int n=1; n < 8; n++)
+      {
+        SafeHighlightPiece(x, y+n);
+        SafeHighlightPiece(x, y-n);
+        SafeHighlightPiece(x+n, y);
+        SafeHighlightPiece(x-n, y);
+      }
+      break;
+    case QUEEN:
+      for (int n=1; n < 8; n++)
+      {
+        SafeHighlightPiece(x+n, y+n);
+        SafeHighlightPiece(x+n, y-n);
+        SafeHighlightPiece(x-n, y+n);
+        SafeHighlightPiece(x-n, y-n);
+        SafeHighlightPiece(x, y+n);
+        SafeHighlightPiece(x, y-n);
+        SafeHighlightPiece(x+n, y);
+        SafeHighlightPiece(x-n, y);
+      }
+      break;
+    case KING:
+        SafeHighlightPiece(x+1, y+1);
+        SafeHighlightPiece(x+1, y-1);
+        SafeHighlightPiece(x-1, y+1);
+        SafeHighlightPiece(x-1, y-1);
+        SafeHighlightPiece(x, y+1);
+        SafeHighlightPiece(x, y-1);
+        SafeHighlightPiece(x+1, y);
+        SafeHighlightPiece(x-1, y);
       break;
     default: return;
+  }
+}
+
+/*
+ * Highlights a piece with given coordinates
+ * if coordinates are within confines of the board.
+ */
+void Board::SafeHighlightPiece(int i, int j)
+{
+  if (i >= 0 && i < 8 && j >=0 && j < 8)
+  {
+    pieces[i][j]->SetHighlighted(true);
+  }
+}
+
+void Board::UnhighlightPieces()
+{
+  int i, j;
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      pieces[i][j]->SetHighlighted(false);
+    }
   }
 }
 
