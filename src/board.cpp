@@ -150,7 +150,7 @@ void Board::SelectSquareAt(int x, int y)
   EnableSelectionMode(true);
   glReadBuffer(GL_BACK);
   glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, rgb);
-  cout << "{" << rgb[0]<< ", " << rgb[1] << ", " << rgb[2] << ", " << rgb[3] << "}" << endl;
+  //cout << "{" << rgb[0]<< ", " << rgb[1] << ", " << rgb[2] << ", " << rgb[3] << "}" << endl;
   
   for (i = 0; i < 8; i++)
   {
@@ -212,12 +212,17 @@ void Board::DisplayPossibleMoves()
   {
     case EMPTY: return;
     case PAWN:
-      SafeHighlightPiece(x, y+i);
-      // Pawns can move 2 squares from start position
-      if ((y == 1 && col == WHITE) || (y == 6 && col == BLACK))
+      if (SafeHighlightPiecePawn(x, y+i)
+         && ((y == 1 && col == WHITE) || (y == 6 && col == BLACK)))
       {
-        SafeHighlightPiece(x, y+2*i);
+        // Pawns can move 2 squares only from start position
+        SafeHighlightPiecePawn(x, y+2*i);
       }
+
+      // Pawns take diagonally
+      SafeHighlightPiecePawnTake(x+1, y+i, col);
+      SafeHighlightPiecePawnTake(x-1, y+i, col);
+
       //TODO: en passent case
       break;
     case KNIGHT:
@@ -271,22 +276,61 @@ bool Board::SafeHighlightPiece(int i, int j)
 {
   if (i >= 0 && i < 8 && j >=0 && j < 8)
   {
-    if (pieces[i][j]->GetType() != EMPTY && pieces[i][j]->GetColour() == selectedPiece->GetColour())
-      return false;
+    if (pieces[i][j]->GetType() != EMPTY)
+    {
+      // If we hit one of our own pieces stop highlighting.
+      if (pieces[i][j]->GetColour() == selectedPiece->GetColour())
+      {
+        return false;
+      }
+      // If we hit one of opponent's pieces highlight that piece then stop highlighting.
+      else
+      {
+        pieces[i][j]->SetHighlighted(true);
+        return false;
+      }
+    }
     pieces[i][j]->SetHighlighted(true);
+    return true;
   }
-  return true;
+  return false;
 }
-
 
 void Board::SafeHighlightPieces(int i, int j, int (*fx)(int, int), int (*fy)(int, int))
 {
-  int n = 0;
-  for (n=0; n < 8; n++)
+  int n;
+  for (n=1; n < 8; n++)
   {
 	if (!SafeHighlightPiece(fx(i, n), fy(j, n)))
       break;
   }
+}
+
+bool Board::SafeHighlightPiecePawn(int i, int j)
+{
+  if (i >= 0 && i < 8 && j >=0 && j < 8)
+  {
+    if (pieces[i][j]->GetType() == EMPTY)
+    {
+      pieces[i][j]->SetHighlighted(true);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Board::SafeHighlightPiecePawnTake(int i, int j, PieceColour col)
+{
+  if (i >= 0 && i < 8 && j >=0 && j < 8)
+  {
+    if (pieces[i][j]->GetType() != EMPTY
+        && pieces[i][j]->GetColour() != col)
+      {
+        pieces[i][j]->SetHighlighted(true);
+        return true;
+      }
+  }
+  return false;
 }
 
 void Board::UnhighlightPieces()

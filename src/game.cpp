@@ -11,7 +11,7 @@ Game::~Game()
 
 void Game::Init()
 {
-  Logger::Info("Initializing game...");
+  Logger::Info("Initializing game.");
 
   centreBoard[0] = 0.02f*4.0f;
   centreBoard[1] = 0.0f;

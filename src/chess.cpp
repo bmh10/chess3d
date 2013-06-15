@@ -19,7 +19,7 @@ Game *game;
 void Init() 
 {
   glClearColor (0.0, 0.0, 0.0, 0.0);
-  Logger::Info("Initialising...");
+  Logger::Info("Initialising.");
   
   menuManager = new MenuManager();
   game = new Game();
@@ -48,7 +48,7 @@ void Display()
 
 void Reshape (int w, int h)
 {
-  Logger::Info("Reshape...");
+  Logger::Info("Reshape.");
   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
   
   // Setup perspective
