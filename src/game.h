@@ -3,6 +3,7 @@
 
 #include "headers.h"
 #include "board.h"
+#include "hud.h"
 
 class Game
 {
@@ -11,6 +12,7 @@ class Game
     GLfloat lightPos[3];
     GLfloat centreBoard[3];
     Board *board;
+    Hud *hud;
 
     void Init();
 

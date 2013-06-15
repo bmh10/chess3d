@@ -114,6 +114,7 @@ void Game::Draw()
     glEnd();
 
     board->Draw();
+    hud->Draw();
 }
 
 void Game::KeyboardPress(unsigned char key)
