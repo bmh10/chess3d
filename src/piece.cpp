@@ -30,6 +30,11 @@ PieceColour Piece::GetColour()
   return colour;
 }
 
+PieceState Piece::GetState()
+{
+  return state;
+}
+
 void Piece::SetSelected(bool selected)
 {
   this->state = (selected) ? SELECTED : NORMAL;
@@ -50,7 +55,7 @@ void Piece::EnableSelectionMode(bool enable, int i, int j)
   Draw(i, j);
 }
 
-bool Piece::CheckIfSelected(GLfloat* rgba)
+bool Piece::CheckIfClicked(GLfloat* rgba)
 {
   bool selected = true;
   GLfloat sa = selectedColour[3];
@@ -60,11 +65,12 @@ bool Piece::CheckIfSelected(GLfloat* rgba)
   {
     selected &= Match(selectedColour[i]*sa, rgba[i]*a);
   }
-
+/*
   if (selected)
   {
     this->state = SELECTED;
   }
+*/
 
   return selected;
 }

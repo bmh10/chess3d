@@ -130,9 +130,17 @@ void Board::SetSelectedPiece(int i, int j)
   else
   {
     selectedPiece = pieces[i][j];
+    selectedPiece->SetSelected(true);
     selCoord[0] = i;
     selCoord[1] = j;
   }
+}
+
+void Board::MoveSelectedPiece(int i, int j)
+{
+  pieces[i][j] = selectedPiece;
+  pieces[selCoord[0]][selCoord[1]] = new Piece(EMPTY);
+  selectedPiece = NULL;
 }
 
 void Board::SelectSquareAt(int x, int y)
@@ -143,30 +151,40 @@ void Board::SelectSquareAt(int x, int y)
   glReadBuffer(GL_BACK);
   glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, rgb);
   cout << "{" << rgb[0]<< ", " << rgb[1] << ", " << rgb[2] << ", " << rgb[3] << "}" << endl;
-  UnhighlightPieces();
-
+  
   for (i = 0; i < 8; i++)
   {
     for (j = 0; j < 8; j++)
     {
-      if (pieces[i][j]->CheckIfSelected(rgb))
+      if (pieces[i][j]->CheckIfClicked(rgb))
       {
-        SetSelectedPiece(i, j);
+        PieceState stateOfClickedPiece = pieces[i][j]->GetState();
+        UnhighlightPieces();
+        switch (stateOfClickedPiece)
+        {
+          case NORMAL:
+            SetSelectedPiece(i, j);
+            DisplayPossibleMoves();
+            break;
+          case HIGHLIGHTED:
+            MoveSelectedPiece(i, j);
+            break;
+          case SELECTED:
+            selectedPiece = NULL;
+            break;
+        }     
         goto end_loop;
       }
     }
   }
   // If click did not select a piece/square then return.
-  EnableSelectionMode(false);
-  return;
+  UnhighlightPieces();
 
   end_loop:
-  EnableSelectionMode(false);
-  
-  // TODO: insert logic here depending on current selection state of board.
-  DisplayPossibleMoves();
+    EnableSelectionMode(false);
 }
 
+// TODO: Move these functions elsewhere.
 int Add(int i, int j)
 {
   return i + j;

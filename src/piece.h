@@ -34,11 +34,12 @@ class Piece
 
     PieceType GetType();
     PieceColour GetColour();
+    PieceState GetState();
     
     void SetSelected(bool selected);
     void SetHighlighted(bool highlight);
     void EnableSelectionMode(bool enable, int i, int j);
-    bool CheckIfSelected(GLfloat* rgba);
+    bool CheckIfClicked(GLfloat* rgba);
     void Draw(int i, int j);
     
 
