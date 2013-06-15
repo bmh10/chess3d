@@ -1,5 +1,8 @@
 #include "board.h"
 
+#define PLUS std::plus<int>
+#define MINUS std::minus<int>
+
 Board::Board()
 {
   Init();
@@ -164,6 +167,7 @@ void Board::SelectSquareAt(int x, int y)
   DisplayPossibleMoves();
 }
 
+
 void Board::DisplayPossibleMoves()
 {
   if (selectedPiece == NULL) return;
@@ -209,27 +213,35 @@ void Board::DisplayPossibleMoves()
       }
       break;
     case QUEEN:
-      for (int n=1; n < 8; n++)
-      {
-        SafeHighlightPiece(x+n, y+n);
-        SafeHighlightPiece(x+n, y-n);
-        SafeHighlightPiece(x-n, y+n);
-        SafeHighlightPiece(x-n, y-n);
-        SafeHighlightPiece(x, y+n);
-        SafeHighlightPiece(x, y-n);
-        SafeHighlightPiece(x+n, y);
-        SafeHighlightPiece(x-n, y);
-      }
+      //for (int n=1; n < 8; n++)
+      //{
+        //SafeHighlightPiece(x+n, y+n);
+        SafeHighlightPieces<PLUS, PLUS>(x, y, PLUS(), PLUS());
+        //SafeHighlightPiece(x+n, y-n);
+SafeHighlightPieces<PLUS, MINUS>(x, y, PLUS(), MINUS());
+        //SafeHighlightPiece(x-n, y+n);
+SafeHighlightPieces<MINUS, PLUS>(x, y, MINUS(), PLUS());
+        //SafeHighlightPiece(x-n, y-n);
+SafeHighlightPieces<PLUS, PLUS>(x, y, MINUS(), MINUS());
+        //SafeHighlightPiece(x, y+n);
+SafeHighlightPieces<PLUS, PLUS>(x, y, ??, PLUS());
+        //SafeHighlightPiece(x, y-n);
+SafeHighlightPieces<PLUS, PLUS>(x, y, PLUS(), PLUS());
+        //SafeHighlightPiece(x+n, y);
+SafeHighlightPieces<PLUS, PLUS>(x, y, PLUS(), PLUS());
+        //SafeHighlightPiece(x-n, y);
+      //}
       break;
     case KING:
-        SafeHighlightPiece(x+1, y+1);
-        SafeHighlightPiece(x+1, y-1);
-        SafeHighlightPiece(x-1, y+1);
-        SafeHighlightPiece(x-1, y-1);
-        SafeHighlightPiece(x, y+1);
-        SafeHighlightPiece(x, y-1);
-        SafeHighlightPiece(x+1, y);
-        SafeHighlightPiece(x-1, y);
+      //TODO: castling case
+      SafeHighlightPiece(x+1, y+1);
+      SafeHighlightPiece(x+1, y-1);
+      SafeHighlightPiece(x-1, y+1);
+      SafeHighlightPiece(x-1, y-1);
+      SafeHighlightPiece(x, y+1);
+      SafeHighlightPiece(x, y-1);
+      SafeHighlightPiece(x+1, y);
+      SafeHighlightPiece(x-1, y);
       break;
     default: return;
   }
@@ -239,12 +251,15 @@ void Board::DisplayPossibleMoves()
  * Highlights a piece with given coordinates
  * if coordinates are within confines of the board.
  */
-void Board::SafeHighlightPiece(int i, int j)
+bool Board::SafeHighlightPiece(int i, int j)
 {
   if (i >= 0 && i < 8 && j >=0 && j < 8)
   {
+    if (pieces[i][j]->GetType() != EMPTY && pieces[i][j]->GetColour() == selectedPiece->GetColour())
+      return false;
     pieces[i][j]->SetHighlighted(true);
   }
+  return true;
 }
 
 void Board::UnhighlightPieces()
