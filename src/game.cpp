@@ -60,6 +60,7 @@ void Game::Init()
   
   // Initialise game components
   board = new Board();
+  hud = new Hud();
 }
 
 void Game::Update()
@@ -114,7 +115,7 @@ void Game::Draw()
     glEnd();
 
     board->Draw();
-    hud->Draw();
+    hud->Draw(board->IsWhiteToMove());
 }
 
 void Game::KeyboardPress(unsigned char key)

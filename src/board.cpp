@@ -17,6 +17,7 @@ void Board::Init()
   modelManager = new ModelManager();
   modelManager->LoadAllModels();
   selectedPiece = NULL;
+  whiteToMove = true;
   
   // Initialize pieces
   int x, y;
@@ -56,6 +57,11 @@ void Board::Init()
   pieces[4][0] = new Piece(QUEEN, WHITE, modelManager);
   pieces[4][7] = new Piece(QUEEN, BLACK, modelManager);
 
+}
+
+bool Board::IsWhiteToMove()
+{
+  return whiteToMove;
 }
 
 void Board::Draw()
@@ -117,22 +123,17 @@ void Board::EnableSelectionMode(bool enable)
 
 void Board::SetSelectedPiece(int i, int j)
 {
-  // Can only have one selected piece at one time.
-  if (selectedPiece != NULL)
-  {
-    selectedPiece->SetSelected(false);
-  }
+  selectedPiece = pieces[i][j];
+  selectedPiece->SetSelected(true);
+  selCoord[0] = i;
+  selCoord[1] = j;
   
-  if (selectedPiece == pieces[i][j])
+  // Only highlight possible moves if correct turn.
+  PieceColour selCol = selectedPiece->GetColour();
+  if ((selCol == WHITE && whiteToMove)
+   || (selCol == BLACK && !whiteToMove))
   {
-    selectedPiece = NULL;
-  }
-  else
-  {
-    selectedPiece = pieces[i][j];
-    selectedPiece->SetSelected(true);
-    selCoord[0] = i;
-    selCoord[1] = j;
+    DisplayPossibleMoves();
   }
 }
 
@@ -141,6 +142,8 @@ void Board::MoveSelectedPiece(int i, int j)
   pieces[i][j] = selectedPiece;
   pieces[selCoord[0]][selCoord[1]] = new Piece(EMPTY);
   selectedPiece = NULL;
+  // Switch turns
+  whiteToMove = !whiteToMove;
 }
 
 void Board::SelectSquareAt(int x, int y)
@@ -164,7 +167,6 @@ void Board::SelectSquareAt(int x, int y)
         {
           case NORMAL:
             SetSelectedPiece(i, j);
-            DisplayPossibleMoves();
             break;
           case HIGHLIGHTED:
             MoveSelectedPiece(i, j);

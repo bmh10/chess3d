@@ -12,6 +12,7 @@ class Board
     ModelManager* modelManager;
     Piece* selectedPiece;
     int selCoord[2];
+    bool whiteToMove;
 
     void Init();
     void EnableSelectionMode(bool enable);
@@ -32,6 +33,8 @@ class Board
     void Draw();
     void SelectSquareAt(int x, int y);
     void DisplayPossibleMoves();
+
+    bool IsWhiteToMove();
    
 };
 
