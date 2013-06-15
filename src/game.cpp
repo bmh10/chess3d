@@ -114,6 +114,16 @@ void Game::Draw()
     glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, 0.0, -100.0);
     glEnd();
 
+    // Ground plane
+    GLfloat n = 100.0;
+    glBegin(GL_POLYGON);
+    glColor3f(0.7, 0.7, 0.5);
+    glVertex3f(-n, -n, -0.011);
+    glVertex3f(n, -n, -0.011);
+    glVertex3f(n, n, -0.011);
+    glVertex3f(-n, n, -0.011);
+    glEnd();
+
     board->Draw();
     hud->Draw(board->IsWhiteToMove());
 }
