@@ -167,6 +167,20 @@ void Board::SelectSquareAt(int x, int y)
   DisplayPossibleMoves();
 }
 
+int Add(int i, int j)
+{
+  return i + j;
+}
+
+int Sub(int i, int j)
+{
+  return i - j;
+}
+
+int Id(int i, int j)
+{
+  return i;
+}
 
 void Board::DisplayPossibleMoves()
 {
@@ -195,42 +209,26 @@ void Board::DisplayPossibleMoves()
       SafeHighlightPiece(x-1, y-2);
       break;
     case BISHOP:
-      for (int n=1; n < 8; n++)
-      {
-        SafeHighlightPiece(x+n, y+n);
-        SafeHighlightPiece(x+n, y-n);
-        SafeHighlightPiece(x-n, y+n);
-        SafeHighlightPiece(x-n, y-n);
-      }
+      SafeHighlightPieces(x, y, &Add, &Add);
+      SafeHighlightPieces(x, y, &Add, &Sub);
+      SafeHighlightPieces(x, y, &Sub, &Add);
+      SafeHighlightPieces(x, y, &Sub, &Sub);
       break;
     case CASTLE:
-      for (int n=1; n < 8; n++)
-      {
-        SafeHighlightPiece(x, y+n);
-        SafeHighlightPiece(x, y-n);
-        SafeHighlightPiece(x+n, y);
-        SafeHighlightPiece(x-n, y);
-      }
+      SafeHighlightPieces(x, y, &Id, &Add);
+	  SafeHighlightPieces(x, y, &Id, &Sub);
+      SafeHighlightPieces(x, y, &Add, &Id);
+      SafeHighlightPieces(x, y, &Sub, &Id);
       break;
     case QUEEN:
-      //for (int n=1; n < 8; n++)
-      //{
-        //SafeHighlightPiece(x+n, y+n);
-        SafeHighlightPieces<PLUS, PLUS>(x, y, PLUS(), PLUS());
-        //SafeHighlightPiece(x+n, y-n);
-SafeHighlightPieces<PLUS, MINUS>(x, y, PLUS(), MINUS());
-        //SafeHighlightPiece(x-n, y+n);
-SafeHighlightPieces<MINUS, PLUS>(x, y, MINUS(), PLUS());
-        //SafeHighlightPiece(x-n, y-n);
-SafeHighlightPieces<PLUS, PLUS>(x, y, MINUS(), MINUS());
-        //SafeHighlightPiece(x, y+n);
-SafeHighlightPieces<PLUS, PLUS>(x, y, ??, PLUS());
-        //SafeHighlightPiece(x, y-n);
-SafeHighlightPieces<PLUS, PLUS>(x, y, PLUS(), PLUS());
-        //SafeHighlightPiece(x+n, y);
-SafeHighlightPieces<PLUS, PLUS>(x, y, PLUS(), PLUS());
-        //SafeHighlightPiece(x-n, y);
-      //}
+      SafeHighlightPieces(x, y, &Add, &Add);
+	  SafeHighlightPieces(x, y, &Add, &Sub);
+	  SafeHighlightPieces(x, y, &Sub, &Add);
+	  SafeHighlightPieces(x, y, &Sub, &Sub);
+	  SafeHighlightPieces(x, y, &Id, &Add);
+	  SafeHighlightPieces(x, y, &Id, &Sub);
+	  SafeHighlightPieces(x, y, &Add, &Id);
+	  SafeHighlightPieces(x, y, &Sub, &Id);
       break;
     case KING:
       //TODO: castling case
@@ -260,6 +258,17 @@ bool Board::SafeHighlightPiece(int i, int j)
     pieces[i][j]->SetHighlighted(true);
   }
   return true;
+}
+
+
+void Board::SafeHighlightPieces(int i, int j, int (*fx)(int, int), int (*fy)(int, int))
+{
+  int n = 0;
+  for (n=0; n < 8; n++)
+  {
+	if (!SafeHighlightPiece(fx(i, n), fy(j, n)))
+      break;
+  }
 }
 
 void Board::UnhighlightPieces()

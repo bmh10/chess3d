@@ -18,22 +18,11 @@ class Board
     void EnableSelectionMode(bool enable);
     void SetSelectedPiece(int i, int j);
     bool SafeHighlightPiece(int i, int j);
-    //template<class Fx, class Fy> int SafeHighlightPieces(int i, int j, Fx fx, Fx fy);
-    //void SafeHighlightPieces(int i, int j, std::binary_function<int, int, int> fx,
-                                           //std::binary_function<int, int, int> fy);
+    void SafeHighlightPieces(int i, int j, int (*fx)(int, int), int (*fy)(int, int));
     int Apply(int i, int j, std::binary_function<int, int, int> f);
     void UnhighlightPieces();
 
-    template<class Fx, class Fy> int SafeHighlightPieces(int i, int j, Fx fx, Fx fy)
-	{
-	  int n = 0;
-	  for (n=0; n < 8; n++)
-	  {
-		if (!SafeHighlightPiece(fx(i, n), fy(j, n)))
-          break;
-	  }
-
-	}
+    //int Add(int i, int j);
 
   public:
     Board();
