@@ -105,15 +105,28 @@ void Special(int key, int x, int y)
   }
 }
 
-void Mouse(int button, int state, int x, int y)
+void Mouse(int button, int mouseState, int x, int y)
 {
   switch (state)
   {
     case MENU:
-      menuManager->MousePress(button, state, x, WINDOW_HEIGHT-y);
+      menuManager->MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
     break;
     case GAME:
-      game->MousePress(button, state, x, WINDOW_HEIGHT-y);
+      game->MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
+    break;
+  }
+}
+
+void MouseMotion(int x, int y)
+{
+  switch (state)
+  {
+    case MENU:
+      menuManager->MouseMotion(x, WINDOW_HEIGHT-y);
+    break;
+    case GAME:
+      //game->MouseMotion(x, WINDOW_HEIGHT-y);
     break;
   }
 }
@@ -139,6 +152,7 @@ int main(int argc, char** argv)
   glutKeyboardFunc(Keyboard);
   glutSpecialFunc(Special);
   glutMouseFunc(Mouse);
+  glutPassiveMotionFunc(MouseMotion);
 
   // Start rendering 
   glutMainLoop();

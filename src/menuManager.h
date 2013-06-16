@@ -2,6 +2,7 @@
 #define _MENU_MANAGER_H
 
 #include "headers.h"
+#include "box2d.h"
 
 #define NUM_OPTIONS 4
 
@@ -11,12 +12,14 @@ class MenuManager
 {
   private:
     MenuState state;
+    Box2d* boxes[4];
     char text[2][4][25];
     int selectedOption;
     bool gameStarted;
+    Box2d* backBox;
 
     void Init();
-    void DrawOption(int n, GLfloat* pos, GLfloat* col);
+    void DrawOption(int n);
     void OptionClicked();
 
   public:
@@ -28,7 +31,7 @@ class MenuManager
     void Draw();
     void KeyboardPress(unsigned char key);
     void MousePress(int button, int state, int x, int y);
-    
+    void MouseMotion(int x, int y);
 
 };
 

@@ -30,6 +30,16 @@ void MenuManager::Init()
   selectedOption = 0;
   gameStarted = false;
   state = MAIN;
+
+  GLfloat boxCol[3] = { 0.0f, 0.0f, 0.0f };
+  for (int i=0; i<4; i++)
+  {
+    GLfloat origin[3] = { 0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f };
+    boxes[i] = new Box2d(origin, WINDOW_WIDTH/3, 50.0f, boxCol);
+  }
+
+  GLfloat origin[3] = { 0.0f, 0.0f, 0.0f };
+  backBox = new Box2d(origin, WINDOW_WIDTH/3, WINDOW_HEIGHT, boxCol);
 }
 
 void MenuManager::Update()
@@ -53,7 +63,9 @@ void MenuManager::Draw()
   // TODO: not sure if necessary
   glDisable(GL_CULL_FACE);
   glClear(GL_DEPTH_BUFFER_BIT);
-
+ 
+  backBox->Draw();
+/*
   // Draw menu background
   glBegin(GL_QUADS);
     GLfloat w = WINDOW_WIDTH/3;
@@ -64,21 +76,10 @@ void MenuManager::Draw()
     glVertex2f(w, h);
     glVertex2f(0.0, h);
   glEnd();
-
-  // Draw options
-  int optWidth;
-  GLfloat normCol[3] = { 1.0f, 1.0f, 1.0f };
-  GLfloat selCol[3] = { 0.0f, 0.0f, 1.0f };
-  GLfloat* col;
-  
+*/
   for (int i=0; i < 4; i++)
   {
-    glPushMatrix();
-      optWidth = (int)strlen(text[state][i])*15;
-      GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, WINDOW_HEIGHT*2/3 - 50.0f*i, 1.0f };
-      col = (i == selectedOption) ? selCol : normCol;
-      DrawOption(i, pos, col);
-    glPopMatrix();
+    DrawOption(i);
   }
 
   // Restore saved matricies ready for 3D rendering.
@@ -88,21 +89,21 @@ void MenuManager::Draw()
   glPopMatrix();
 }
 
-void MenuManager::DrawOption(int n, GLfloat* pos, GLfloat* col)
+// Should only really draw when things change not all the time.
+void MenuManager::DrawOption(int n)
 {
-  // Draw box around option
-  glBegin(GL_QUADS);
-    GLfloat w = WINDOW_WIDTH/3;
-    GLfloat h = 50.f;
-    GLfloat y = pos[1]-10.0f;
-    glColor3f(0.0f, 0.2f, 0.0f);
-    glVertex3f(0.0f, y, 0.5f);
-    glVertex3f(w, y, 0.5f);
-    glVertex3f(w, y + h, 0.5f);
-    glVertex3f(0.0, y + h, 0.5f);
-  glEnd();
+  glPushMatrix();
 
+  // Draw box around option
+  boxes[n]->Draw();
+
+  GLfloat normCol[3] = { 1.0f, 1.0f, 1.0f };
+  GLfloat selCol[3] = { 0.0f, 0.0f, 1.0f };
+  GLfloat* col = (n == selectedOption) ? selCol : normCol;
   glColor3fv(col);
+
+  int optWidth = (int)strlen(text[state][n])*15;
+  GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, boxes[n]->GetOrigin()[1]+10, 1.0f };
   glTranslatef(pos[0], pos[1], pos[2]);
   glScalef(0.25f, 0.25f, 0.5f);
 
@@ -110,7 +111,8 @@ void MenuManager::DrawOption(int n, GLfloat* pos, GLfloat* col)
   {
     glutStrokeCharacter(GLUT_STROKE_ROMAN, text[state][n][i]);
   }
-
+  
+  glPopMatrix();
 }
 
 void MenuManager::OptionClicked()
@@ -179,4 +181,28 @@ void MenuManager::KeyboardPress(unsigned char key)
 
 void MenuManager::MousePress(int button, int state, int x, int y)
 {
+  switch(button)
+  {
+    case GLUT_LEFT_BUTTON:
+      if (state == GLUT_UP)
+      {
+        OptionClicked();
+      }
+    break;
+  }
 }
+
+void MenuManager::MouseMotion(int x, int y)
+{
+  for (int i=0; i < 4; i++)
+  {
+    if (boxes[i]->IsPointInBox(x, y))
+    {
+      selectedOption = i;
+      return;
+    }
+  }
+}
+
+
+
