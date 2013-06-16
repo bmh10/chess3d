@@ -11,8 +11,10 @@ class Game
     GLfloat cameraPos[3];
     GLfloat lightPos[3];
     GLfloat centreBoard[3];
+    GLfloat rotationAngle;
     Board *board;
     Hud *hud;
+    bool demoMode;
 
     void Init();
 
@@ -20,7 +22,7 @@ class Game
     Game();
     ~Game();
 
-    
+    void SetDemoMode(bool enable);
     void Update();
     void Draw();
     void KeyboardPress(unsigned char key);

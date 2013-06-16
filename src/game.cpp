@@ -9,12 +9,17 @@ Game::~Game()
 {
 }
 
+void Game::SetDemoMode(bool enable)
+{
+  demoMode = enable;
+}
+
 void Game::Init()
 {
   Logger::Info("Initializing game.");
 
-  centreBoard[0] = 0.02f*4.0f;
-  centreBoard[1] = 0.0f;
+  centreBoard[0] = SQUARE_SIZE*4.0f;
+  centreBoard[1] = SQUARE_SIZE*4.0f;
   centreBoard[2] = 0.0f;
 
   // Set initial camera position relative to centre of board
@@ -22,8 +27,9 @@ void Game::Init()
     cameraPos[i] = centreBoard[i];
 
   cameraPos[0] += 0.0f;
-  cameraPos[1] -= 0.05f;
-  cameraPos[2] += 0.05f;
+  cameraPos[1] -= 0.12f;
+  cameraPos[2] += 0.08f;
+  rotationAngle = 0.0f;
 
   // Put light in same place as camera
   for (int i=0; i < 3; i++)
@@ -61,36 +67,32 @@ void Game::Init()
   // Initialise game components
   board = new Board();
   hud = new Hud();
+  demoMode = true;
 }
 
 void Game::Update()
 {
   // Move light depending on current coords
   glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-
   // Move camera depending on current coords
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
   gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2],
     centreBoard[0], centreBoard[1], centreBoard[2], 0.0f, 0.0f, 1.0f);
+
+  if (demoMode)
+  {
+    rotationAngle += 0.2f;
+    if (rotationAngle == 360.0f)
+      rotationAngle = 0.0f;
+    glTranslatef(centreBoard[0], centreBoard[1], centreBoard[2]);
+    glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-centreBoard[0], -centreBoard[1], -centreBoard[2]);
+  }
 }
 
 void Game::Draw()
 {
-
-/*
-  if (DEBUG)
-  {
-    // Draw triangle at light source
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(lightPos[0], lightPos[1], lightPos[2]);
-    glVertex3f(lightPos[0], lightPos[1]+0.1, lightPos[2]);
-    glVertex3f(lightPos[0], lightPos[1]+0.1, lightPos[2]+0.1);
-    glEnd();
-  }
-*/
-  
 /*
   if (textureOn)
     glEnable(GL_TEXTURE_2D);
@@ -99,20 +101,22 @@ void Game::Draw()
 */
 
     // Draw axis
-
-    glBegin(GL_LINES);
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(0.0, 0.0, 0.0); glVertex3f(100.0, 0.0, 0.0);
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 100.0, 0.0);
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 100.0);
-    
-    glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(0.0, 0.0, 0.0); glVertex3f(-100.0, 0.0, 0.0);
-    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, -100.0, 0.0);
-    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, 0.0, -100.0);
-    glEnd();
+    if (DEBUG)
+    {
+      glBegin(GL_LINES);
+      glColor3f(1.0, 0.0, 0.0);
+      glVertex3f(0.0, 0.0, 0.0); glVertex3f(100.0, 0.0, 0.0);
+      glColor3f(0.0, 1.0, 0.0);
+      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 100.0, 0.0);
+      glColor3f(0.0, 0.0, 1.0);
+      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 100.0);
+      
+      glColor3f(1.0, 1.0, 1.0);
+      glVertex3f(0.0, 0.0, 0.0); glVertex3f(-100.0, 0.0, 0.0);
+      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, -100.0, 0.0);
+      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, 0.0, -100.0);
+      glEnd();
+    }
 
     // Ground plane
     GLfloat n = 100.0;
@@ -125,7 +129,10 @@ void Game::Draw()
     glEnd();
 
     board->Draw();
-    hud->Draw(board->IsWhiteToMove());
+    if (!demoMode)
+    {
+      hud->Draw(board->IsWhiteToMove());
+    }
 }
 
 void Game::KeyboardPress(unsigned char key)

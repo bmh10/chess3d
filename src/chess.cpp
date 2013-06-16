@@ -32,7 +32,9 @@ void Display()
   switch (state)
   {
     case MENU:
+      game->Draw();
       menuManager->Draw();
+      
       break;
     case GAME:
       game->Draw();
@@ -58,8 +60,14 @@ void Update()
   switch (state)
   {
     case MENU:
+      game->Update();
       menuManager->Update();
-      if (menuManager != NULL && menuManager->GameStarted()) state = GAME;
+      
+      if (menuManager != NULL && menuManager->GameStarted()) 
+      {
+        state = GAME;
+        game->SetDemoMode(false);
+      }
       break;
     case GAME:
       game->Update();
