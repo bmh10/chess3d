@@ -23,7 +23,7 @@ void Hud::Draw(bool whiteToMove)
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-  glOrtho(0.0, 1024.0, 0.0, 1024.0, -1.0, 10.0);
+  glOrtho(0.0, WINDOW_HEIGHT, 0.0, WINDOW_WIDTH, -1.0, 10.0);
 
   // Save model view matrix then reset it.
   glMatrixMode(GL_MODELVIEW);
@@ -39,8 +39,8 @@ void Hud::Draw(bool whiteToMove)
   glBegin(GL_QUADS);
     glColor3f(0.0f, 0.3f, 1.0f);
     glVertex2f(0.0, 0.0);
-    glVertex2f(1024.0, 0.0);
-    glVertex2f(1024.0, 50.0);
+    glVertex2f(WINDOW_WIDTH, 0.0);
+    glVertex2f(WINDOW_WIDTH, 50.0);
     glVertex2f(0.0, 50.0);
   glEnd();
   

@@ -6,11 +6,7 @@
 /*
  * Chess3D main entry point
  */
-
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 1024
-
-enum State { MenuState, GameState };
+enum State { MENU, GAME };
 State state;
 
 MenuManager *menuManager;
@@ -25,7 +21,7 @@ void Init()
   game = new Game();
   
   // TODO: change to menu when start writing menu
-  state = GameState; 
+  state = MENU; 
 }
 
 void Display()
@@ -35,10 +31,10 @@ void Display()
 
   switch (state)
   {
-    case MenuState:
+    case MENU:
       menuManager->Draw();
       break;
-    case GameState:
+    case GAME:
       game->Draw();
       break;
   }  
@@ -61,10 +57,10 @@ void Update()
 {
   switch (state)
   {
-    case MenuState:
+    case MENU:
       menuManager->Update();
       break;
-    case GameState:
+    case GAME:
       game->Update();
       break;
   }
@@ -85,10 +81,10 @@ void Keyboard(unsigned char key, int x, int y)
 
   switch (state)
   {
-    case MenuState:
+    case MENU:
       menuManager->KeyboardPress(key);
     break;
-    case GameState:
+    case GAME:
       game->KeyboardPress(key);
     break;
   }
@@ -98,10 +94,10 @@ void Mouse(int button, int state, int x, int y)
 {
   switch (state)
   {
-    case MenuState:
+    case MENU:
       menuManager->MousePress(button, state, x, WINDOW_HEIGHT-y);
     break;
-    case GameState:
+    case GAME:
       game->MousePress(button, state, x, WINDOW_HEIGHT-y);
     break;
   }

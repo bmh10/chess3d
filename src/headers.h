@@ -4,6 +4,8 @@
 #define DEBUG 1
 
 #define SQUARE_SIZE 0.02
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 1024
 
 #include <GL/glut.h>
 #include <stdlib.h>

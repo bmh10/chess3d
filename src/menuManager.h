@@ -6,14 +6,15 @@
 class MenuManager
 {
   private:
+    char text[2][20];
 
     void Init();
+    void DrawOption(int n, GLfloat* pos, GLfloat* col);
 
   public:
     MenuManager();
     ~MenuManager();
 
-    
     void Update();
     void Draw();
     void KeyboardPress(unsigned char key);
