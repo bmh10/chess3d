@@ -17,13 +17,19 @@ bool MenuManager::GameStarted()
 void MenuManager::Init()
 {
   // Load text
-  strcpy(text[0], "Single Player");
-  strcpy(text[1], "Multiplayer");
-  strcpy(text[2], "Options");
-  strcpy(text[3], "Quit");
+  strcpy(text[MAIN][0], "Single Player");
+  strcpy(text[MAIN][1], "Multiplayer");
+  strcpy(text[MAIN][2], "Options");
+  strcpy(text[MAIN][3], "Quit");
+
+  strcpy(text[OPTIONS][0], "Sound");
+  strcpy(text[OPTIONS][1], "Language");
+  strcpy(text[OPTIONS][2], "Ingame Options");
+  strcpy(text[OPTIONS][3], "Back");
 
   selectedOption = 0;
   gameStarted = false;
+  state = MAIN;
 }
 
 void MenuManager::Update()
@@ -65,13 +71,10 @@ void MenuManager::Draw()
   GLfloat selCol[3] = { 0.0f, 0.0f, 1.0f };
   GLfloat* col;
   
-  //GLfloat translate[3] = { 0.0f, -150.0f, 0.0f };
-  //glTranslatef(pos[0], startPos[1], pos[2]);
-  
   for (int i=0; i < 4; i++)
   {
     glPushMatrix();
-      optWidth = (int)strlen(text[i])*15;
+      optWidth = (int)strlen(text[state][i])*15;
       GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, WINDOW_HEIGHT*2/3 - 50.0f*i, 1.0f };
       col = (i == selectedOption) ? selCol : normCol;
       DrawOption(i, pos, col);
@@ -103,31 +106,57 @@ void MenuManager::DrawOption(int n, GLfloat* pos, GLfloat* col)
   glTranslatef(pos[0], pos[1], pos[2]);
   glScalef(0.25f, 0.25f, 0.5f);
 
-  for (int i=0; i < (int)strlen(text[n]); i++)
+  for (int i=0; i < (int)strlen(text[state][n]); i++)
   {
-    glutStrokeCharacter(GLUT_STROKE_ROMAN, text[n][i]);
+    glutStrokeCharacter(GLUT_STROKE_ROMAN, text[state][n][i]);
   }
 
 }
 
 void MenuManager::OptionClicked()
 {
-  switch(selectedOption)
+  switch (state)
   {
-    // TODO: add different game started modes after implemented.
-    case 0:
-      gameStarted = true;
-      break;
-    case 1:
-      gameStarted = true;
-      break;
-    case 2:
-
-      break;
-    case 3:
-      exit(0);
-      break;
+    case MAIN:
+	  switch(selectedOption)
+	  {
+		// TODO: add different game started modes after implemented.
+		case 0:
+		  gameStarted = true;
+		  break;
+		case 1:
+		  gameStarted = true;
+		  break;
+		case 2:
+		  state = OPTIONS;
+		  break;
+		case 3:
+		  exit(0);
+		  break;
+	  }
+    break;
+    case OPTIONS:
+      // TODO: save preferences to file after setting. 
+      // TODO: add restore to default settings option.
+      switch(selectedOption)
+	  {
+		case 0:
+		  // TODO: sound options
+		  break;
+		case 1:
+		  // TODO: Language options
+		  break;
+		case 2:
+		  // TODO: In-game options
+		  break;
+		case 3:
+		  state = MAIN;
+		  break;
+	  }
+    break;
   }
+
+  selectedOption = 0;
 }
 
 void MenuManager::KeyboardPress(unsigned char key)

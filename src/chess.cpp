@@ -59,7 +59,7 @@ void Update()
   {
     case MENU:
       menuManager->Update();
-      if (menuManager->GameStarted()) state = GAME;
+      if (menuManager != NULL && menuManager->GameStarted()) state = GAME;
       break;
     case GAME:
       game->Update();

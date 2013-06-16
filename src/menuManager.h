@@ -5,10 +5,13 @@
 
 #define NUM_OPTIONS 4
 
+enum MenuState { MAIN, OPTIONS };
+
 class MenuManager
 {
   private:
-    char text[4][20];
+    MenuState state;
+    char text[2][4][25];
     int selectedOption;
     bool gameStarted;
 
