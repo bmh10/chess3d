@@ -9,6 +9,11 @@ MenuManager::~MenuManager()
 {
 }
 
+bool MenuManager::GameStarted()
+{
+  return gameStarted;
+}
+
 void MenuManager::Init()
 {
   // Load text
@@ -16,6 +21,9 @@ void MenuManager::Init()
   strcpy(text[1], "Multiplayer");
   strcpy(text[2], "Options");
   strcpy(text[3], "Quit");
+
+  selectedOption = 0;
+  gameStarted = false;
 }
 
 void MenuManager::Update()
@@ -53,7 +61,9 @@ void MenuManager::Draw()
 
   // Draw options
   int optWidth;
-  GLfloat col[3] = { 1.0f, 1.0f, 1.0f };
+  GLfloat normCol[3] = { 1.0f, 1.0f, 1.0f };
+  GLfloat selCol[3] = { 0.0f, 0.0f, 1.0f };
+  GLfloat* col;
   
   //GLfloat translate[3] = { 0.0f, -150.0f, 0.0f };
   //glTranslatef(pos[0], startPos[1], pos[2]);
@@ -63,6 +73,7 @@ void MenuManager::Draw()
     glPushMatrix();
       optWidth = (int)strlen(text[i])*15;
       GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, WINDOW_HEIGHT*2/3 - 50.0f*i, 1.0f };
+      col = (i == selectedOption) ? selCol : normCol;
       DrawOption(i, pos, col);
     glPopMatrix();
   }
@@ -99,8 +110,42 @@ void MenuManager::DrawOption(int n, GLfloat* pos, GLfloat* col)
 
 }
 
+void MenuManager::OptionClicked()
+{
+  switch(selectedOption)
+  {
+    // TODO: add different game started modes after implemented.
+    case 0:
+      gameStarted = true;
+      break;
+    case 1:
+      gameStarted = true;
+      break;
+    case 2:
+
+      break;
+    case 3:
+      exit(0);
+      break;
+  }
+}
+
 void MenuManager::KeyboardPress(unsigned char key)
 {
+  key = tolower(key);
+  if (key == 'w') 
+  {
+    if (selectedOption < 1) selectedOption = NUM_OPTIONS-1;
+    else selectedOption = (selectedOption-1)%NUM_OPTIONS;
+  }
+  else if (key == 's') 
+  {
+    selectedOption = (selectedOption+1)%NUM_OPTIONS;
+  }
+  else if (key == 13) // 'Enter' key
+  {
+    OptionClicked();
+  }
 }
 
 void MenuManager::MousePress(int button, int state, int x, int y)

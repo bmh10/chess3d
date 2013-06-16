@@ -59,6 +59,7 @@ void Update()
   {
     case MENU:
       menuManager->Update();
+      if (menuManager->GameStarted()) state = GAME;
       break;
     case GAME:
       game->Update();
@@ -87,6 +88,20 @@ void Keyboard(unsigned char key, int x, int y)
     case GAME:
       game->KeyboardPress(key);
     break;
+  }
+}
+
+// Maps special keys to normals key presses for simplicity.
+void Special(int key, int x, int y)
+{
+  switch (key)
+  {
+    case GLUT_KEY_UP:
+      Keyboard('w', x, y);
+      break;
+    case GLUT_KEY_DOWN:
+      Keyboard('s', x, y);
+      break;
   }
 }
 
@@ -122,6 +137,7 @@ int main(int argc, char** argv)
   glutIdleFunc(Update); 
   glutReshapeFunc(Reshape);
   glutKeyboardFunc(Keyboard);
+  glutSpecialFunc(Special);
   glutMouseFunc(Mouse);
 
   // Start rendering 
