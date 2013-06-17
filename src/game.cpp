@@ -83,12 +83,20 @@ void Game::Update()
   if (demoMode)
   {
     rotationAngle += 0.2f;
-    if (rotationAngle == 360.0f)
-      rotationAngle = 0.0f;
-    glTranslatef(centreBoard[0], centreBoard[1], centreBoard[2]);
-    glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
-    glTranslatef(-centreBoard[0], -centreBoard[1], -centreBoard[2]);
   }
+  else if ((board->IsWhiteToMove() && rotationAngle != 0.0f)
+      || (!board->IsWhiteToMove() && rotationAngle != 180.0f))
+  {
+    rotationAngle += 2.0f;
+  }
+
+  if (rotationAngle > 360.0f)
+  {
+    rotationAngle = 0.0f;  
+  }
+  glTranslatef(centreBoard[0], centreBoard[1], centreBoard[2]);
+  glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
+  glTranslatef(-centreBoard[0], -centreBoard[1], -centreBoard[2]);
 }
 
 void Game::Draw()
