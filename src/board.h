@@ -13,6 +13,7 @@ class Board
     Piece* selectedPiece;
     int selCoord[2];
     bool whiteToMove;
+    bool rotateCam;
 
     void Init();
     void EnableSelectionMode(bool enable);
@@ -29,6 +30,8 @@ class Board
     Board();
     ~Board();
 
+    bool GetRotateCam();
+    void SetRotateCam(bool enable);
     //void Update();
     void Draw();
     void SelectSquareAt(int x, int y);

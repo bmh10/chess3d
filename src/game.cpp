@@ -84,9 +84,9 @@ void Game::Update()
   {
     rotationAngle += 0.2f;
   }
-  else if ((board->IsWhiteToMove() && rotationAngle != 0.0f)
-      || (!board->IsWhiteToMove() && rotationAngle != 180.0f))
+  else if (board->GetRotateCam())
   {
+    // TODO: make it rotate shortest distance rather than same way all the time.
     rotationAngle += 2.0f;
   }
 
@@ -94,6 +94,14 @@ void Game::Update()
   {
     rotationAngle = 0.0f;  
   }
+
+  if ((board->IsWhiteToMove() && rotationAngle == 0.0f)
+      || (!board->IsWhiteToMove() && rotationAngle == 180.0f))
+  {
+    board->SetRotateCam(false);
+  }
+
+
   glTranslatef(centreBoard[0], centreBoard[1], centreBoard[2]);
   glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
   glTranslatef(-centreBoard[0], -centreBoard[1], -centreBoard[2]);
@@ -145,6 +153,14 @@ void Game::Draw()
 
 void Game::KeyboardPress(unsigned char key)
 {
+  // Left/right to rotate camera.
+  if (key == 'a') rotationAngle += 2.0f;
+  else if (key == 'd') rotationAngle -= 2.0f;
+
+  // Up/down to zoom in or out.
+  if (key == 'w') cameraPos[1] += 0.01f;
+  else if (key == 's') cameraPos[1] -= 0.01f;
+/*
   if (key == 'q') cameraPos[0] += 0.01;
   else if (key == 'a') cameraPos[0] -= 0.01;
   else if (key == 'w') cameraPos[1] += 0.01;
@@ -158,10 +174,15 @@ void Game::KeyboardPress(unsigned char key)
   else if (key == 'k') lightPos[1] -= 0.01;
   else if (key == 'o') lightPos[2] += 0.01;
   else if (key == 'l') lightPos[2] -= 0.01;
+*/
 }
 
 void Game::MousePress(int button, int state, int x, int y)
 {
+  // Use scroll wheel to zoom in or out.
+  if (button == 3) cameraPos[1] += 0.01f;
+  else if (button == 4) cameraPos[1] -= 0.01f;
+
   switch(button)
   {
     case GLUT_LEFT_BUTTON:

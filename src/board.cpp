@@ -12,12 +12,23 @@ Board::~Board()
 {
 }
 
+bool Board::GetRotateCam()
+{
+  return rotateCam;
+}
+
+void Board::SetRotateCam(bool enable)
+{
+  rotateCam = enable;
+}
+
 void Board::Init()
 {
   modelManager = new ModelManager();
   modelManager->LoadAllModels();
   selectedPiece = NULL;
   whiteToMove = true;
+  rotateCam = true;
   
   // Initialize pieces
   int x, y;
@@ -144,6 +155,7 @@ void Board::MoveSelectedPiece(int i, int j)
   selectedPiece = NULL;
   // Switch turns
   whiteToMove = !whiteToMove;
+  rotateCam = true;
 }
 
 void Board::SelectSquareAt(int x, int y)

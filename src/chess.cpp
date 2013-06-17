@@ -110,6 +110,12 @@ void Special(int key, int x, int y)
     case GLUT_KEY_DOWN:
       Keyboard('s', x, y);
       break;
+    case GLUT_KEY_LEFT:
+      Keyboard('a', x, y);
+      break;
+    case GLUT_KEY_RIGHT:
+      Keyboard('d', x, y);
+      break; 
   }
 }
 
