@@ -5,6 +5,9 @@
 #include "board.h"
 #include "hud.h"
 
+#define ZOOM_MAX 0.07f
+#define ZOOM_MIN -0.07f
+
 class Game
 {
   private:
@@ -17,6 +20,7 @@ class Game
     bool demoMode;
 
     void Init();
+    void Zoom(bool zoomIn);
 
   public:
     Game();

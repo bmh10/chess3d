@@ -158,8 +158,8 @@ void Game::KeyboardPress(unsigned char key)
   else if (key == 'd') rotationAngle -= 2.0f;
 
   // Up/down to zoom in or out.
-  if (key == 'w') cameraPos[1] += 0.01f;
-  else if (key == 's') cameraPos[1] -= 0.01f;
+  if (key == 'w') Zoom(true);
+  else if (key == 's') Zoom(false);
 /*
   if (key == 'q') cameraPos[0] += 0.01;
   else if (key == 'a') cameraPos[0] -= 0.01;
@@ -180,8 +180,9 @@ void Game::KeyboardPress(unsigned char key)
 void Game::MousePress(int button, int state, int x, int y)
 {
   // Use scroll wheel to zoom in or out.
-  if (button == 3) cameraPos[1] += 0.01f;
-  else if (button == 4) cameraPos[1] -= 0.01f;
+  if (button == 3) Zoom(true);
+  else if (button == 4) Zoom(false);
+
 
   switch(button)
   {
@@ -191,5 +192,17 @@ void Game::MousePress(int button, int state, int x, int y)
         board->SelectSquareAt(x, y);
       }
     break;
+  }
+}
+
+void Game::Zoom(bool zoomIn)
+{
+  if (zoomIn && cameraPos[1] < ZOOM_MAX)
+  {
+    cameraPos[1] += 0.01f;
+  }
+  else if (!zoomIn && cameraPos[1] > ZOOM_MIN)
+  {
+    cameraPos[1] -= 0.01f; 
   }
 }
