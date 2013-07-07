@@ -14,6 +14,11 @@ Model::~Model()
 {
 }
 
+string Model::GetId()
+{
+  return id;
+}
+
 void Model::PrintData()
 {
   int i, j;
@@ -68,6 +73,7 @@ void Model::DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, GLfloat* colo
       glVertex3f(i + v.coord[0]*scale, j + v.coord[1]*scale, k + v.coord[2]*scale);
     }
     glEnd();
+   cout << "here2" << endl;
   }
 }
 

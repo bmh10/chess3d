@@ -137,22 +137,22 @@ void Piece::LoadModel(ModelManager* modelManager)
   switch(type)
   {
     case PAWN:
-      model = modelManager->GetModel("pawn");
+      model = modelManager->GetModel("PAWN");
       break;
     case KNIGHT:
-      model = modelManager->GetModel("knight");
+      model = modelManager->GetModel("KNIGHT");
       break;
     case BISHOP:
-      model = modelManager->GetModel("bishop");
+      model = modelManager->GetModel("BISHOP");
       break;
     case CASTLE:
-      model = modelManager->GetModel("castle");
+      model = modelManager->GetModel("CASTLE");
       break;
    case KING:
-      model = modelManager->GetModel("king");
+      model = modelManager->GetModel("KING");
       break;
    case QUEEN:
-      model = modelManager->GetModel("queen");
+      model = modelManager->GetModel("QUEEN");
       break;  
   }
 }

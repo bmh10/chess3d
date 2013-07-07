@@ -8,13 +8,15 @@ class ModelManager
 {
   private:
     // TODO: change to array of models later.
-    Model* pawnModel;
+    vector<Model*> models;
+    //Model* pawnModel;
 
   public:
     ModelManager();
     ~ModelManager();
 
     void LoadAllModels();
+    void LoadModel(string id, string path);
     Model* GetModel(string id);
 };
 

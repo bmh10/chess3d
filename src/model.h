@@ -33,6 +33,7 @@ class Model
     Vertex *vertexData;
     Face *faceData;
 
+    string GetId();
     void PrintData();
     void DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, GLfloat* colour);
 };

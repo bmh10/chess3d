@@ -67,7 +67,6 @@ void Board::Init()
   pieces[3][7] = new Piece(KING, BLACK, modelManager);
   pieces[4][0] = new Piece(QUEEN, WHITE, modelManager);
   pieces[4][7] = new Piece(QUEEN, BLACK, modelManager);
-
 }
 
 bool Board::IsWhiteToMove()

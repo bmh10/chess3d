@@ -2,6 +2,7 @@
 
 ModelManager::ModelManager()
 {
+  this->models = vector<Model*>();
 }
 
 ModelManager::~ModelManager()
@@ -10,8 +11,14 @@ ModelManager::~ModelManager()
 
 void ModelManager::LoadAllModels()
 {
-  // TODO: For now just loads dummy pawn model.
   Logger::Info("Loading models.");
+  string path = "../res/";
+  LoadModel("PAWN", path + "pawn.ply");
+  //LoadModel("CASTLE", path + "castle.ply");
+}
+
+void ModelManager::LoadModel(string id, string path)
+{  
   std::ifstream in;
   int numVerticies;
   int numFaces;
@@ -19,9 +26,11 @@ void ModelManager::LoadAllModels()
   int i, j;
   int numIndicies;
   //int size;
-  GLfloat c[3];
+  GLfloat c[3];d
+  Model* model;d
+  bool done
   //Vertex v;
-  in.open("../res/pawn.ply");
+  in.open("../res/pawn.ply"); //path.c_str());
 
   if (in.fail())
   {
@@ -29,49 +38,60 @@ void ModelManager::LoadAllModels()
     exit(0);
   }
 
+  cout << "a";
   while (in >> f)
   {
+    cout << f;
     if (f == "element") {
       in >> f;
       if (f == "vertex")
       {
         in >> numVerticies;
-        // cout << "Number of verticies is: " << numVerticies << endl;
+         cout << "Number of verticies is: " << numVerticies << endl;
       }
       else if (f == "face")
       {
         in >> numFaces;
-        // cout << "Number of faces is: " << numFaces << endl;
+        cout << "Number of faces is: " << numFaces << endl;
       }
     }
     else if (f == "end_header")
     {
-      pawnModel = new Model("PAWN", numVerticies, numFaces);
+      model = new Model(id, numVerticies, numFaces);
       
       // Store vertex and normal data
       for (i=0; i < numVerticies; i++)
       {        
         in >> c[0] >> c[1] >> c[2];
-        memcpy(pawnModel->vertexData[i].coord, c, 3*sizeof(GLfloat));
+        memcpy(model->vertexData[i].coord, c, 3*sizeof(GLfloat));
         in >> c[0] >> c[1] >> c[2];
-        memcpy(pawnModel->vertexData[i].normal, c, 3*sizeof(GLfloat)); 
+        memcpy(model->vertexData[i].normal, c, 3*sizeof(GLfloat)); 
       }
 
       // Store face data
       for (i=0; i < numFaces; i++)
       {
         in >> numIndicies;
-        pawnModel->faceData[i].numIndicies = numIndicies;
-        pawnModel->faceData[i].vIdxs = new int[numIndicies];
+        model->faceData[i].numIndicies = numIndicies;
+        model->faceData[i].vIdxs = new int[numIndicies];
         
         for (j=0; j < numIndicies; j++)
         {
-          in >> pawnModel->faceData[i].vIdxs[j];
+          in >> model->faceData[i].vIdxs[j];
         }
       }
+      cout << "c";
 
       //pawnModel->PrintData();
     }
+
+    //in.close();
+    
+    models.push_back(model);
+    cout << "3" << endl;
+    model->PrintData();
+    //models.back()->PrintData();
+    cout << "4" << endl;
     
       /*vertexData = new Vertex[VERTEX_DATA_SIZE];
       cout << "Storing vertex data: size " << VERTEX_DATA_SIZE << endl;
@@ -127,6 +147,13 @@ void ModelManager::LoadAllModels()
 //TODO: for now just returns pawn model - will act as lookup for loaded models.
 Model* ModelManager::GetModel(string id)
 {
-  return pawnModel;
+  for (int i = 0; i < models.size(); ++i)
+  {
+    if (models.at(i)->GetId() == id)
+    {
+      return models.at(i);
+    }
+  }
+  return models.front();
 }
 
