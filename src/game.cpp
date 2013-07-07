@@ -87,7 +87,7 @@ void Game::Update()
   else if (board->GetRotateCam())
   {
     // TODO: make it rotate shortest distance rather than same way all the time.
-    rotationAngle += 2.0f;
+    rotationAngle += 5.0f;
   }
 
   if (rotationAngle > 360.0f)
