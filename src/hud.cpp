@@ -15,6 +15,7 @@ void Hud::Init()
   // Load text
   strcpy(text[0], "White to move");
   strcpy(text[1], "Black to move");
+  strcpy(text[2], "Menu");
 }
 
 void Hud::Draw(bool whiteToMove)
@@ -49,8 +50,10 @@ void Hud::Draw(bool whiteToMove)
   glScalef(0.25f, 0.25f, 0.5f);
   glTranslatef(50.0f, 50.0f, 1.0f);
   int n = (whiteToMove) ? 0 : 1;
-  for (int i=0; i < (int)strlen(text[n]); i++)
-    glutStrokeCharacter(GLUT_STROKE_ROMAN, text[n][i]);
+  DrawText(n);
+
+  glTranslatef(2500.f, 0.0f, 1.0f);
+  DrawText(2);
 
   // Restore saved matricies ready for 3D rendering.
   glEnable(GL_LIGHTING);
@@ -58,4 +61,14 @@ void Hud::Draw(bool whiteToMove)
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
+}
+
+// ## Private Methods ## //
+
+void Hud::DrawText(int n)
+{
+  for (int i=0; i < (int)strlen(text[n]); i++)
+  {
+    glutStrokeCharacter(GLUT_STROKE_ROMAN, text[n][i]);
+  }
 }

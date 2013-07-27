@@ -144,7 +144,7 @@ void Game::Draw()
     // Ground plane
     GLfloat n = 100.0;
     glBegin(GL_POLYGON);
-    glColor3f(0.7, 0.7, 0.5);
+    glColor3f(1.0, 1.0, 1.0);
     glVertex3f(-n, -n, -0.011);
     glVertex3f(n, -n, -0.011);
     glVertex3f(n, n, -0.011);
@@ -168,6 +168,7 @@ void Game::KeyboardPress(unsigned char key)
   if (key == 'w') Zoom(true);
   else if (key == 's') Zoom(false);
 
+/*
   if (key == 'q') cameraPos[0] += 0.01;
   else if (key == 'a') cameraPos[0] -= 0.01;
   else if (key == 'w') cameraPos[1] += 0.01;
@@ -181,7 +182,7 @@ void Game::KeyboardPress(unsigned char key)
   else if (key == 'k') lightPos[1] -= 0.01;
   else if (key == 'o') lightPos[2] += 0.01;
   else if (key == 'l') lightPos[2] -= 0.01;
-
+*/
 }
 
 void Game::MousePress(int button, int state, int x, int y)

@@ -8,6 +8,8 @@ class Hud
   private:
     char text[2][20];
 
+    void DrawText(int n);
+
   public:
     Hud();
     ~Hud();

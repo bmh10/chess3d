@@ -87,6 +87,8 @@ void Piece::Draw(int i, int j)
   GLfloat blue[] = {0.0, 0.0, 1.0, 1.0};
   GLfloat white[] = {1.0, 1.0, 0.0, 1.0}; // Make static?
   GLfloat black[] = {0.0, 1.0, 1.0, 1.0};
+  GLfloat selectedCol[] = {1.0, 1.0, 0.0, 0.2};
+  GLfloat highlightedCol[] = {0.0, 1.0, 1.0, 0.001};
   
   GLfloat* col = NULL;
 
@@ -99,10 +101,10 @@ void Piece::Draw(int i, int j)
     switch (state)
     {
       case SELECTED:
-        col = white;
+        col = selectedCol;
         break;
      case HIGHLIGHTED:
-        col = black;
+        col = highlightedCol;
         break;
      default:
        col = ((i+j)%2 == 0) ? red : blue;
@@ -124,7 +126,7 @@ void Piece::Draw(int i, int j)
     model->DrawAt(
       i*SQUARE_SIZE + SQUARE_SIZE/2, 
       j*SQUARE_SIZE + SQUARE_SIZE/2,
-      SQUARE_SIZE/4,
+      0,
       PIECE_SCALE,
       col);
   }
