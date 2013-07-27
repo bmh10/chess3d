@@ -41,7 +41,8 @@ void ModelManager::LoadModel(string id, string path)
 
   while (in >> f)
   {
-    if (f == "element") {
+    if (f == "element")
+    {
       in >> f;
       if (f == "vertex")
       {

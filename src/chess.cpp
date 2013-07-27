@@ -21,7 +21,6 @@ void Init()
   menuManager = new MenuManager();
   game = new Game();
   
-  // TODO: change to menu when start writing menu
   state = MENU; 
 }
 

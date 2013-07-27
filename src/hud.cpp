@@ -30,9 +30,10 @@ void Hud::Draw(bool whiteToMove)
   glPushMatrix();
   glLoadIdentity();
   
-  // Disable face culling and depth buffering for 2D drawing.
+  // Disable face culling, depth buffering and lighting for 2D drawing.
   // TODO: not sure if necessary
   glDisable(GL_CULL_FACE);
+  glDisable(GL_LIGHTING);
   glClear(GL_DEPTH_BUFFER_BIT);
 
   // Draw HUD  
@@ -52,6 +53,7 @@ void Hud::Draw(bool whiteToMove)
     glutStrokeCharacter(GLUT_STROKE_ROMAN, text[n][i]);
 
   // Restore saved matricies ready for 3D rendering.
+  glEnable(GL_LIGHTING);
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);

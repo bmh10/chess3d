@@ -122,6 +122,15 @@ void Board::EnableSelectionMode(bool enable)
 {
   int i, j;
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  if (enable) 
+  {
+    glDisable(GL_LIGHTING);
+  }
+  else
+  { 
+    glEnable(GL_LIGHTING);
+  }
+
   for (i = 0; i < 8; i++)
   {
     for (j = 0; j < 8; j++)

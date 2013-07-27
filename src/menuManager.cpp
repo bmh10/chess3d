@@ -59,8 +59,9 @@ void MenuManager::Draw()
   glPushMatrix();
   glLoadIdentity();
   
-  // Disable face culling and depth buffering for 2D drawing.
+  // Disable face culling, depth buffering and lighting for 2D drawing.
   // TODO: not sure if necessary
+  glDisable(GL_LIGHTING);
   glDisable(GL_CULL_FACE);
   glClear(GL_DEPTH_BUFFER_BIT);
  
@@ -83,6 +84,7 @@ void MenuManager::Draw()
   }
 
   // Restore saved matricies ready for 3D rendering.
+  glEnable(GL_LIGHTING);
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);

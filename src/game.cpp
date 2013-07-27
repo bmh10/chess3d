@@ -43,8 +43,8 @@ void Game::Init()
   GLfloat MaterialShininess[] = {128};
   
   // Enable lighting
-  //glEnable (GL_LIGHTING);
-  //glEnable (GL_LIGHT0);
+  glEnable (GL_LIGHTING);
+  glEnable (GL_LIGHT0);
   glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
   glLightfv(GL_LIGHT0, GL_AMBIENT,  LightAmbient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE,  LightDiffuse);
@@ -132,6 +132,13 @@ void Game::Draw()
       glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, -100.0, 0.0);
       glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, 0.0, -100.0);
       glEnd();
+
+      // Draw light source
+      /*glBegin(GL_POLYGON);
+      glVertex3f(lightPos[0], lightPos[1], lightPos[2]);
+      glVertex3f(lightPos[0], lightPos[1] + 0.1f, lightPos[2]);
+      glVertex3f(lightPos[0], lightPos[1] + 0.1f, lightPos[2] + 0.1f);
+      glEnd();*/
     }
 
     // Ground plane
@@ -160,7 +167,7 @@ void Game::KeyboardPress(unsigned char key)
   // Up/down to zoom in or out.
   if (key == 'w') Zoom(true);
   else if (key == 's') Zoom(false);
-/*
+
   if (key == 'q') cameraPos[0] += 0.01;
   else if (key == 'a') cameraPos[0] -= 0.01;
   else if (key == 'w') cameraPos[1] += 0.01;
@@ -174,7 +181,7 @@ void Game::KeyboardPress(unsigned char key)
   else if (key == 'k') lightPos[1] -= 0.01;
   else if (key == 'o') lightPos[2] += 0.01;
   else if (key == 'l') lightPos[2] -= 0.01;
-*/
+
 }
 
 void Game::MousePress(int button, int state, int x, int y)
