@@ -1,28 +1,50 @@
 #include "logger.h"
 
+std::ofstream Logger::outfile;
 
-// TODO: output logs to file.
+void Logger::Init()
+{
+  outfile.open("../logs/log.txt", std::ios_base::app);
+  Info("--------------- LOGGER STARTED ---------------");
+}
 
+void Logger::Dispose()
+{
+  outfile.close();
+}
+ 
 void Logger::Info(string s)
 {
-  if (DEBUG)
-  {
-    cout << "INFO: " << s << endl;
-  }
+  Logger::Output(s, "INFO");
 }
 
 void Logger::Warn(string s)
 {
-  if (DEBUG)
-  {
-    cout << "WARN: " << s << endl;
-  }
+  Logger::Output(s, "WARN");
 }
 
 void Logger::Error(string s)
 {
+  Logger::Output(s, "ERROR");
+}
+
+// ## Private Methods ## //
+
+char* Logger::GetTime()
+{
+  char* timeBuff = new char[30];
+  time_t tTime = time(NULL);
+  strftime(timeBuff, 30, "%F %T", localtime(&tTime));
+  return timeBuff;
+}
+
+void Logger::Output(string s, string type)
+{
   if (DEBUG)
   {
-    cout << "ERROR: " << s << endl;
+    char str[500];
+    sprintf(str, "(%s)(%s) %s", GetTime(), type.c_str(), s.c_str());
+    outfile << str << endl;
   }
 }
+

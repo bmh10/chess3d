@@ -15,6 +15,7 @@ Game *game;
 void Init() 
 {
   glClearColor (0.0, 0.5, 1.0, 0.0);
+  Logger::Init();
   Logger::Info("Initialising.");
   
   menuManager = new MenuManager();

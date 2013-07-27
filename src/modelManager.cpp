@@ -30,7 +30,7 @@ void ModelManager::LoadModel(string id, string path)
   Model* model;
   bool done;
   //Vertex v;
-  Logger::Info("About to load model: " + path);
+  Logger::Info("Loading model: " + path);
   in.open(path.c_str());
 
   if (in.fail())
@@ -46,12 +46,12 @@ void ModelManager::LoadModel(string id, string path)
       if (f == "vertex")
       {
         in >> numVerticies;
-        Logger::Info("Number of verticies is: " + numVerticies);
+        //Logger::Info("Number of verticies is: " + numVerticies);
       }
       else if (f == "face")
       {
         in >> numFaces;
-        Logger::Info("Number of faces is: " + numFaces);
+        //Logger::Info("Number of faces is: " + numFaces);
       }
     }
     else if (f == "end_header")
@@ -85,7 +85,6 @@ void ModelManager::LoadModel(string id, string path)
   }
 
   in.close();
-  Logger::Info("Loading model complete.");
   //model->PrintData();
 }
 
