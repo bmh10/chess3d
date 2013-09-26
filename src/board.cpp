@@ -3,23 +3,14 @@
 #define PLUS std::plus<int>
 #define MINUS std::minus<int>
 
-Board::Board()
+Board::Board(Camera* camera)
 {
+  this->camera = camera;
   Init();
 }
 
 Board::~Board()
 {
-}
-
-bool Board::GetRotateCam()
-{
-  return rotateCam;
-}
-
-void Board::SetRotateCam(bool enable)
-{
-  rotateCam = enable;
 }
 
 void Board::Init()
@@ -28,7 +19,6 @@ void Board::Init()
   modelManager->LoadAllModels();
   selectedPiece = NULL;
   whiteToMove = true;
-  rotateCam = true;
   
   // Initialize pieces
   int x, y;
@@ -90,24 +80,6 @@ void Board::Draw()
     glVertex3f(0.0, 8*SQUARE_SIZE, -0.01);
   glEnd();
 
-  // Draw squares
-  /*
-  for (i = 0; i < 8; i++)
-  {
-    for (j = 0; j < 8; j++)
-    {
-      glBegin(GL_POLYGON);
-        col = ((i+j)%2 == 0) ? red : blue;
-        glColor3fv(col);
-        glVertex3f(i*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
-        glVertex3f((i+1)*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
-        glVertex3f((i+1)*SQUARE_SIZE, (j+1)*SQUARE_SIZE, 0.0);
-        glVertex3f(i*SQUARE_SIZE, (j+1)*SQUARE_SIZE, 0.0);
-      glEnd();
-    }
-  }
-  */
-
   // Draw pieces and squares
   for (i = 0; i < 8; i++)
   {
@@ -163,7 +135,7 @@ void Board::MoveSelectedPiece(int i, int j)
   selectedPiece = NULL;
   // Switch turns
   whiteToMove = !whiteToMove;
-  rotateCam = true;
+  camera->RotateToWhite(whiteToMove);
 }
 
 void Board::SelectSquareAt(int x, int y)

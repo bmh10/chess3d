@@ -3,6 +3,7 @@
 
 #include "headers.h"
 #include "piece.h"
+#include "camera.h"
 #include "modelManager.h"
 
 class Board
@@ -10,10 +11,10 @@ class Board
   private:
     Piece* pieces[8][8];
     ModelManager* modelManager;
+    Camera* camera;
     Piece* selectedPiece;
     int selCoord[2];
     bool whiteToMove;
-    bool rotateCam;
 
     void Init();
     void EnableSelectionMode(bool enable);
@@ -27,18 +28,15 @@ class Board
     void UnhighlightPieces();
 
   public:
-    Board();
+    Board(Camera* camera);
     ~Board();
 
-    bool GetRotateCam();
-    void SetRotateCam(bool enable);
     //void Update();
     void Draw();
     void SelectSquareAt(int x, int y);
     void DisplayPossibleMoves();
 
     bool IsWhiteToMove();
-   
 };
 
 #endif

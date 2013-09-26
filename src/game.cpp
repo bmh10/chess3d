@@ -12,6 +12,7 @@ Game::~Game()
 void Game::SetDemoMode(bool enable)
 {
   demoMode = enable;
+  camera->RotateToWhite(true);
 }
 
 void Game::Init()
@@ -23,13 +24,13 @@ void Game::Init()
   centreBoard[2] = 0.0f;
 
   // Set initial camera position relative to centre of board
+  GLfloat* cameraPos = new GLfloat[3];
   for (int i=0; i < 3; i++)
     cameraPos[i] = centreBoard[i];
 
   cameraPos[0] += 0.0f;
   cameraPos[1] -= 0.12f;
   cameraPos[2] += 0.08f;
-  rotationAngle = 0.0f;
 
   // Put light in same place as camera
   for (int i=0; i < 3; i++)
@@ -69,7 +70,8 @@ void Game::Init()
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   // Initialise game components
-  board = new Board();
+  camera = new Camera(cameraPos, 0.0f, CONTINOUS_ROTATE);
+  board = new Board(camera);
   hud = new Hud();
   demoMode = true;
 }
@@ -81,33 +83,15 @@ void Game::Update()
   // Move camera depending on current coords
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
+
+  GLfloat* cameraPos = camera->GetCameraPos();
   gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2],
     centreBoard[0], centreBoard[1], centreBoard[2], 0.0f, 0.0f, 1.0f);
 
-  if (demoMode)
-  {
-    rotationAngle += 0.2f;
-  }
-  else if (board->GetRotateCam())
-  {
-    // TODO: make it rotate shortest distance rather than same way all the time.
-    rotationAngle += 5.0f;
-  }
-
-  if (rotationAngle > 360.0f)
-  {
-    rotationAngle = 0.0f;  
-  }
-
-  if ((board->IsWhiteToMove() && rotationAngle == 0.0f)
-      || (!board->IsWhiteToMove() && rotationAngle == 180.0f))
-  {
-    board->SetRotateCam(false);
-  }
-
+  camera->Update();
 
   glTranslatef(centreBoard[0], centreBoard[1], centreBoard[2]);
-  glRotatef(rotationAngle, 0.0f, 0.0f, 1.0f);
+  glRotatef(camera->GetCameraAngle(), 0.0f, 0.0f, 1.0f);
   glTranslatef(-centreBoard[0], -centreBoard[1], -centreBoard[2]);
 }
 
@@ -164,38 +148,12 @@ void Game::Draw()
 
 void Game::KeyboardPress(unsigned char key)
 {
-  // Left/right to rotate camera.
-  if (key == 'a') rotationAngle += 2.0f;
-  else if (key == 'd') rotationAngle -= 2.0f;
-
-  // Up/down to zoom in or out.
-  if (key == 'w') Zoom(true);
-  else if (key == 's') Zoom(false);
-
-/*
-  if (key == 'q') cameraPos[0] += 0.01;
-  else if (key == 'a') cameraPos[0] -= 0.01;
-  else if (key == 'w') cameraPos[1] += 0.01;
-  else if (key == 's') cameraPos[1] -= 0.01;
-  else if (key == 'e') cameraPos[2] += 0.01;
-  else if (key == 'd') cameraPos[2] -= 0.01;
-  
-  else if (key == 'u') lightPos[0] += 0.01;
-  else if (key == 'j') lightPos[0] -= 0.01;
-  else if (key == 'i') lightPos[1] += 0.01;
-  else if (key == 'k') lightPos[1] -= 0.01;
-  else if (key == 'o') lightPos[2] += 0.01;
-  else if (key == 'l') lightPos[2] -= 0.01;
-*/
+  camera->KeyboardPress(key);
 }
 
 void Game::MousePress(int button, int state, int x, int y)
 {
-  // Use scroll wheel to zoom in or out.
-  if (button == 3) Zoom(true);
-  else if (button == 4) Zoom(false);
-
-
+  camera->MousePress(button, state, x, y);
   switch(button)
   {
     case GLUT_LEFT_BUTTON:
@@ -204,17 +162,5 @@ void Game::MousePress(int button, int state, int x, int y)
         board->SelectSquareAt(x, y);
       }
     break;
-  }
-}
-
-void Game::Zoom(bool zoomIn)
-{
-  if (zoomIn && cameraPos[1] < ZOOM_MAX)
-  {
-    cameraPos[1] += 0.01f;
-  }
-  else if (!zoomIn && cameraPos[1] > ZOOM_MIN)
-  {
-    cameraPos[1] -= 0.01f; 
   }
 }

@@ -39,7 +39,7 @@ void Hud::Draw(bool whiteToMove)
 
   // Draw HUD  
   glBegin(GL_QUADS);
-    glColor3f(0.0f, 0.3f, 1.0f);
+    glColor4f(0.0f, 0.3f, 0.5f, 0.5f);
     glVertex2f(0.0, 0.0);
     glVertex2f(WINDOW_WIDTH, 0.0);
     glVertex2f(WINDOW_WIDTH, 50.0);
