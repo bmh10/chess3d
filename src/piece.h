@@ -4,6 +4,7 @@
 #include "headers.h"
 #include "model.h"
 #include "modelManager.h"
+#include "box2d.h"
 
 #define PIECE_SCALE 0.005f
 
@@ -41,8 +42,7 @@ class Piece
     void EnableSelectionMode(bool enable, int i, int j);
     bool CheckIfClicked(GLfloat* rgba);
     void Draw(int i, int j);
-    
-
+    void Draw2D(int i, int j);
 };
 
 #endif

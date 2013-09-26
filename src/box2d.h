@@ -7,7 +7,7 @@ class Box2d
 {
   private:
     GLfloat origin[3];
-    GLfloat colour[3];
+    GLfloat colour[4];
     GLfloat width;
     GLfloat height;
 

@@ -73,7 +73,7 @@ void Game::Init()
   // Initialise game components
   camera = new Camera(cameraPos, 0.0f, centerBoard, CONTINOUS_ROTATE);
   board = new Board(camera);
-  hud = new Hud();
+  hud = new Hud(board);
   demoMode = true;
 }
 

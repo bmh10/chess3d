@@ -133,6 +133,19 @@ void Piece::Draw(int i, int j)
   }
 }
 
+void Piece::Draw2D(int i, int j)
+{
+  GLfloat red[] = {1.0, 0.0, 0.0, 1.0};
+  GLfloat black[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+  GLfloat white[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+  GLfloat origin[] = { 50.0f + i*25.0f, WINDOW_HEIGHT - 270.0f + j*25.0f, 1.0f };
+  GLfloat* col = ((i+j)%2 == 0) ? white : black;
+  if (type == PAWN)
+    col = red;
+  Box2d* box = new Box2d(origin, 25.0f, 25.0f, col);
+  box->Draw();
+}
+
 void Piece::LoadModel(ModelManager* modelManager)
 {
   assert(modelManager != NULL);

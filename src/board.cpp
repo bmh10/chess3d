@@ -1,7 +1,7 @@
 #include "board.h"
 
-#define PLUS std::plus<int>
-#define MINUS std::minus<int>
+// #define PLUS std::plus<int>
+// #define MINUS std::minus<int>
 
 Board::Board(Camera* camera)
 {
@@ -66,7 +66,7 @@ bool Board::IsWhiteToMove()
 
 void Board::Draw()
 {
-  GLfloat red[] = {1.0, 0.0, 0.0}; // Make static?
+  GLfloat red[] = {1.0, 0.0, 0.0, 1.0}; // Make static?
   GLfloat blue[] = {0.0, 0.0, 1.0};
   GLfloat *col = red;
   int i, j;
@@ -80,7 +80,7 @@ void Board::Draw()
     glVertex3f(0.0, 8*SQUARE_SIZE, -0.01);
   glEnd();
 
-  // Draw pieces and squares
+  // Draw pieces and squares (3D)
   for (i = 0; i < 8; i++)
   {
     for (j = 0; j < 8; j++)
@@ -88,6 +88,18 @@ void Board::Draw()
       pieces[i][j]->Draw(i, j);
     }
   }
+
+  // Draw pieces and squares (2D)
+  OpenGLUtil::StartOrtho();
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      pieces[i][j]->Draw2D(i, j);
+    }
+  }
+
+  OpenGLUtil::EndOrtho();
 }
 
 void Board::EnableSelectionMode(bool enable)
@@ -338,5 +350,3 @@ void Board::UnhighlightPieces()
     }
   }
 }
-
-

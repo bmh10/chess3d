@@ -35,7 +35,7 @@ void MenuManager::Init()
   gameStarted = false;
   state = MAIN;
 
-  GLfloat boxCol[3] = { 0.0f, 0.0f, 0.0f };
+  GLfloat boxCol[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
   for (int i=0; i<4; i++)
   {
     GLfloat origin[3] = { 0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f };

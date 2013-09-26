@@ -3,7 +3,7 @@
 Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour)
 {
   memcpy(this->origin, origin, 3*sizeof(GLfloat));
-  memcpy(this->colour, colour, 3*sizeof(GLfloat));
+  memcpy(this->colour, colour, 4*sizeof(GLfloat));
   this->width = width;
   this->height = height;
 }
@@ -26,7 +26,7 @@ bool Box2d::IsPointInBox(int i, int j)
 void Box2d::Draw()
 {
   glBegin(GL_QUADS);
-    glColor3fv(colour);
+    glColor4fv(colour);
     glVertex3f(origin[0],       origin[1],        origin[2]);
     glVertex3f(origin[0]+width, origin[1],        origin[2]);
     glVertex3f(origin[0]+width, origin[1]+height, origin[2]);

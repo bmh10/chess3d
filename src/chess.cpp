@@ -34,8 +34,8 @@ void Display()
     case MENU:
       game->Draw();
       menuManager->Draw();
-      
       break;
+      
     case GAME:
       game->Draw();
       break;
