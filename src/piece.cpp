@@ -83,10 +83,10 @@ bool Piece::Match(GLfloat a, GLfloat b)
 
 void Piece::Draw(int i, int j)
 {
-  GLfloat red[] = {1.0, 0.0, 0.0, 1.0}; // Make static?
-  GLfloat blue[] = {0.0, 0.0, 1.0, 1.0};
-  GLfloat white[] = {1.0, 1.0, 0.0, 1.0}; // Make static?
-  GLfloat black[] = {0.0, 1.0, 1.0, 1.0};
+  COL_RED(1.0f)
+  COL_BLUE(1.0f)
+  COL_YELLOW(1.0f)
+  COL_CYAN(1.0f)
   GLfloat selectedCol[] = {1.0, 1.0, 0.0, 0.8};
   GLfloat highlightedCol[] = {0.0, 1.0, 1.0, 0.8};
   GLfloat highlightedCol2[] = {0.0, 0.5, 1.0, 0.8};
@@ -123,7 +123,7 @@ void Piece::Draw(int i, int j)
 
   if (type != EMPTY)
   {
-    col = (colour == WHITE) ? white : black;
+    col = (colour == WHITE) ? yellow : cyan;
     model->DrawAt(
       i*SQUARE_SIZE + SQUARE_SIZE/2, 
       j*SQUARE_SIZE + SQUARE_SIZE/2,
@@ -135,15 +135,15 @@ void Piece::Draw(int i, int j)
 
 void Piece::Draw2D(int i, int j)
 {
-  GLfloat red[] = {1.0, 0.0, 0.0, 1.0};
-  GLfloat black[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-  GLfloat white[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+  COL_WHITE(1.0f)
+  COL_BLACK(1.0f)
+  COL_RED(1.0f)
   GLfloat origin[] = { 50.0f + i*25.0f, WINDOW_HEIGHT - 270.0f + j*25.0f, 1.0f };
   GLfloat* col = ((i+j)%2 == 0) ? white : black;
   if (type == PAWN)
     col = red;
-  Box2d* box = new Box2d(origin, 25.0f, 25.0f, col);
-  box->Draw();
+  Box2d box = Box2d(origin, 25.0f, 25.0f, col);
+  box.Draw();
 }
 
 void Piece::LoadModel(ModelManager* modelManager)

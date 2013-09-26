@@ -35,15 +35,15 @@ void MenuManager::Init()
   gameStarted = false;
   state = MAIN;
 
-  GLfloat boxCol[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+  COL_BLACK(1.0f)
   for (int i=0; i<4; i++)
   {
     GLfloat origin[3] = { 0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f };
-    boxes[i] = new Box2d(origin, WINDOW_WIDTH/3, 50.0f, boxCol);
+    boxes[i] = new Box2d(origin, WINDOW_WIDTH/3, 50.0f, black);
   }
 
   GLfloat origin[3] = { 0.0f, 0.0f, 0.0f };
-  backBox = new Box2d(origin, WINDOW_WIDTH/3, WINDOW_HEIGHT, boxCol);
+  backBox = new Box2d(origin, WINDOW_WIDTH/3, WINDOW_HEIGHT, black);
 }
 
 void MenuManager::Update()

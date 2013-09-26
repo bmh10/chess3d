@@ -66,9 +66,6 @@ bool Board::IsWhiteToMove()
 
 void Board::Draw()
 {
-  GLfloat red[] = {1.0, 0.0, 0.0, 1.0}; // Make static?
-  GLfloat blue[] = {0.0, 0.0, 1.0};
-  GLfloat *col = red;
   int i, j;
 
   // Draw board base
@@ -157,7 +154,6 @@ void Board::SelectSquareAt(int x, int y)
   EnableSelectionMode(true);
   glReadBuffer(GL_BACK);
   glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, rgb);
-  //cout << "{" << rgb[0]<< ", " << rgb[1] << ", " << rgb[2] << ", " << rgb[3] << "}" << endl;
   
   for (i = 0; i < 8; i++)
   {
