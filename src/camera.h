@@ -14,6 +14,8 @@ class Camera
     CameraState state;
     GLfloat* cameraPos;
     GLfloat cameraAngle;
+    GLfloat* lookAtPos;
+
     GLfloat targetAngle;
     GLfloat increment;
 
@@ -21,7 +23,7 @@ class Camera
     void Zoom(bool zoomIn);
 
   public:
-    Camera(GLfloat* cameraPos, GLfloat cameraAngle, CameraState state);
+    Camera(GLfloat* cameraPos, GLfloat cameraAngle, GLfloat* lookAtPos, CameraState state);
     ~Camera();
 
     GLfloat* GetCameraPos();

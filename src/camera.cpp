@@ -1,9 +1,10 @@
 #include "camera.h"
 
-Camera::Camera(GLfloat* cameraPos, GLfloat cameraAngle, CameraState state)
+Camera::Camera(GLfloat* cameraPos, GLfloat cameraAngle, GLfloat* lookAtPos, CameraState state)
 {
   this->cameraPos = cameraPos;
   this->cameraAngle = cameraAngle;
+  this->lookAtPos = lookAtPos;
   this->state = state;
 }
 
@@ -45,6 +46,11 @@ void Camera::RotateTo(GLfloat angle)
 
 void Camera::Update()
 {
+  glMatrixMode (GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2],
+    lookAtPos[0], lookAtPos[1], lookAtPos[2], 0.0f, 0.0f, 1.0f);
+
   if (state == CONTINOUS_ROTATE)
   {
     cameraAngle += 0.25f;
@@ -65,6 +71,10 @@ void Camera::Update()
   {
     cameraAngle = 0.0f;  
   }
+
+  glTranslatef(lookAtPos[0], lookAtPos[1], lookAtPos[2]);
+  glRotatef(cameraAngle, 0.0f, 0.0f, 1.0f);
+  glTranslatef(-lookAtPos[0], -lookAtPos[1], -lookAtPos[2]);
 }
 
 void Camera::KeyboardPress(unsigned char key)

@@ -10,7 +10,6 @@ class Game
 {
   private:
     GLfloat lightPos[3];
-    GLfloat centreBoard[3];
 
     Camera* camera;
     Board *board;

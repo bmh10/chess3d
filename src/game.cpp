@@ -19,14 +19,15 @@ void Game::Init()
 {
   Logger::Info("Initializing game.");
 
-  centreBoard[0] = SQUARE_SIZE*4.0f;
-  centreBoard[1] = SQUARE_SIZE*4.0f;
-  centreBoard[2] = 0.0f;
+  GLfloat* centerBoard = new GLfloat[3];
+  centerBoard[0] = SQUARE_SIZE*4.0f;
+  centerBoard[1] = SQUARE_SIZE*4.0f;
+  centerBoard[2] = 0.0f;
 
   // Set initial camera position relative to centre of board
   GLfloat* cameraPos = new GLfloat[3];
   for (int i=0; i < 3; i++)
-    cameraPos[i] = centreBoard[i];
+    cameraPos[i] = centerBoard[i];
 
   cameraPos[0] += 0.0f;
   cameraPos[1] -= 0.12f;
@@ -70,7 +71,7 @@ void Game::Init()
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   // Initialise game components
-  camera = new Camera(cameraPos, 0.0f, CONTINOUS_ROTATE);
+  camera = new Camera(cameraPos, 0.0f, centerBoard, CONTINOUS_ROTATE);
   board = new Board(camera);
   hud = new Hud();
   demoMode = true;
@@ -81,18 +82,7 @@ void Game::Update()
   // Move light depending on current coords
   glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
   // Move camera depending on current coords
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity();
-
-  GLfloat* cameraPos = camera->GetCameraPos();
-  gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2],
-    centreBoard[0], centreBoard[1], centreBoard[2], 0.0f, 0.0f, 1.0f);
-
   camera->Update();
-
-  glTranslatef(centreBoard[0], centreBoard[1], centreBoard[2]);
-  glRotatef(camera->GetCameraAngle(), 0.0f, 0.0f, 1.0f);
-  glTranslatef(-centreBoard[0], -centreBoard[1], -centreBoard[2]);
 }
 
 void Game::Draw()
