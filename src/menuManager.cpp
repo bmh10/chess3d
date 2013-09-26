@@ -52,22 +52,7 @@ void MenuManager::Update()
 
 void MenuManager::Draw()
 {
-  // Save projection matrix on stack then set it up for ortho drawing.
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glOrtho(0.0, WINDOW_HEIGHT, 0.0, WINDOW_WIDTH, -1.0, 10.0);
-
-  // Save model view matrix then reset it.
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-  glLoadIdentity();
-  
-  // Disable face culling, depth buffering and lighting for 2D drawing.
-  // TODO: not sure if necessary
-  glDisable(GL_LIGHTING);
-  glDisable(GL_CULL_FACE);
-  glClear(GL_DEPTH_BUFFER_BIT);
+  OpenGLUtil::StartOrtho();
  
   backBox->Draw();
 /*
@@ -87,12 +72,7 @@ void MenuManager::Draw()
     DrawOption(i);
   }
 
-  // Restore saved matricies ready for 3D rendering.
-  glEnable(GL_LIGHTING);
-  glMatrixMode(GL_MODELVIEW);
-  glPopMatrix();
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
+  OpenGLUtil::EndOrtho();
 }
 
 // Should only really draw when things change not all the time.

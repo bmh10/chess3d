@@ -21,6 +21,7 @@ using namespace std;
 #include <iostream>
 
 #include "logger.h"
+#include "openglUtil.h"
 /*
 #include "piece.h"
 #include "board.h"
