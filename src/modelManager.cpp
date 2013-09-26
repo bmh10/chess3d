@@ -1,5 +1,11 @@
 #include "modelManager.h"
 
+#define checkImageWidth 64
+#define checkImageHeight 64
+static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
+
+static GLuint texName;
+
 ModelManager::ModelManager()
 {
   this->models = vector<Model*>();
@@ -9,12 +15,54 @@ ModelManager::~ModelManager()
 {
 }
 
+void ModelManager::LoadAllTextures()
+{
+  Logger::Info("Loading textures.");
+  string path = "../res/";
+  //LoadTexture("pieces2d", path + "pieces2d.png");
+}
+
 void ModelManager::LoadAllModels()
 {
   Logger::Info("Loading models.");
   string path = "../res/";
   LoadModel("PAWN", path + "pawn.ply");
   LoadModel("CASTLE", path + "castle.ply");
+}
+
+// TESTING...
+GLuint* ModelManager::LoadTexture()
+{ 
+   // Load file and decode image.
+  vector<unsigned char> image;
+  unsigned width, height;
+  unsigned error = lodepng::decode(image, width, height, "../res/pieces2d.png");
+
+  // If there's an error, display it.
+  if(error != 0)
+  {
+    std::cout << "error " << error << ": " << lodepng_error_text(error) << std::endl;
+  }
+
+  //GLvoid* ptr = NULL;
+
+  //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+  glGenTextures(1, &texName);
+  glBindTexture(GL_TEXTURE_2D, texName);
+
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
+                 GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
+                 GL_NEAREST);
+  //cout << width << ":" << height << endl;
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, 
+                 height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 
+                 &image[0]);
+
+  return &texName;
 }
 
 void ModelManager::LoadModel(string id, string path)

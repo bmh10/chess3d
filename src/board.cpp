@@ -96,6 +96,21 @@ void Board::Draw()
     }
   }
 
+  // Testing 2d drawing...
+  GLuint* texName = modelManager->LoadTexture();
+  glEnable(GL_TEXTURE_2D);
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+   glBindTexture(GL_TEXTURE_2D, *texName);
+  glBegin(GL_QUADS);
+    glColor3f(0.5, 0.5, 0.5);
+    glTexCoord2f(1.0, 1.0); glVertex3f(0.0, 0.0, 1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(0.0, 500.0, 1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(500.0, 500.0, 1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(500.0, 0.0, 1.0);
+  glEnd();
+
+  glDisable(GL_TEXTURE_2D);
+
   OpenGLUtil::EndOrtho();
 }
 
