@@ -261,19 +261,19 @@ void Board::DisplayPossibleMoves()
       break;
     case CASTLE:
       SafeHighlightPieces(x, y, &Id, &Add);
-	  SafeHighlightPieces(x, y, &Id, &Sub);
+	    SafeHighlightPieces(x, y, &Id, &Sub);
       SafeHighlightPieces(x, y, &Add, &Id);
       SafeHighlightPieces(x, y, &Sub, &Id);
       break;
     case QUEEN:
       SafeHighlightPieces(x, y, &Add, &Add);
-	  SafeHighlightPieces(x, y, &Add, &Sub);
-	  SafeHighlightPieces(x, y, &Sub, &Add);
-	  SafeHighlightPieces(x, y, &Sub, &Sub);
-	  SafeHighlightPieces(x, y, &Id, &Add);
-	  SafeHighlightPieces(x, y, &Id, &Sub);
-	  SafeHighlightPieces(x, y, &Add, &Id);
-	  SafeHighlightPieces(x, y, &Sub, &Id);
+  	  SafeHighlightPieces(x, y, &Add, &Sub);
+  	  SafeHighlightPieces(x, y, &Sub, &Add);
+  	  SafeHighlightPieces(x, y, &Sub, &Sub);
+  	  SafeHighlightPieces(x, y, &Id, &Add);
+  	  SafeHighlightPieces(x, y, &Id, &Sub);
+  	  SafeHighlightPieces(x, y, &Add, &Id);
+  	  SafeHighlightPieces(x, y, &Sub, &Id);
       break;
     case KING:
       //TODO: castling case
@@ -323,7 +323,7 @@ void Board::SafeHighlightPieces(int i, int j, int (*fx)(int, int), int (*fy)(int
   int n;
   for (n=1; n < 8; n++)
   {
-	if (!SafeHighlightPiece(fx(i, n), fy(j, n)))
+	  if (!SafeHighlightPiece(fx(i, n), fy(j, n)))
       break;
   }
 }

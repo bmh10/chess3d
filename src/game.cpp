@@ -63,6 +63,10 @@ void Game::Init()
   // Cull back faces of polygons
   //glEnable(GL_CULL_FACE);
   //glCullFace(GL_BACK);
+
+  // Enable blending for transparent objects
+  glEnable (GL_BLEND);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   // Initialise game components
   board = new Board();

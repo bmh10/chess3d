@@ -87,8 +87,9 @@ void Piece::Draw(int i, int j)
   GLfloat blue[] = {0.0, 0.0, 1.0, 1.0};
   GLfloat white[] = {1.0, 1.0, 0.0, 1.0}; // Make static?
   GLfloat black[] = {0.0, 1.0, 1.0, 1.0};
-  GLfloat selectedCol[] = {1.0, 1.0, 0.0, 0.2};
-  GLfloat highlightedCol[] = {0.0, 1.0, 1.0, 0.001};
+  GLfloat selectedCol[] = {1.0, 1.0, 0.0, 0.8};
+  GLfloat highlightedCol[] = {0.0, 1.0, 1.0, 0.8};
+  GLfloat highlightedCol2[] = {0.0, 0.5, 1.0, 0.8};
   
   GLfloat* col = NULL;
 
@@ -104,13 +105,13 @@ void Piece::Draw(int i, int j)
         col = selectedCol;
         break;
      case HIGHLIGHTED:
-        col = highlightedCol;
+        col = ((i+j)%2 == 0) ? highlightedCol : highlightedCol2;
         break;
      default:
        col = ((i+j)%2 == 0) ? red : blue;
     }
   }
-  
+
   // Draw square under this piece
   glColor4fv(col);
   glBegin(GL_POLYGON);  

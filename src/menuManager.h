@@ -6,14 +6,14 @@
 
 #define NUM_OPTIONS 4
 
-enum MenuState { MAIN, OPTIONS };
+enum MenuState { MAIN, OPTIONS, CHECK };
 
 class MenuManager
 {
   private:
     MenuState state;
     Box2d* boxes[4];
-    char text[2][4][25];
+    char text[3][4][25];
     int selectedOption;
     bool gameStarted;
     Box2d* backBox;

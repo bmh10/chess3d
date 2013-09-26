@@ -27,6 +27,10 @@ void MenuManager::Init()
   strcpy(text[OPTIONS][2], "Ingame Options");
   strcpy(text[OPTIONS][3], "Back");
 
+  strcpy(text[CHECK][0], "Are you sure?");
+  strcpy(text[CHECK][1], "Yes");
+  strcpy(text[CHECK][2], "No");
+
   selectedOption = 0;
   gameStarted = false;
   state = MAIN;
@@ -122,41 +126,56 @@ void MenuManager::OptionClicked()
   switch (state)
   {
     case MAIN:
-	  switch(selectedOption)
-	  {
-		// TODO: add different game started modes after implemented.
-		case 0:
-		  gameStarted = true;
-		  break;
-		case 1:
-		  gameStarted = true;
-		  break;
-		case 2:
-		  state = OPTIONS;
-		  break;
-		case 3:
-		  exit(0);
-		  break;
-	  }
+  	  switch(selectedOption)
+  	  {
+  		// TODO: add different game started modes after implemented.
+  		case 0:
+  		  gameStarted = true;
+  		  break;
+  		case 1:
+  		  gameStarted = true;
+  		  break;
+  		case 2:
+  		  state = OPTIONS;
+  		  break;
+  		case 3:
+  		  state = CHECK;
+  		  break;
+  	  }
     break;
     case OPTIONS:
       // TODO: save preferences to file after setting. 
       // TODO: add restore to default settings option.
       switch(selectedOption)
-	  {
-		case 0:
-		  // TODO: sound options
-		  break;
-		case 1:
-		  // TODO: Language options
-		  break;
-		case 2:
-		  // TODO: In-game options
-		  break;
-		case 3:
-		  state = MAIN;
-		  break;
-	  }
+  	  {
+  		case 0:
+  		  // TODO: sound options
+  		  break;
+  		case 1:
+  		  // TODO: Language options
+  		  break;
+  		case 2:
+  		  // TODO: In-game options
+  		  break;
+  		case 3:
+  		  state = MAIN;
+  		  break;
+  	  }
+    break;
+    case CHECK:
+      // TODO: save preferences to file after setting. 
+      // TODO: add restore to default settings option.
+      switch(selectedOption)
+      {
+      case 0:
+        break;
+      case 1:
+        exit(0);
+        break;
+      case 2:
+        state = MAIN;
+        break;
+      }
     break;
   }
 
