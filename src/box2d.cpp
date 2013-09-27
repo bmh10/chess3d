@@ -6,6 +6,7 @@ Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour)
   memcpy(this->colour, colour, 4*sizeof(GLfloat));
   this->width = width;
   this->height = height;
+  this->texName = NULL;
 }
 
 Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour, GLuint texName)
