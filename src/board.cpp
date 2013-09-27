@@ -21,6 +21,7 @@ void Board::Init()
   selectedPiece = NULL;
   whiteToMove = true;
   show2dBoard = false;
+  boardState = STANDARD;
   
   // Initialize pieces
   int x, y;
@@ -55,15 +56,20 @@ void Board::Init()
     }
   }
 
-  pieces[3][0] = new Piece(KING, WHITE, modelManager);
-  pieces[3][7] = new Piece(KING, BLACK, modelManager);
-  pieces[4][0] = new Piece(QUEEN, WHITE, modelManager);
-  pieces[4][7] = new Piece(QUEEN, BLACK, modelManager);
+  pieces[4][0] = new Piece(KING, WHITE, modelManager);
+  pieces[4][7] = new Piece(KING, BLACK, modelManager);
+  pieces[3][0] = new Piece(QUEEN, WHITE, modelManager);
+  pieces[3][7] = new Piece(QUEEN, BLACK, modelManager);
 }
 
 bool Board::IsWhiteToMove()
 {
   return whiteToMove;
+}
+
+BoardState Board::GetBoardState()
+{
+  return boardState;
 }
 
 void Board::Draw()
@@ -144,12 +150,69 @@ void Board::SetSelectedPiece(int i, int j)
 
 void Board::MoveSelectedPiece(int i, int j)
 {
+  // TODO: if move would put current player in check - disallow.
+  
   pieces[i][j] = selectedPiece;
   pieces[selCoord[0]][selCoord[1]] = new Piece(EMPTY);
-  selectedPiece = NULL;
+
+  // If move puts current player in check then disallow.
+  if (IsInCheck(whiteToMove ? WHITE : BLACK))
+  {
+    pieces[i][j] = new Piece(EMPTY);
+    pieces[selCoord[0]][selCoord[1]] = selectedPiece;
+    return;
+  }
+
   // Switch turns
+  selectedPiece->SetHasMoved();
+  selectedPiece = NULL;
   whiteToMove = !whiteToMove;
   camera->RotateToWhite(whiteToMove);
+
+  // After move calculate board state i.e. see if anyone in in check, stalemate or checkmate.
+  boardState = IsInCheck(whiteToMove ? WHITE : BLACK) ? CHECK : STANDARD;
+}
+
+bool Board::IsInCheck(PieceColour colourOfKingToCheck)
+{
+  // TODO: do this a better way which doesn't involve directly highlighting all moves -> just get moves as a list of coords.
+  int i, j;
+  Piece* king;
+  Piece* selectedPieceTemp = selectedPiece;
+  int selCoordTemp[] = {selCoord[0], selCoord[1]};
+
+  // 1. Find location of king we are checking.
+  // 2. Check if moves of other pieces intersect.
+  for (i = 0; i < 8; i++) 
+  {
+    for (j = 0; j < 8; j++) 
+    {
+      Piece* p = pieces[i][j];
+      if (p->GetType() == KING && p->GetColour() == colourOfKingToCheck)
+      {
+        king = p;
+      }
+      else if (p->GetColour() == !colourOfKingToCheck)
+      {
+        selectedPiece = p;
+        selCoord[0] = i;
+        selCoord[1] = j;
+        DisplayPossibleMoves();
+      }
+    }
+  }
+
+  // TODO: doesnt take into account that pawns can't take forwards!!
+  bool inCheck = king->GetState() == HIGHLIGHTED;
+  if (inCheck) cout << colourOfKingToCheck << " KING IN CHECK!!" << endl;
+
+  // Reset selected piece to original.
+  selectedPiece = selectedPieceTemp;
+  selCoord[0] = selCoordTemp[0];
+  selCoord[1] = selCoordTemp[1];
+  UnhighlightPieces();
+
+  return inCheck;
 }
 
 void Board::SelectSquareAt(int x, int y)
@@ -261,7 +324,12 @@ void Board::DisplayPossibleMoves()
   	  SafeHighlightPieces(x, y, &Sub, &Id);
       break;
     case KING:
-      //TODO: castling case
+      //TODO: castling case -- see wiki page for condititions
+      if (!selectedPiece->HasMoved())
+      {
+        //SafeHighlightPiece(x+2, y);
+      }
+
       SafeHighlightPiece(x+1, y+1);
       SafeHighlightPiece(x+1, y-1);
       SafeHighlightPiece(x-1, y+1);

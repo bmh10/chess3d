@@ -16,9 +16,10 @@ void Hud::Init()
   strcpy(text[0], "White to move");
   strcpy(text[1], "Black to move");
   strcpy(text[2], "Menu");
+  strcpy(text[3], "X");
 }
 
-void Hud::Draw(bool whiteToMove)
+void Hud::Draw(bool whiteToMove, BoardState boardState)
 {
   OpenGLUtil::StartOrtho();
   
@@ -37,6 +38,11 @@ void Hud::Draw(bool whiteToMove)
     glScalef(0.25f, 0.25f, 0.5f);
     int n = (whiteToMove) ? 0 : 1;
     DrawText(n);
+    if (boardState == CHECK)
+    {
+      glTranslatef(100.0f, 0.0f, 0.0f);
+      DrawText(3);
+    }
   glPopMatrix();
 
   glPushMatrix();

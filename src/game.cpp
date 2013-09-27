@@ -132,7 +132,7 @@ void Game::Draw()
     board->Draw();
     if (!demoMode)
     {
-      hud->Draw(board->IsWhiteToMove());
+      hud->Draw(board->IsWhiteToMove(), board->GetBoardState());
     }
 }
 

@@ -23,6 +23,7 @@ class Piece
 
     bool selectionMode;
     GLfloat selectedColour[4];
+    bool hasMoved;
 
     void LoadModelAnd2dTexture(ModelManager* modelManager);
     bool Match(GLfloat a, GLfloat b);
@@ -36,6 +37,9 @@ class Piece
     PieceColour GetColour();
     PieceState GetState();
     
+    void SetHasMoved();
+    bool HasMoved();
+
     void SetSelected(bool selected);
     void SetHighlighted(bool highlight);
     void EnableSelectionMode(bool enable, int i, int j);

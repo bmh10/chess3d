@@ -6,6 +6,8 @@
 #include "camera.h"
 #include "modelManager.h"
 
+enum BoardState { STANDARD, CHECK };
+
 class Board
 {
   private:
@@ -14,8 +16,11 @@ class Board
     Camera* camera;
     Piece* selectedPiece;
     int selCoord[2];
+    // Put these in struct so HUD can have easy access.
     bool whiteToMove;
     bool show2dBoard;
+    BoardState boardState;
+    //
 
     void Init();
     void EnableSelectionMode(bool enable);
@@ -36,8 +41,9 @@ class Board
     void Draw();
     void SelectSquareAt(int x, int y);
     void DisplayPossibleMoves();
-
+    bool IsInCheck(PieceColour colourOfKingToCheck);
     bool IsWhiteToMove();
+    BoardState GetBoardState();
 
     void Toggle2dMode();
 };

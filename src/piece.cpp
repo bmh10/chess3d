@@ -4,6 +4,7 @@ Piece::Piece(PieceType type)
 {
   this->type = type;
   selectionMode = false;
+  hasMoved = false;
   state = NORMAL;
 }
 
@@ -13,6 +14,7 @@ Piece::Piece(PieceType type, PieceColour colour, ModelManager* modelManager)
   this->colour = colour;
   LoadModelAnd2dTexture(modelManager);
   selectionMode = false;
+  hasMoved = false;
   state = NORMAL;
 }
 
@@ -33,6 +35,16 @@ PieceColour Piece::GetColour()
 PieceState Piece::GetState()
 {
   return state;
+}
+
+void Piece::SetHasMoved()
+{
+  hasMoved = true;
+}
+
+bool Piece::HasMoved()
+{
+  return hasMoved;
 }
 
 void Piece::SetSelected(bool selected)

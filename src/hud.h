@@ -10,7 +10,7 @@ class Hud
 {
   private:
   	Board* board;
-    char text[2][20];
+    char text[10][20];
 
     void DrawText(int n);
 
@@ -19,7 +19,7 @@ class Hud
     ~Hud();
 
     void Init();
-    void Draw(bool whiteToMove);
+    void Draw(bool whiteToMove, BoardState boardState);
 };
 
 #endif
