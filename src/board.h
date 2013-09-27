@@ -40,6 +40,7 @@ class Board
     // Board analysis functions.
     bool WillMoveCauseCheck(Coord s, Coord e, int l);
     bool IsInCheck(PieceColour colourToCheck, int ls);
+    bool IsLegalMove(PieceColour colour);
 
     // Piece* CreateBoardClone();
 

@@ -180,7 +180,15 @@ void Board::MoveSelectedPiece(int i, int j)
   camera->RotateToWhite(whiteToMove);
 
   // After move calculate board state i.e. see if anyone in in check, stalemate or checkmate.
-  boardState = IsInCheck(whiteToMove ? WHITE : BLACK, 0) ? CHECK : STANDARD;
+  PieceColour colourToMove = whiteToMove ? WHITE : BLACK;
+  boardState = IsInCheck(colourToMove, 0) ? CHECK : STANDARD;
+  if (!IsLegalMove(colourToMove))
+  {
+    // If current player is in check and has no legal move -> checkmate.
+    if (boardState == CHECK) boardState = CHECKMATE;
+    // If current player is not in check and has no legal move -> stalemate.
+    else boardState = STALEMATE;
+  }
 }
 
 void Board::SelectSquareAt(int x, int y)
@@ -231,6 +239,22 @@ void Board::HighlightPossibleMoves()
     Coord m = *it;
     pieces[m.x][m.y]->SetHighlighted(true);
   }
+}
+
+bool Board::IsLegalMove(PieceColour colour)
+{
+  int i, j;
+  int count = 0;
+  for (i = 0; i < 8; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      vector<Coord> moves = GetPossibleMoves(Coord(i, j), 0);
+      if (moves.size() > 0 && pieces[i][j]->GetColour() == colour) return true;
+    }
+  }
+
+  return false;
 }
 
 // Gets the possible moves for the piece at (i, j) as a vector of coords.

@@ -16,7 +16,9 @@ void Hud::Init()
   strcpy(text[0], "White to move");
   strcpy(text[1], "Black to move");
   strcpy(text[2], "Menu");
-  strcpy(text[3], "X");
+  strcpy(text[3], "Check");
+  strcpy(text[4], "Stalemate");
+  strcpy(text[5], "Checkmate");
 }
 
 void Hud::Draw(bool whiteToMove, BoardState boardState)
@@ -38,11 +40,15 @@ void Hud::Draw(bool whiteToMove, BoardState boardState)
     glScalef(0.25f, 0.25f, 0.5f);
     int n = (whiteToMove) ? 0 : 1;
     DrawText(n);
-    if (boardState == CHECK)
+    glTranslatef(100.0f, 0.0f, 0.0f);
+    switch (boardState)
     {
-      glTranslatef(100.0f, 0.0f, 0.0f);
-      DrawText(3);
+      case STANDARD: break;
+      case CHECK: DrawText(3); break;
+      case STALEMATE: DrawText(4); break;
+      case CHECKMATE: DrawText(5); break;
     }
+
   glPopMatrix();
 
   glPushMatrix();
