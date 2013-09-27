@@ -7,7 +7,7 @@
 #include "modelManager.h"
 #include "coord.h"
 
-enum BoardState { STANDARD, CHECK, STALEMATE, CHECKMATE };
+enum BoardState { STANDARD, CHECK, STALEMATE, CHECKMATE_WHITE, CHECKMATE_BLACK };
 
 class Board
 {

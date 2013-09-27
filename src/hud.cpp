@@ -18,7 +18,8 @@ void Hud::Init()
   strcpy(text[2], "Menu");
   strcpy(text[3], "Check");
   strcpy(text[4], "Stalemate");
-  strcpy(text[5], "Checkmate");
+  strcpy(text[5], "Checkmate - White Wins!");
+  strcpy(text[6], "Checkmate - Black Wins!");
 }
 
 void Hud::Draw(bool whiteToMove, BoardState boardState)
@@ -46,7 +47,8 @@ void Hud::Draw(bool whiteToMove, BoardState boardState)
       case STANDARD: break;
       case CHECK: DrawText(3); break;
       case STALEMATE: DrawText(4); break;
-      case CHECKMATE: DrawText(5); break;
+      case CHECKMATE_WHITE: DrawText(5); break;
+      case CHECKMATE_BLACK: DrawText(6); break;
     }
 
   glPopMatrix();

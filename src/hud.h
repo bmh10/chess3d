@@ -10,7 +10,7 @@ class Hud
 {
   private:
   	Board* board;
-    char text[10][20];
+    char text[10][30];
 
     void DrawText(int n);
 

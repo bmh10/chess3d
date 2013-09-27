@@ -3975,3 +3975,50 @@
 (2013-09-27 21:22:04)(INFO) Loading model: ../res/pawn.ply
 (2013-09-27 21:22:04)(INFO) Loading model: ../res/castle.ply
 (2013-09-27 21:22:04)(INFO) Reshape.
+(2013-09-27 21:28:25)(INFO) --------------- LOGGER STARTED ---------------
+(2013-09-27 21:28:25)(INFO) Initialising.
+(2013-09-27 21:28:25)(INFO) Initializing game.
+(2013-09-27 21:28:25)(INFO) Loading models.
+(2013-09-27 21:28:25)(INFO) Loading model: ../res/pawn.ply
+(2013-09-27 21:28:25)(INFO) Loading model: ../res/castle.ply
+(2013-09-27 21:28:25)(INFO) Reshape.
+(2013-09-27 21:29:24)(INFO) --------------- LOGGER STARTED ---------------
+(2013-09-27 21:29:24)(INFO) Initialising.
+(2013-09-27 21:29:24)(INFO) Initializing game.
+(2013-09-27 21:29:24)(INFO) Loading models.
+(2013-09-27 21:29:24)(INFO) Loading model: ../res/pawn.ply
+(2013-09-27 21:29:24)(INFO) Loading model: ../res/castle.ply
+(2013-09-27 21:29:36)(INFO) --------------- LOGGER STARTED ---------------
+(2013-09-27 21:29:36)(INFO) Initialising.
+(2013-09-27 21:29:36)(INFO) Initializing game.
+(2013-09-27 21:29:36)(INFO) Loading models.
+(2013-09-27 21:29:36)(INFO) Loading model: ../res/pawn.ply
+(2013-09-27 21:29:36)(INFO) Loading model: ../res/castle.ply
+(2013-09-27 21:29:56)(INFO) --------------- LOGGER STARTED ---------------
+(2013-09-27 21:29:56)(INFO) Initialising.
+(2013-09-27 21:29:56)(INFO) Initializing game.
+(2013-09-27 21:29:56)(INFO) Loading models.
+(2013-09-27 21:29:56)(INFO) Loading model: ../res/pawn.ply
+(2013-09-27 21:29:56)(INFO) Loading model: ../res/castle.ply
+(2013-09-27 21:29:56)(INFO) Reshape.
+(2013-09-27 21:30:23)(INFO) --------------- LOGGER STARTED ---------------
+(2013-09-27 21:30:23)(INFO) Initialising.
+(2013-09-27 21:30:23)(INFO) Initializing game.
+(2013-09-27 21:30:23)(INFO) Loading models.
+(2013-09-27 21:30:23)(INFO) Loading model: ../res/pawn.ply
+(2013-09-27 21:30:23)(INFO) Loading model: ../res/castle.ply
+(2013-09-27 21:30:23)(INFO) Reshape.
+(2013-09-27 21:30:42)(INFO) --------------- LOGGER STARTED ---------------
+(2013-09-27 21:30:42)(INFO) Initialising.
+(2013-09-27 21:30:42)(INFO) Initializing game.
+(2013-09-27 21:30:42)(INFO) Loading models.
+(2013-09-27 21:30:42)(INFO) Loading model: ../res/pawn.ply
+(2013-09-27 21:30:42)(INFO) Loading model: ../res/castle.ply
+(2013-09-27 21:30:42)(INFO) Reshape.
+(2013-09-27 21:30:59)(INFO) --------------- LOGGER STARTED ---------------
+(2013-09-27 21:30:59)(INFO) Initialising.
+(2013-09-27 21:30:59)(INFO) Initializing game.
+(2013-09-27 21:30:59)(INFO) Loading models.
+(2013-09-27 21:30:59)(INFO) Loading model: ../res/pawn.ply
+(2013-09-27 21:30:59)(INFO) Loading model: ../res/castle.ply
+(2013-09-27 21:30:59)(INFO) Reshape.

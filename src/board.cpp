@@ -184,9 +184,9 @@ void Board::MoveSelectedPiece(int i, int j)
   boardState = IsInCheck(colourToMove, 0) ? CHECK : STANDARD;
   if (!IsLegalMove(colourToMove))
   {
-    // If current player is in check and has no legal move -> checkmate.
-    if (boardState == CHECK) boardState = CHECKMATE;
-    // If current player is not in check and has no legal move -> stalemate.
+    // If current player is in check and has no legal move -> checkmate (other player wins).
+    if (boardState == CHECK) boardState = whiteToMove ? CHECKMATE_BLACK : CHECKMATE_WHITE;
+    // If current player is not in check and has no legal move -> stalemate (draw).
     else boardState = STALEMATE;
   }
 }
