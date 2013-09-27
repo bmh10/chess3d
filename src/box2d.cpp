@@ -8,6 +8,15 @@ Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour)
   this->height = height;
 }
 
+Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour, GLuint texName)
+{
+  memcpy(this->origin, origin, 3*sizeof(GLfloat));
+  memcpy(this->colour, colour, 4*sizeof(GLfloat));
+  this->width = width;
+  this->height = height;
+  this->texName = texName;
+}
+
 Box2d::~Box2d()
 {
 }
@@ -25,11 +34,28 @@ bool Box2d::IsPointInBox(int i, int j)
 
 void Box2d::Draw()
 {
-  glBegin(GL_QUADS);
-    glColor4fv(colour);
-    glVertex3f(origin[0],       origin[1],        origin[2]);
-    glVertex3f(origin[0]+width, origin[1],        origin[2]);
-    glVertex3f(origin[0]+width, origin[1]+height, origin[2]);
-    glVertex3f(origin[0]      , origin[1]+height, origin[2]);
-  glEnd();
+  if (texName)
+  {
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glBindTexture(GL_TEXTURE_2D, texName);
+    glBegin(GL_QUADS);
+      glColor4fv(colour);
+      glTexCoord2f(0.0, 1.0); glVertex3f(origin[0],       origin[1],        origin[2]);
+      glTexCoord2f(0.0, 0.0); glVertex3f(origin[0]      , origin[1]+height, origin[2]);
+      glTexCoord2f(1.0, 0.0); glVertex3f(origin[0]+width, origin[1]+height, origin[2]);
+      glTexCoord2f(1.0, 1.0); glVertex3f(origin[0]+width, origin[1],        origin[2]);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+  }
+  else
+  {
+    glBegin(GL_QUADS);
+      glColor4fv(colour);
+      glVertex3f(origin[0],       origin[1],        origin[2]);
+      glVertex3f(origin[0]+width, origin[1],        origin[2]);
+      glVertex3f(origin[0]+width, origin[1]+height, origin[2]);
+      glVertex3f(origin[0]      , origin[1]+height, origin[2]);
+    glEnd();
+  }
 }

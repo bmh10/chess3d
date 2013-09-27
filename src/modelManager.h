@@ -10,7 +10,7 @@ class ModelManager
   private:
     // TODO: change to array of models later.
     vector<Model*> models;
-    //vector<unsigned char> texture;
+    GLuint pieces2d[6][2];
     //Model* pawnModel;
 
   public:
@@ -20,9 +20,10 @@ class ModelManager
     void LoadAllTextures();
     void LoadAllModels();
     
-    GLuint* LoadTexture();
+    void LoadTextures();
     void LoadModel(string id, string path);
     Model* GetModel(string id);
+    GLuint GetPiece2d(PieceType type, PieceColour colour);
 };
 
 #endif

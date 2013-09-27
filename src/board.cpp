@@ -17,6 +17,7 @@ void Board::Init()
 {
   modelManager = new ModelManager();
   modelManager->LoadAllModels();
+  modelManager->LoadTextures();
   selectedPiece = NULL;
   whiteToMove = true;
   
@@ -96,21 +97,6 @@ void Board::Draw()
     }
   }
 
-  // Testing 2d drawing...
-  GLuint* texName = modelManager->LoadTexture();
-  glEnable(GL_TEXTURE_2D);
-   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-   glBindTexture(GL_TEXTURE_2D, *texName);
-  glBegin(GL_QUADS);
-    glColor3f(0.5, 0.5, 0.5);
-    glTexCoord2f(1.0, 1.0); glVertex3f(0.0, 0.0, 1.0);
-    glTexCoord2f(1.0, 0.0); glVertex3f(0.0, 500.0, 1.0);
-    glTexCoord2f(0.0, 0.0); glVertex3f(500.0, 500.0, 1.0);
-    glTexCoord2f(0.0, 1.0); glVertex3f(500.0, 0.0, 1.0);
-  glEnd();
-
-  glDisable(GL_TEXTURE_2D);
-
   OpenGLUtil::EndOrtho();
 }
 
@@ -174,7 +160,7 @@ void Board::SelectSquareAt(int x, int y)
   {
     for (j = 0; j < 8; j++)
     {
-      if (pieces[i][j]->CheckIfClicked(rgb))
+      if (pieces[i][j]->CheckIfClicked(x, y, rgb))
       {
         PieceState stateOfClickedPiece = pieces[i][j]->GetState();
         UnhighlightPieces();

@@ -8,10 +8,6 @@
 
 #define PIECE_SCALE 0.005f
 
-enum PieceType { EMPTY, PAWN, KNIGHT, BISHOP, CASTLE, QUEEN, KING };
-
-enum PieceColour { WHITE, BLACK };
-
 enum PieceState { NORMAL, HIGHLIGHTED, SELECTED };
 
 class Piece
@@ -22,10 +18,13 @@ class Piece
     PieceState state;
     Model* model;
 
+    GLuint tex2dName;
+    Box2d* box;
+
     bool selectionMode;
     GLfloat selectedColour[4];
 
-    void LoadModel(ModelManager* modelManager);
+    void LoadModelAnd2dTexture(ModelManager* modelManager);
     bool Match(GLfloat a, GLfloat b);
 
   public:
@@ -40,7 +39,7 @@ class Piece
     void SetSelected(bool selected);
     void SetHighlighted(bool highlight);
     void EnableSelectionMode(bool enable, int i, int j);
-    bool CheckIfClicked(GLfloat* rgba);
+    bool CheckIfClicked(int x, int y, GLfloat* rgba);
     void Draw(int i, int j);
     void Draw2D(int i, int j);
 };

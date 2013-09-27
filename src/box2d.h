@@ -10,9 +10,11 @@ class Box2d
     GLfloat colour[4];
     GLfloat width;
     GLfloat height;
+    GLuint texName;
 
   public:
     Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour);
+    Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour, GLuint texName);
     ~Box2d();
 
     GLfloat* GetOrigin();

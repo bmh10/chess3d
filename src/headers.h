@@ -32,6 +32,10 @@ using namespace std;
 #include "logger.h"
 #include "openglUtil.h"
 
+// Global enums (to avoid cyclic dependancies between headers)
+enum PieceType { KING, QUEEN, CASTLE, BISHOP, KNIGHT, PAWN, EMPTY };
+enum PieceColour { WHITE, BLACK };
+
 /*
 #include "piece.h"
 #include "board.h"

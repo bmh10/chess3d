@@ -11,7 +11,7 @@ Piece::Piece(PieceType type, PieceColour colour, ModelManager* modelManager)
 {
   this->type = type;
   this->colour = colour;
-  LoadModel(modelManager);
+  LoadModelAnd2dTexture(modelManager);
   selectionMode = false;
   state = NORMAL;
 }
@@ -55,16 +55,27 @@ void Piece::EnableSelectionMode(bool enable, int i, int j)
   Draw(i, j);
 }
 
-bool Piece::CheckIfClicked(GLfloat* rgba)
+bool Piece::CheckIfClicked(int x, int y, GLfloat* rgba)
 {
   bool selected = true;
   GLfloat sa = selectedColour[3];
   GLfloat a = rgba[3];
 
+  // 2D selection (takes priority when 2D board is active.)
+  GLfloat* origin = box->GetOrigin();
+  // cout << x << ", " << y << " | " << origin[0] << "< " << origin[1] << endl;
+  if (box->IsPointInBox(x, y))
+  {
+    return true;
+  }
+
+  //cout << rgba[0] << ", " << rgba[1] << ", " << rgba[2] << ", " << rgba[3] << endl;
   for (int i=0; i < 3; i++)
   {
     selected &= Match(selectedColour[i]*sa, rgba[i]*a);
   }
+
+  
 /*
   if (selected)
   {
@@ -139,30 +150,45 @@ void Piece::Draw2D(int i, int j)
   COL_BLACK(1.0f)
   COL_YELLOW(1.0f)
   COL_CYAN(1.0f)
+  GLfloat navy[] = {0.0, 0.0, 0.2, 1.0};
   GLfloat selectedCol[] = {1.0, 1.0, 0.0, 0.8};
   GLfloat highlightedCol[] = {0.0, 1.0, 1.0, 0.8};
   GLfloat highlightedCol2[] = {0.0, 0.5, 1.0, 0.8};
 
   GLfloat* col = NULL;
-  switch (state)
+  if (selectionMode)
   {
-    case SELECTED:
-      col = selectedCol;
-      break;
-   case HIGHLIGHTED:
-      col = ((i+j)%2 == 0) ? highlightedCol : highlightedCol2;
-      break;
-   default:
-     col = ((i+j)%2 == 0) ? white : black;
+    col = selectedColour;
+  }
+  else
+  {
+    switch (state)
+    {
+      case SELECTED:
+        col = selectedCol;
+        break;
+     case HIGHLIGHTED:
+        col = ((i+j)%2 == 0) ? highlightedCol : highlightedCol2;
+        break;
+     default:
+       col = ((i+j)%2 == 0) ? white : navy;
+    }
   }
 
-  GLfloat origin[] = { 50.0f + i*25.0f, WINDOW_HEIGHT - 270.0f + j*25.0f, 1.0f };
-  Box2d(origin, 25.0f, 25.0f, col).Draw();
+  GLfloat origin[] = { 50.0f + i*50.0f, WINDOW_HEIGHT - 500.0f + j*50.0f, 1.0f };
+  if (type == EMPTY)
+    box = new Box2d(origin, 50.0f, 50.0f, col);
+  else
+    box = new Box2d(origin, 50.0f, 50.0f, col, tex2dName);
+
+  box->Draw();
 }
 
-void Piece::LoadModel(ModelManager* modelManager)
+void Piece::LoadModelAnd2dTexture(ModelManager* modelManager)
 {
   assert(modelManager != NULL);
+  tex2dName = modelManager->GetPiece2d(type, colour);
+
   // TODO: make simpler by somehow mapping enum to string.
   switch(type)
   {

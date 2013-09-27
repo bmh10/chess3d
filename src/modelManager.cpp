@@ -4,8 +4,6 @@
 #define checkImageHeight 64
 static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
 
-static GLuint texName;
-
 ModelManager::ModelManager()
 {
   this->models = vector<Model*>();
@@ -31,12 +29,13 @@ void ModelManager::LoadAllModels()
 }
 
 // TESTING...
-GLuint* ModelManager::LoadTexture()
+void ModelManager::LoadTextures()
 { 
-   // Load file and decode image.
+  // Load file and decode image.
   vector<unsigned char> image;
   unsigned width, height;
-  unsigned error = lodepng::decode(image, width, height, "../res/pieces2d.png");
+  // TODO: switch to picoPNG?
+  unsigned error = lodepng::decode(image, width, height, "../res/pieces2dtrans.png");
 
   // If there's an error, display it.
   if(error != 0)
@@ -44,25 +43,35 @@ GLuint* ModelManager::LoadTexture()
     std::cout << "error " << error << ": " << lodepng_error_text(error) << std::endl;
   }
 
-  //GLvoid* ptr = NULL;
+  GLuint texName;
 
-  //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  for (int i = 0; i < 6; i++)
+  {
+    for (int j = 0; j < 2; j++)
+    {
+      unsigned subImageWidth = width/6;
+      unsigned subImageHeight = height/4;
 
-  glGenTextures(1, &texName);
-  glBindTexture(GL_TEXTURE_2D, texName);
+      glPixelStorei(GL_UNPACK_ROW_LENGTH, width);
+      glPixelStorei(GL_UNPACK_SKIP_PIXELS, subImageWidth*i);
+      glPixelStorei(GL_UNPACK_SKIP_ROWS, subImageHeight*j);
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
-                 GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
-                 GL_NEAREST);
-  //cout << width << ":" << height << endl;
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, 
-                 height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 
-                 &image[0]);
+      glGenTextures(1, &texName);
+      glBindTexture(GL_TEXTURE_2D, texName);
 
-  return &texName;
+      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      //cout << width << ":" << height << endl;
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, subImageWidth, 
+                     subImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 
+                     &image[0]);
+
+      pieces2d[i][j] = texName;
+    }
+  }
 }
 
 void ModelManager::LoadModel(string id, string path)
@@ -148,5 +157,21 @@ Model* ModelManager::GetModel(string id)
   }
   // TODO: for now if model not found - return first model in list - later throw exception.
   return models.front();
+}
+
+GLuint ModelManager::GetPiece2d(PieceType type, PieceColour colour)
+{
+  return pieces2d[type][colour];
+  // uint col = colour = ? 0 : 1;
+  // switch (type)
+  // {
+  //   case KING: return pieces2d[0][col];
+  //   case QUEEN: return pieces2d[1][col];
+  //   case CASTLE: return pieces2d[2][col];
+  //   case BISHOP: return pieces2d[3][col];
+  //   case KNIGHT: return pieces2d[4][col];
+  //   case PAWN: return pieces2d[5][col];
+  // }
+  
 }
 
