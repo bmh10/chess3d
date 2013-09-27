@@ -6,7 +6,7 @@
 
 #define NUM_OPTIONS 4
 
-enum MenuState { MAIN, OPTIONS, CHECK };
+enum MenuState { MAIN, OPTIONS, AREYOUSURE };
 
 class MenuManager
 {

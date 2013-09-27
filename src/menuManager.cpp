@@ -27,9 +27,9 @@ void MenuManager::Init()
   strcpy(text[OPTIONS][2], "Ingame Options");
   strcpy(text[OPTIONS][3], "Back");
 
-  strcpy(text[CHECK][0], "Are you sure?");
-  strcpy(text[CHECK][1], "Yes");
-  strcpy(text[CHECK][2], "No");
+  strcpy(text[AREYOUSURE][0], "Are you sure?");
+  strcpy(text[AREYOUSURE][1], "Yes");
+  strcpy(text[AREYOUSURE][2], "No");
 
   selectedOption = 0;
   gameStarted = false;
@@ -119,7 +119,7 @@ void MenuManager::OptionClicked()
   		  state = OPTIONS;
   		  break;
   		case 3:
-  		  state = CHECK;
+  		  state = AREYOUSURE;
   		  break;
   	  }
     break;
@@ -142,7 +142,7 @@ void MenuManager::OptionClicked()
   		  break;
   	  }
     break;
-    case CHECK:
+    case AREYOUSURE:
       // TODO: save preferences to file after setting. 
       // TODO: add restore to default settings option.
       switch(selectedOption)

@@ -5,8 +5,9 @@
 #include "piece.h"
 #include "camera.h"
 #include "modelManager.h"
+#include "coord.h"
 
-enum BoardState { STANDARD, CHECK };
+enum BoardState { STANDARD, CHECK_WHITE, CHECK_BLACK, STALEMATE, CHECKMATE };
 
 class Board
 {
@@ -26,25 +27,25 @@ class Board
     void EnableSelectionMode(bool enable);
     void SetSelectedPiece(int i, int j);
     void MoveSelectedPiece(int i, int j);
-    bool SafeHighlightPiece(int i, int j);
-    void SafeHighlightPieces(int i, int j, int (*fx)(int, int), int (*fy)(int, int));
-    bool SafeHighlightPiecePawn(int i, int j);
-    bool SafeHighlightPiecePawnTake(int i, int j, PieceColour col);
     int Apply(int i, int j, std::binary_function<int, int, int> f);
     void UnhighlightPieces();
+
+    void HighlightPossibleMoves();
+    vector<Coord> GetPossibleMoves(Coord p);
+    bool SafeAddMove(Coord m, PieceColour ownColour, vector<Coord>* moves);
+    void SafeAddMoves(Coord start, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves);
+    bool SafeAddMovePawn(Coord m, vector<Coord>* moves);
+    bool SafeAddMovePawnTake(Coord m, PieceColour col, vector<Coord>* moves);
 
   public:
     Board(Camera* camera);
     ~Board();
 
-    //void Update();
     void Draw();
     void SelectSquareAt(int x, int y);
-    void DisplayPossibleMoves();
-    bool IsInCheck(PieceColour colourOfKingToCheck);
+    
     bool IsWhiteToMove();
     BoardState GetBoardState();
-
     void Toggle2dMode();
 };
 
