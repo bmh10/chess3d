@@ -173,14 +173,6 @@ void Board::MoveSelectedPiece(int i, int j)
   pieces[i][j] = selectedPiece;
   pieces[selCoord[0]][selCoord[1]] = new Piece(EMPTY);
 
-  // If move puts current player in check then disallow - TODO: filter out these moves in selected squares.
-  // if (IsInCheck(whiteToMove ? WHITE : BLACK))
-  // {
-  //   pieces[i][j] = new Piece(EMPTY);
-  //   pieces[selCoord[0]][selCoord[1]] = selectedPiece;
-  //   return;
-  // }
-
   // Switch turns
   selectedPiece->SetHasMoved();
   selectedPiece = NULL;
@@ -188,7 +180,7 @@ void Board::MoveSelectedPiece(int i, int j)
   camera->RotateToWhite(whiteToMove);
 
   // After move calculate board state i.e. see if anyone in in check, stalemate or checkmate.
-  //boardState = IsInCheck(whiteToMove ? WHITE : BLACK) ? CHECK : STANDARD;
+  boardState = IsInCheck(whiteToMove ? WHITE : BLACK, 0) ? CHECK : STANDARD;
 }
 
 void Board::SelectSquareAt(int x, int y)
@@ -360,6 +352,7 @@ bool Board::SafeAddMovePawn(Coord p, Coord m, vector<Coord>* moves, int l)
 {
   if (m.OutOfRange()) return false;
 
+  // Pawns can only move forwards if the square infront is empty.
   if (pieces[m.x][m.y]->GetType() == EMPTY)
   {
     if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
@@ -371,6 +364,7 @@ bool Board::SafeAddMovePawnTake(Coord p, Coord m, PieceColour col, vector<Coord>
 {
   if (m.OutOfRange()) return false;
 
+  // Pawns can only take if diagonal square is occupied by enemy piece.
   if (pieces[m.x][m.y]->GetType() != EMPTY && pieces[m.x][m.y]->GetColour() != col)
   {
     if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
