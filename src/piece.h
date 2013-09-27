@@ -39,7 +39,7 @@ class Piece
     void SetSelected(bool selected);
     void SetHighlighted(bool highlight);
     void EnableSelectionMode(bool enable, int i, int j);
-    bool CheckIfClicked(int x, int y, GLfloat* rgba);
+    bool CheckIfClicked(int x, int y, GLfloat* rgba, bool in2D);
     void Draw(int i, int j);
     void Draw2D(int i, int j);
 };

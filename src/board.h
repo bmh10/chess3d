@@ -15,6 +15,7 @@ class Board
     Piece* selectedPiece;
     int selCoord[2];
     bool whiteToMove;
+    bool show2dBoard;
 
     void Init();
     void EnableSelectionMode(bool enable);
@@ -37,6 +38,8 @@ class Board
     void DisplayPossibleMoves();
 
     bool IsWhiteToMove();
+
+    void Toggle2dMode();
 };
 
 #endif

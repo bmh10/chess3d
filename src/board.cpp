@@ -20,6 +20,7 @@ void Board::Init()
   modelManager->LoadTextures();
   selectedPiece = NULL;
   whiteToMove = true;
+  show2dBoard = false;
   
   // Initialize pieces
   int x, y;
@@ -87,17 +88,20 @@ void Board::Draw()
     }
   }
 
-  // Draw pieces and squares (2D)
-  OpenGLUtil::StartOrtho();
-  for (i = 0; i < 8; i++)
+  if (show2dBoard)
   {
-    for (j = 0; j < 8; j++)
+    // Draw pieces and squares (2D)
+    OpenGLUtil::StartOrtho();
+    for (i = 0; i < 8; i++)
     {
-      pieces[i][j]->Draw2D(i, j);
+      for (j = 0; j < 8; j++)
+      {
+        pieces[i][j]->Draw2D(i, j);
+      }
     }
-  }
 
-  OpenGLUtil::EndOrtho();
+    OpenGLUtil::EndOrtho();
+  }
 }
 
 void Board::EnableSelectionMode(bool enable)
@@ -160,7 +164,7 @@ void Board::SelectSquareAt(int x, int y)
   {
     for (j = 0; j < 8; j++)
     {
-      if (pieces[i][j]->CheckIfClicked(x, y, rgb))
+      if (pieces[i][j]->CheckIfClicked(x, y, rgb, show2dBoard))
       {
         PieceState stateOfClickedPiece = pieces[i][j]->GetState();
         UnhighlightPieces();
@@ -346,4 +350,9 @@ void Board::UnhighlightPieces()
       pieces[i][j]->SetHighlighted(false);
     }
   }
+}
+
+void Board::Toggle2dMode()
+{
+  show2dBoard = !show2dBoard;
 }

@@ -55,35 +55,27 @@ void Piece::EnableSelectionMode(bool enable, int i, int j)
   Draw(i, j);
 }
 
-bool Piece::CheckIfClicked(int x, int y, GLfloat* rgba)
+bool Piece::CheckIfClicked(int x, int y, GLfloat* rgba, bool in2D)
 {
   bool selected = true;
   GLfloat sa = selectedColour[3];
   GLfloat a = rgba[3];
 
-  // 2D selection (takes priority when 2D board is active.)
-  GLfloat* origin = box->GetOrigin();
-  // cout << x << ", " << y << " | " << origin[0] << "< " << origin[1] << endl;
-  if (box->IsPointInBox(x, y))
+  // 2D selection - simple box check.
+  if (in2D)
   {
-    return true;
+    return box->IsPointInBox(x, y);
   }
-
-  //cout << rgba[0] << ", " << rgba[1] << ", " << rgba[2] << ", " << rgba[3] << endl;
-  for (int i=0; i < 3; i++)
+  // 3D selection - check colours match.
+  else
   {
-    selected &= Match(selectedColour[i]*sa, rgba[i]*a);
-  }
-
+    for (int i=0; i < 3; i++)
+    {
+      selected &= Match(selectedColour[i]*sa, rgba[i]*a);
+    }
   
-/*
-  if (selected)
-  {
-    this->state = SELECTED;
+    return selected;
   }
-*/
-
-  return selected;
 }
 
 bool Piece::Match(GLfloat a, GLfloat b)
@@ -175,7 +167,7 @@ void Piece::Draw2D(int i, int j)
     }
   }
 
-  GLfloat origin[] = { 50.0f + i*50.0f, WINDOW_HEIGHT - 500.0f + j*50.0f, 1.0f };
+  GLfloat origin[] = { WINDOW_WIDTH/2 - 4*50.0f + i*50.0f, WINDOW_HEIGHT - 500.0f + j*50.0f, 1.0f };
   if (type == EMPTY)
     box = new Box2d(origin, 50.0f, 50.0f, col);
   else

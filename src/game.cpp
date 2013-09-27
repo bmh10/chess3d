@@ -139,6 +139,11 @@ void Game::Draw()
 void Game::KeyboardPress(unsigned char key)
 {
   camera->KeyboardPress(key);
+
+  if (key == 'v')
+  {
+    board->Toggle2dMode();
+  }
 }
 
 void Game::MousePress(int button, int state, int x, int y)
