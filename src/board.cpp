@@ -83,6 +83,11 @@ bool Board::IsWhiteToMove()
   return whiteToMove;
 }
 
+void Board::Toggle2dMode()
+{
+  show2dBoard = !show2dBoard;
+}
+
 BoardState Board::GetBoardState()
 {
   return boardState;
@@ -227,19 +232,20 @@ void Board::SelectSquareAt(int x, int y)
 
 void Board::HighlightPossibleMoves()
 {
-  vector<Coord> moves = GetPossibleMoves(Coord(selCoord[0], selCoord[1]));
+  vector<Coord> moves = GetPossibleMoves(Coord(selCoord[0], selCoord[1]), 0);
 
-  for(vector<Coord>::iterator it = moves.begin(); it != moves.end(); ++it)
+  for (vector<Coord>::iterator it = moves.begin(); it != moves.end(); ++it)
   {
-    pieces[(*it).x][(*it).y]->SetHighlighted(true);
+    Coord m = *it;
+    pieces[m.x][m.y]->SetHighlighted(true);
   }
 }
 
 // Gets the possible moves for the piece at (i, j) as a vector of coords.
-vector<Coord> Board::GetPossibleMoves(Coord p)
+vector<Coord> Board::GetPossibleMoves(Coord p, int l)
 {
   vector<Coord>* moves = new vector<Coord>();
-  if (p.x < 0 || p.x > 7 || p.y < 0 || p.y > 7) return *moves;
+  if (p.OutOfRange()) return *moves;
 
   Piece* piece = pieces[p.x][p.y];
   if (piece == NULL) return *moves;
@@ -251,66 +257,64 @@ vector<Coord> Board::GetPossibleMoves(Coord p)
   switch (piece->GetType())
   {
     case EMPTY: return *moves;
-    case PAWN:
-      
-
-      if (SafeAddMovePawn(Coord(x, y+i), moves)
+    case PAWN:    
+      if (SafeAddMovePawn(p, Coord(x, y+i), moves, l)
         && ((y == 1 && col == WHITE) || (y == 6 && col == BLACK)))
       {
         // Pawns can move 2 squares only from start position
-        SafeAddMovePawn(Coord(x, y+2*i), moves);
+        SafeAddMovePawn(p, Coord(x, y+2*i), moves, l);
       }
 
       // Pawns take diagonally
-      SafeAddMovePawnTake(Coord(x+1, y+i), col, moves);
-      SafeAddMovePawnTake(Coord(x-1, y+i), col, moves);
+      SafeAddMovePawnTake(p, Coord(x+1, y+i), col, moves, l);
+      SafeAddMovePawnTake(p, Coord(x-1, y+i), col, moves, l);
 
       //TODO: en passent case
       break;
     case KNIGHT:
-      SafeAddMove(Coord(x+1, y+2), col, moves);
-      SafeAddMove(Coord(x+1, y-2), col, moves);
-      SafeAddMove(Coord(x-1, y+2), col, moves);
-      SafeAddMove(Coord(x-1, y-2), col, moves);
-      SafeAddMove(Coord(x+2, y+1), col, moves);
-      SafeAddMove(Coord(x+2, y-1), col, moves);
-      SafeAddMove(Coord(x-2, y+1), col, moves);
-      SafeAddMove(Coord(x-2, y-1), col, moves);
+      SafeAddMove(p, Coord(x+1, y+2), col, moves, l);
+      SafeAddMove(p, Coord(x+1, y-2), col, moves, l);
+      SafeAddMove(p, Coord(x-1, y+2), col, moves, l);
+      SafeAddMove(p, Coord(x-1, y-2), col, moves, l);
+      SafeAddMove(p, Coord(x+2, y+1), col, moves, l);
+      SafeAddMove(p, Coord(x+2, y-1), col, moves, l);
+      SafeAddMove(p, Coord(x-2, y+1), col, moves, l);
+      SafeAddMove(p, Coord(x-2, y-1), col, moves, l);
       break;
     case BISHOP:
-      SafeAddMoves(Coord(x, y), &Add, &Add, col, moves);
-      SafeAddMoves(Coord(x, y), &Add, &Sub, col, moves);
-      SafeAddMoves(Coord(x, y), &Sub, &Add, col, moves);
-      SafeAddMoves(Coord(x, y), &Sub, &Sub, col, moves);
+      SafeAddMoves(p, &Add, &Add, col, moves, l);
+      SafeAddMoves(p, &Add, &Sub, col, moves, l);
+      SafeAddMoves(p, &Sub, &Add, col, moves, l);
+      SafeAddMoves(p, &Sub, &Sub, col, moves, l);
       break;
     case CASTLE:
-      SafeAddMoves(Coord(x, y), &Id, &Add, col, moves);
-      SafeAddMoves(Coord(x, y), &Id, &Sub, col, moves);
-      SafeAddMoves(Coord(x, y), &Add, &Id, col, moves);
-      SafeAddMoves(Coord(x, y), &Sub, &Id, col, moves);
+      SafeAddMoves(p, &Id, &Add, col, moves, l);
+      SafeAddMoves(p, &Id, &Sub, col, moves, l);
+      SafeAddMoves(p, &Add, &Id, col, moves, l);
+      SafeAddMoves(p, &Sub, &Id, col, moves, l);
       break;
     case QUEEN:
-      SafeAddMoves(Coord(x, y), &Add, &Add, col, moves);
-      SafeAddMoves(Coord(x, y), &Add, &Sub, col, moves);
-      SafeAddMoves(Coord(x, y), &Sub, &Add, col, moves);
-      SafeAddMoves(Coord(x, y), &Sub, &Sub, col, moves);
-      SafeAddMoves(Coord(x, y), &Id,  &Add, col, moves);
-      SafeAddMoves(Coord(x, y), &Id,  &Sub, col, moves);
-      SafeAddMoves(Coord(x, y), &Add, &Id,  col, moves);
-      SafeAddMoves(Coord(x, y), &Sub, &Id,  col, moves);
+      SafeAddMoves(p, &Add, &Add, col, moves, l);
+      SafeAddMoves(p, &Add, &Sub, col, moves, l);
+      SafeAddMoves(p, &Sub, &Add, col, moves, l);
+      SafeAddMoves(p, &Sub, &Sub, col, moves, l);
+      SafeAddMoves(p, &Id,  &Add, col, moves, l);
+      SafeAddMoves(p, &Id,  &Sub, col, moves, l);
+      SafeAddMoves(p, &Add, &Id,  col, moves, l);
+      SafeAddMoves(p, &Sub, &Id,  col, moves, l);
       break;
     case KING:
       //TODO: castling case -- see wiki page for condititions
-      if (!selectedPiece->HasMoved()) {}
+      if (!piece->HasMoved()) {}
 
-      SafeAddMove(Coord(x+1, y+1), col, moves);
-      SafeAddMove(Coord(x+1, y-1), col, moves);
-      SafeAddMove(Coord(x-1, y+1), col, moves);
-      SafeAddMove(Coord(x-1, y-1), col, moves);
-      SafeAddMove(Coord(x,   y+1), col, moves);
-      SafeAddMove(Coord(x,   y-1), col, moves);
-      SafeAddMove(Coord(x+1, y),   col, moves);
-      SafeAddMove(Coord(x-1, y),   col, moves);
+      SafeAddMove(p, Coord(x+1, y+1), col, moves, l);
+      SafeAddMove(p, Coord(x+1, y-1), col, moves, l);
+      SafeAddMove(p, Coord(x-1, y+1), col, moves, l);
+      SafeAddMove(p, Coord(x-1, y-1), col, moves, l);
+      SafeAddMove(p, Coord(x,   y+1), col, moves, l);
+      SafeAddMove(p, Coord(x,   y-1), col, moves, l);
+      SafeAddMove(p, Coord(x+1, y),   col, moves, l);
+      SafeAddMove(p, Coord(x-1, y),   col, moves, l);
       break;
     default: return *moves;
   }
@@ -318,13 +322,14 @@ vector<Coord> Board::GetPossibleMoves(Coord p)
   return *moves;
 }
 
-bool Board::SafeAddMove(Coord m, PieceColour ownColour, vector<Coord>* moves)
+// p = start point, m = end point
+bool Board::SafeAddMove(Coord p, Coord m, PieceColour ownColour, vector<Coord>* moves, int l)
 {
-  if (m.x < 0 || m.x > 7 || m.y < 0 || m.y > 7) return false;
+  if (m.OutOfRange()) return false;
   
   if (pieces[m.x][m.y]->GetType() == EMPTY)
   {
-    moves->push_back(m);
+    if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
     return true;
   }
 
@@ -336,179 +341,42 @@ bool Board::SafeAddMove(Coord m, PieceColour ownColour, vector<Coord>* moves)
   // If we hit one of opponent's pieces, highlight that piece then stop highlighting.
   else
   {
-    moves->push_back(m);
+    if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
     return false;
   }
 }
 
-void Board::SafeAddMoves(Coord start, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves)
+// p = start point
+void Board::SafeAddMoves(Coord p, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves, int l)
 {
   for (int n=1; n < 8; n++)
   {
-    Coord move = Coord(fx(start.x, n), fy(start.y, n));
-    if (!SafeAddMove(move, ownColour, moves)) break;
+    Coord move = Coord(fx(p.x, n), fy(p.y, n));
+    if (!SafeAddMove(p, move, ownColour, moves, l)) break;
   }
 }
 
-bool Board::SafeAddMovePawn(Coord m, vector<Coord>* moves)
+bool Board::SafeAddMovePawn(Coord p, Coord m, vector<Coord>* moves, int l)
 {
-  if (m.x < 0 || m.x > 7 || m.y < 0 || m.y > 7) return false;
+  if (m.OutOfRange()) return false;
 
   if (pieces[m.x][m.y]->GetType() == EMPTY)
   {
-    moves->push_back(m);
+    if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
     return true;
   }
 }
 
-bool Board::SafeAddMovePawnTake(Coord m, PieceColour col, vector<Coord>* moves)
+bool Board::SafeAddMovePawnTake(Coord p, Coord m, PieceColour col, vector<Coord>* moves, int l)
 {
-  if (m.x < 0 || m.x > 7 || m.y < 0 || m.y > 7) return false;
+  if (m.OutOfRange()) return false;
 
   if (pieces[m.x][m.y]->GetType() != EMPTY && pieces[m.x][m.y]->GetColour() != col)
   {
-    moves->push_back(m);
+    if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
     return true;
   }
 }
-
-// void Board::DisplayPossibleMoves()
-// {
-//   if (selectedPiece == NULL) return;
-
-//   int x = selCoord[0];
-//   int y = selCoord[1];
-//   PieceColour col = selectedPiece->GetColour();
-//   int i = (col == WHITE) ? 1 : -1;
-//   switch (selectedPiece->GetType())
-//   {
-//     case EMPTY: return;
-//     case PAWN:
-//       if (SafeHighlightPiecePawn(x, y+i)
-//          && ((y == 1 && col == WHITE) || (y == 6 && col == BLACK)))
-//       {
-//         // Pawns can move 2 squares only from start position
-//         SafeHighlightPiecePawn(x, y+2*i);
-//       }
-
-//       // Pawns take diagonally
-//       SafeHighlightPiecePawnTake(x+1, y+i, col);
-//       SafeHighlightPiecePawnTake(x-1, y+i, col);
-
-//       //TODO: en passent case
-//       break;
-//     case KNIGHT:
-//       SafeHighlightPiece(x+1, y+2);
-//       SafeHighlightPiece(x+1, y-2);
-//       SafeHighlightPiece(x-1, y+2);
-//       SafeHighlightPiece(x-1, y-2);
-//       break;
-//     case BISHOP:
-//       SafeHighlightPieces(x, y, &Add, &Add);
-//       SafeHighlightPieces(x, y, &Add, &Sub);
-//       SafeHighlightPieces(x, y, &Sub, &Add);
-//       SafeHighlightPieces(x, y, &Sub, &Sub);
-//       break;
-//     case CASTLE:
-//       SafeHighlightPieces(x, y, &Id, &Add);
-// 	    SafeHighlightPieces(x, y, &Id, &Sub);
-//       SafeHighlightPieces(x, y, &Add, &Id);
-//       SafeHighlightPieces(x, y, &Sub, &Id);
-//       break;
-//     case QUEEN:
-//       SafeHighlightPieces(x, y, &Add, &Add);
-//   	  SafeHighlightPieces(x, y, &Add, &Sub);
-//   	  SafeHighlightPieces(x, y, &Sub, &Add);
-//   	  SafeHighlightPieces(x, y, &Sub, &Sub);
-//   	  SafeHighlightPieces(x, y, &Id, &Add);
-//   	  SafeHighlightPieces(x, y, &Id, &Sub);
-//   	  SafeHighlightPieces(x, y, &Add, &Id);
-//   	  SafeHighlightPieces(x, y, &Sub, &Id);
-//       break;
-//     case KING:
-//       //TODO: castling case -- see wiki page for condititions
-//       if (!selectedPiece->HasMoved())
-//       {
-//         //SafeHighlightPiece(x+2, y);
-//       }
-
-//       SafeHighlightPiece(x+1, y+1);
-//       SafeHighlightPiece(x+1, y-1);
-//       SafeHighlightPiece(x-1, y+1);
-//       SafeHighlightPiece(x-1, y-1);
-//       SafeHighlightPiece(x, y+1);
-//       SafeHighlightPiece(x, y-1);
-//       SafeHighlightPiece(x+1, y);
-//       SafeHighlightPiece(x-1, y);
-//       break;
-//     default: return;
-//   }
-// }
-
-// /*
-//  * Highlights a piece with given coordinates
-//  * if coordinates are within confines of the board.
-//  */
-// bool Board::SafeHighlightPiece(int i, int j)
-// {
-//   if (i >= 0 && i < 8 && j >=0 && j < 8)
-//   {
-//     if (pieces[i][j]->GetType() != EMPTY)
-//     {
-//       // If we hit one of our own pieces stop highlighting.
-//       if (pieces[i][j]->GetColour() == selectedPiece->GetColour())
-//       {
-//         return false;
-//       }
-//       // If we hit one of opponent's pieces highlight that piece then stop highlighting.
-//       else
-//       {
-//         pieces[i][j]->SetHighlighted(true);
-//         return false;
-//       }
-//     }
-//     pieces[i][j]->SetHighlighted(true);
-//     return true;
-//   }
-//   return false;
-// }
-
-// void Board::SafeHighlightPieces(int i, int j, int (*fx)(int, int), int (*fy)(int, int))
-// {
-//   int n;
-//   for (n=1; n < 8; n++)
-//   {
-// 	  if (!SafeHighlightPiece(fx(i, n), fy(j, n)))
-//       break;
-//   }
-// }
-
-// bool Board::SafeHighlightPiecePawn(int i, int j)
-// {
-//   if (i >= 0 && i < 8 && j >=0 && j < 8)
-//   {
-//     if (pieces[i][j]->GetType() == EMPTY)
-//     {
-//       pieces[i][j]->SetHighlighted(true);
-//       return true;
-//     }
-//   }
-//   return false;
-// }
-
-// bool Board::SafeHighlightPiecePawnTake(int i, int j, PieceColour col)
-// {
-//   if (i >= 0 && i < 8 && j >=0 && j < 8)
-//   {
-//     if (pieces[i][j]->GetType() != EMPTY
-//         && pieces[i][j]->GetColour() != col)
-//       {
-//         pieces[i][j]->SetHighlighted(true);
-//         return true;
-//       }
-//   }
-//   return false;
-// }
 
 void Board::UnhighlightPieces()
 {
@@ -522,37 +390,84 @@ void Board::UnhighlightPieces()
   }
 }
 
-void Board::Toggle2dMode()
-{
-  show2dBoard = !show2dBoard;
-}
-
 /* Board analysis functions */
 
 // IN PROGRESS...
 
-// // Returns the board state that would arise if the piece in location (xs, ys) was moved to (xs, ye).
-// BoardState AnalyseMove(int xs, int ys, int xe, int ye)
-// {
-//   pieces[xe][ye] = pieces[xs][xs];
-//   pieces[xs][ys] = new Piece(EMPTY);
+// Returns the board state that would arise if the piece in location (xs, ys) was moved to (xs, ye).
+bool Board::WillMoveCauseCheck(Coord s, Coord e, int l)
+{
+  // Don't care if moves more than one move ahead cause check.
+  if (l > 0) return false;
+  bool isCheck;
 
-//   // If move puts current player in check then disallow - TODO: filter out these moves in selected squares.
-//   if (IsInCheck(whiteToMove ? WHITE : BLACK))
+  // 1. Save current board state.
+  Piece* oldEndPiece = pieces[e.x][e.y];
+
+  // 2. Move piece to suggested location on board.
+  pieces[e.x][e.y] = pieces[s.x][s.y];
+  pieces[s.x][s.y] = new Piece(EMPTY);
+
+  // 3. If white turn and move causes white check then yes.
+  // OR If black turn and move causes black check then yes.
+  isCheck = ((whiteToMove && IsInCheck(WHITE, l)) || (!whiteToMove && IsInCheck(BLACK, l)));
+
+  // 4. Reset board back to how it was.
+  pieces[s.x][s.y] = pieces[e.x][e.y];
+  pieces[e.x][e.y] = oldEndPiece;
+
+  return isCheck;
+}
+
+bool Board::IsInCheck(PieceColour colourToCheck, int l)
+{
+  int i, j;
+  Coord kingCoord = Coord(-1, -1);
+  vector<Coord> moves;
+
+  // 1. Find location of king we are checking.
+  // 2. Check if moves of other pieces overlap kings coordinates.
+  for (i = 0; i < 8; i++) 
+  {
+    for (j = 0; j < 8; j++) 
+    {
+      Piece* p = pieces[i][j];
+      if (p->GetType() == KING && p->GetColour() == colourToCheck)
+      {
+        kingCoord = Coord(i, j);
+      }
+      else if (p->GetColour() == !colourToCheck)
+      {
+        vector<Coord> newMoves = GetPossibleMoves(Coord(i, j), l+1);
+        moves.insert(moves.end(), newMoves.begin(), newMoves.end());
+      }
+    }
+  }
+
+  for (vector<Coord>::iterator it = moves.begin(); it != moves.end(); ++it)
+  {
+    Coord m = *it;
+    if (m.Equals(kingCoord)) return true;
+  }
+
+  return false;
+}
+
+// Piece* Board::CreateBoardClone()
+// {
+//   Piece piecesClone[8][8] = new Piece[8][8];
+//   int i, j;
+//   for (i = 0; i < 8; i++) 
 //   {
-//     pieces[i][j] = new Piece(EMPTY);
-//     pieces[selCoord[0]][selCoord[1]] = selectedPiece;
-//     return;
+//     for (j = 0; j < 8; j++) 
+//     {
+//       piecesClone[i][j] = *pieces[i][j];
+//     }
 //   }
 
-//   // Switch turns
-//   selectedPiece->SetHasMoved();
-//   selectedPiece = NULL;
-//   whiteToMove = !whiteToMove;
-//   camera->RotateToWhite(whiteToMove);
+//   Piece* p = piecesClone;
+//   return p;
 
-//   // After move calculate board state i.e. see if anyone in in check, stalemate or checkmate.
-//   boardState = IsInCheck(whiteToMove ? WHITE : BLACK) ? CHECK : STANDARD;
 // }
 
 // BoardState Board::AnalyseBoardState()
@@ -567,60 +482,4 @@ void Board::Toggle2dMode()
 //   {
 //     return CHECK_WHITE;
 //   }
-// }
-
-// bool Board::IsInCheck(PieceColour colourToCheck)
-// {
-
-
-// }
-
-
-
-
-
-
-
-
-
-
-  // TODO: do this a better/more efficient way which doesn't involve
-  // directly highlighting all moves -> just get moves as a list of coords.
-  // int i, j;
-  // Piece* king;
-  // Piece* selectedPieceTemp = selectedPiece;
-  // int selCoordTemp[] = {selCoord[0], selCoord[1]};
-
-  // // 1. Find location of king we are checking.
-  // // 2. Check if moves of other pieces intersect.
-  // for (i = 0; i < 8; i++) 
-  // {
-  //   for (j = 0; j < 8; j++) 
-  //   {
-  //     Piece* p = pieces[i][j];
-  //     if (p->GetType() == KING && p->GetColour() == colourOfKingToCheck)
-  //     {
-  //       king = p;
-  //     }
-  //     else if (p->GetColour() == !colourOfKingToCheck)
-  //     {
-  //       selectedPiece = p;
-  //       selCoord[0] = i;
-  //       selCoord[1] = j;
-  //       DisplayPossibleMoves();
-  //     }
-  //   }
-  // }
-
-  // // TODO: doesnt take into account that pawns can't take forwards!!
-  // bool inCheck = king->GetState() == HIGHLIGHTED;
-  // if (inCheck) cout << colourOfKingToCheck << " KING IN CHECK!!" << endl;
-
-  // // Reset selected piece to original.
-  // selectedPiece = selectedPieceTemp;
-  // selCoord[0] = selCoordTemp[0];
-  // selCoord[1] = selCoordTemp[1];
-  // UnhighlightPieces();
-
-  // return inCheck;
 // }

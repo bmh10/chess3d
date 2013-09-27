@@ -14,3 +14,8 @@ bool Coord::Equals(Coord c)
 {
 	return x == c.x && y == c.y;
 }
+
+bool Coord::OutOfRange()
+{
+	return (x < 0 || x > 7 || y < 0 || y > 7);
+}

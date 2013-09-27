@@ -13,6 +13,7 @@ class Coord
     int y;
 
     bool Equals(Coord c);
+    bool OutOfRange();
 };
 
 #endif

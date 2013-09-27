@@ -31,11 +31,17 @@ class Board
     void UnhighlightPieces();
 
     void HighlightPossibleMoves();
-    vector<Coord> GetPossibleMoves(Coord p);
-    bool SafeAddMove(Coord m, PieceColour ownColour, vector<Coord>* moves);
-    void SafeAddMoves(Coord start, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves);
-    bool SafeAddMovePawn(Coord m, vector<Coord>* moves);
-    bool SafeAddMovePawnTake(Coord m, PieceColour col, vector<Coord>* moves);
+    vector<Coord> GetPossibleMoves(Coord p, int l);
+    bool SafeAddMove(Coord p, Coord m, PieceColour ownColour, vector<Coord>* moves, int l);
+    void SafeAddMoves(Coord p, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves, int l);
+    bool SafeAddMovePawn(Coord p, Coord m, vector<Coord>* moves, int l);
+    bool SafeAddMovePawnTake(Coord p, Coord m, PieceColour col, vector<Coord>* moves, int l);
+
+    // Board analysis functions.
+    bool WillMoveCauseCheck(Coord s, Coord e, int l);
+    bool IsInCheck(PieceColour colourToCheck, int ls);
+
+    // Piece* CreateBoardClone();
 
   public:
     Board(Camera* camera);

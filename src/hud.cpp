@@ -38,11 +38,11 @@ void Hud::Draw(bool whiteToMove, BoardState boardState)
     glScalef(0.25f, 0.25f, 0.5f);
     int n = (whiteToMove) ? 0 : 1;
     DrawText(n);
-    if (boardState == CHECK)
-    {
-      glTranslatef(100.0f, 0.0f, 0.0f);
-      DrawText(3);
-    }
+    // if (boardState == CHECK)
+    // {
+    //   glTranslatef(100.0f, 0.0f, 0.0f);
+    //   DrawText(3);
+    // }
   glPopMatrix();
 
   glPushMatrix();
