@@ -2,13 +2,13 @@
 #define _BOX2D_H
 
 #include "headers.h"
-#include "coord.h"
+#include "coord3d.h"
 #include "colour.h"
 
 class Box2d
 {
   private:
-    Coord origin;
+    Coord3D origin;
     Colour colour;
     GLfloat width;
     GLfloat height;
@@ -18,12 +18,12 @@ class Box2d
     bool showTexture;
 
   public:
-    Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour);
-    Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, char* text);
-    Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, GLuint texName);
+    Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour);
+    Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour, char* text);
+    Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour, GLuint texName);
     ~Box2d();
 
-    Coord GetOrigin();
+    Coord3D GetOrigin();
     void SetColour(Colour colour);
     bool IsPointInBox(int i, int j);    
     void Draw();

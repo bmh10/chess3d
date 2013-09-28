@@ -7,7 +7,7 @@ LDFLAGS = -L/usr/X11R6/lib -lglut -lGLU -lGL -lXt -lXext -lX11 -lSM -lICE -lm # 
 
 INCS = headers.h
 
-OBJS = logger.o box2d.o menuManager.o hud.o model.o modelManager.o camera.o coord.o colour.o lodepng.o openglUtil.o piece.o board.o game.o chess.o
+OBJS = logger.o box2d.o menuManager.o hud.o model.o modelManager.o camera.o coord2d.o coord3d.o colour.o lodepng.o openglUtil.o piece.o board.o game.o chess.o
 
 COMPILE = $(CC) $(CFLAGS) $< -o $@
 
@@ -42,7 +42,9 @@ openglUtil.o: openglUtil.cpp openglUtil.h $(INCS); $(COMPILE)
 
 lodepng.o: lodepng.cpp lodepng.h $(INCS); $(COMPILE)
 
-coord.o: coord.cpp coord.h $(INCS); $(COMPILE)
+coord2d.o: coord2d.cpp coord2d.h $(INCS); $(COMPILE)
+
+coord3d.o: coord3d.cpp coord3d.h $(INCS); $(COMPILE)
 
 colour.o: colour.cpp colour.h $(INCS); $(COMPILE)
 

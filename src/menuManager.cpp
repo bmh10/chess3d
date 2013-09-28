@@ -37,11 +37,11 @@ void MenuManager::Init()
 
   for (int i=0; i<4; i++)
   {
-    Coord origin = Coord(0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f);
+    Coord3D origin = Coord3D(0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f);
     boxes[i] = new Box2d(origin, WINDOW_WIDTH/3, 50.0f, COL_BLACK(1.0f));
   }
 
-  backBox = new Box2d(Coord(0.0f, 0.0f, 0.0f), WINDOW_WIDTH/3, WINDOW_HEIGHT, COL_BLACK(1.0f));
+  backBox = new Box2d(Coord3D(0.0f, 0.0f, 0.0f), WINDOW_WIDTH/3, WINDOW_HEIGHT, COL_BLACK(1.0f));
 }
 
 void MenuManager::Update()

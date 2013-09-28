@@ -3,7 +3,7 @@
 
 #define DEBUG 1
 
-#define SQUARE_SIZE 0.02
+#define SQUARE_SIZE 0.02f
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 1024
 

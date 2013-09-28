@@ -127,12 +127,8 @@ void Piece::Draw(int i, int j)
   if (type != EMPTY)
   {
     col = (colour == WHITE) ? yellow : cyan;
-    model->DrawAt(
-      i*SQUARE_SIZE + SQUARE_SIZE/2, 
-      j*SQUARE_SIZE + SQUARE_SIZE/2,
-      0,
-      PIECE_SCALE,
-      col);
+    Coord3D origin = Coord3D(i*SQUARE_SIZE + SQUARE_SIZE/2.0f, j*SQUARE_SIZE + SQUARE_SIZE/2.0f, 0.0f);
+    model->DrawAt(origin, PIECE_SCALE, col);
   }
 }
 
@@ -164,11 +160,11 @@ void Piece::Draw2D(int i, int j)
         col = ((i+j)%2 == 0) ? highlightedCol : highlightedCol2;
         break;
      default:
-       col = ((i+j)%2 == 0) ? white : navy;
+       col = ((i+j)%2 == 0) ? navy : white;
     }
   }
 
-  Coord origin = Coord(WINDOW_WIDTH/2 - 4*50.0f + i*50.0f, WINDOW_HEIGHT - 500.0f + j*50.0f, 1.0f);
+  Coord3D origin = Coord3D(WINDOW_WIDTH/2 - 4*50.0f + i*50.0f, WINDOW_HEIGHT - 500.0f + j*50.0f, 1.0f);
   if (type == EMPTY)
     box = new Box2d(origin, 50.0f, 50.0f, col);
   else

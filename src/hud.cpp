@@ -29,14 +29,14 @@ void Hud::Init()
   selectedOption = -1;
 
   // Main HUD box.
-  Coord origin = Coord(0.0f, WINDOW_HEIGHT-50.0f, 0.0f);
+  Coord3D origin = Coord3D(0.0f, WINDOW_HEIGHT-50.0f, 0.0f);
   hudBox = new Box2d(origin, WINDOW_WIDTH, 50.0f, COL_BLACK(0.7f));
 
   // Menu option boxes.
   for (int i = 0; i < NUM_OPTIONS; i++)
   {
-    Coord origin2 = Coord(WINDOW_WIDTH - 200.0f, WINDOW_HEIGHT-(i+1)*50.0f, 1.0f);
-    optionBoxes[i] = new Box2d(origin2, 200.0f, 50.0f,  COL_GREEN(0.9f), text[6+i]);
+    Coord3D origin2 = Coord3D(WINDOW_WIDTH - 200.0f, WINDOW_HEIGHT-(i+1)*50.0f, 1.0f);
+    optionBoxes[i] = new Box2d(origin2, 200.0f, 50.0f, COL_GREEN(0.9f), text[6+i]);
   }
 }
 
@@ -45,9 +45,10 @@ void Hud::Draw(bool whiteToMove, BoardState boardState)
   Colour white = COL_WHITE(1.0f);
   OpenGLUtil::StartOrtho();
   
-  // Draw HUD  
+  // Draw HUD.
   hudBox->Draw();
 
+  // HUD text.
   glPushMatrix();
     white.Set();
     glTranslatef(50.0f, WINDOW_HEIGHT-40.0f, 1.0f);
@@ -66,13 +67,7 @@ void Hud::Draw(bool whiteToMove, BoardState boardState)
 
   glPopMatrix();
 
-  // glPushMatrix();
-  //   glColor4fv(white);
-  //   glTranslatef(WINDOW_WIDTH - 150.0f, WINDOW_HEIGHT-40.0f, 1.0f);
-  //   glScalef(0.25f, 0.25f, 0.5f);
-  //   DrawText(6);
-  // glPopMatrix();
-
+  // HUD menu.
   for (int i = 0; i < NUM_OPTIONS; i++)
   {
     optionBoxes[i]->SetColour(selectedOption == i ? COL_GREEN(0.7f) : COL_RED(0.7f));

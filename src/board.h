@@ -5,7 +5,7 @@
 #include "piece.h"
 #include "camera.h"
 #include "modelManager.h"
-#include "coord.h"
+#include "coord2d.h"
 
 enum BoardState { STANDARD, CHECK, STALEMATE, CHECKMATE_WHITE, CHECKMATE_BLACK };
 
@@ -16,7 +16,7 @@ class Board
     ModelManager* modelManager;
     Camera* camera;
     Piece* selectedPiece;
-    int selCoord[2];
+    Coord2D selCoord;
     // Put these in struct so HUD can have easy access.
     bool whiteToMove;
     bool show2dBoard;
@@ -33,14 +33,14 @@ class Board
     void HighlightPossibleMoves();
 
     // TODO: Move these functions to chess AI class.
-    vector<Coord> GetPossibleMoves(Coord p, int l);
-    bool SafeAddMove(Coord p, Coord m, PieceColour ownColour, vector<Coord>* moves, int l);
-    void SafeAddMoves(Coord p, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves, int l);
-    bool SafeAddMovePawn(Coord p, Coord m, vector<Coord>* moves, int l);
-    bool SafeAddMovePawnTake(Coord p, Coord m, PieceColour col, vector<Coord>* moves, int l);
+    vector<Coord2D> GetPossibleMoves(Coord2D p, int l);
+    bool SafeAddMove(Coord2D p, Coord2D m, PieceColour ownColour, vector<Coord2D>* moves, int l);
+    void SafeAddMoves(Coord2D p, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord2D>* moves, int l);
+    bool SafeAddMovePawn(Coord2D p, Coord2D m, vector<Coord2D>* moves, int l);
+    bool SafeAddMovePawnTake(Coord2D p, Coord2D m, PieceColour col, vector<Coord2D>* moves, int l);
 
     // Board analysis functions.
-    bool WillMoveCauseCheck(Coord s, Coord e, int l);
+    bool WillMoveCauseCheck(Coord2D s, Coord2D e, int l);
     bool IsInCheck(PieceColour colourToCheck, int ls);
     bool IsLegalMove(PieceColour colour);
 

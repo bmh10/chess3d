@@ -1,6 +1,6 @@
 #include "box2d.h"
 
-Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour)
+Box2d::Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour)
 {
   this->origin = origin;
   this->width = width;
@@ -13,7 +13,7 @@ Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour)
   showTexture = false;
 }
 
-Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, char* text)
+Box2d::Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour, char* text)
 {
   this->origin = origin;
   this->width = width;
@@ -27,7 +27,7 @@ Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, char* t
   showTexture = false;
 }
 
-Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, GLuint texName)
+Box2d::Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour, GLuint texName)
 {
   this->origin = origin;
   this->width = width;
@@ -44,7 +44,7 @@ Box2d::~Box2d()
 {
 }
 
-Coord Box2d::GetOrigin()
+Coord3D Box2d::GetOrigin()
 {
   return origin;
 }

@@ -48,16 +48,16 @@ void Model::PrintData()
   }
 }
 
-void Model::DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, Colour colour)
+void Model::DrawAt(Coord3D origin, GLfloat scale, Colour colour)
 {
   //Draw all vertices for each polygon, setting texture coords and vertex normals
   int a, b;
   Vertex v;
   colour.Set();
-  for (a=0; a < numFaces; a++)
+  for (a = 0; a < numFaces; a++)
   {
     glBegin(GL_POLYGON);
-    for (b=0; b < faceData[a].numIndicies; b++)
+    for (b = 0; b < faceData[a].numIndicies; b++)
     {
       // Lookup vertex index in polygonData, 
       // then use to get actual vertex from vertexData
@@ -70,7 +70,7 @@ void Model::DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, Colour colour
       glNormal3f(v.normal[0], v.normal[1], v.normal[2]);
 
       // Define coordinates of vertex
-      glVertex3f(i + v.coord[0]*scale, j + v.coord[1]*scale, k + v.coord[2]*scale);
+      glVertex3f(origin.x + v.coord[0]*scale, origin.y + v.coord[1]*scale, origin.z + v.coord[2]*scale);
     }
     glEnd();
   }

@@ -3,6 +3,7 @@
 
 #include "headers.h"
 #include "colour.h"
+#include "coord3d.h"
 
 // Holds data about a single vertex in the model
 struct Vertex
@@ -36,7 +37,7 @@ class Model
 
     string GetId();
     void PrintData();
-    void DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, Colour colour);
+    void DrawAt(Coord3D origin, GLfloat scale, Colour colour);
 };
 
 #endif

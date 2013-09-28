@@ -157,8 +157,7 @@ void Board::SetSelectedPiece(int i, int j)
 {
   selectedPiece = pieces[i][j];
   selectedPiece->SetSelected(true);
-  selCoord[0] = i;
-  selCoord[1] = j;
+  selCoord = Coord2D(i, j);
   
   // Only highlight possible moves if correct turn.
   PieceColour selCol = selectedPiece->GetColour();
@@ -171,7 +170,7 @@ void Board::SetSelectedPiece(int i, int j)
 void Board::MoveSelectedPiece(int i, int j)
 {  
   pieces[i][j] = selectedPiece;
-  pieces[selCoord[0]][selCoord[1]] = new Piece(EMPTY);
+  pieces[selCoord.x][selCoord.y] = new Piece(EMPTY);
 
   // Switch turns
   selectedPiece->SetHasMoved();
@@ -233,11 +232,11 @@ void Board::SelectSquareAt(int x, int y)
 
 void Board::HighlightPossibleMoves()
 {
-  vector<Coord> moves = GetPossibleMoves(Coord(selCoord[0], selCoord[1]), 0);
+  vector<Coord2D> moves = GetPossibleMoves(selCoord, 0);
 
-  for (vector<Coord>::iterator it = moves.begin(); it != moves.end(); ++it)
+  for (vector<Coord2D>::iterator it = moves.begin(); it != moves.end(); ++it)
   {
-    Coord m = *it;
+    Coord2D m = *it;
     pieces[m.x][m.y]->SetHighlighted(true);
   }
 }
@@ -250,7 +249,7 @@ bool Board::IsLegalMove(PieceColour colour)
   {
     for (j = 0; j < 8; j++)
     {
-      vector<Coord> moves = GetPossibleMoves(Coord(i, j), 0);
+      vector<Coord2D> moves = GetPossibleMoves(Coord2D(i, j), 0);
       if (moves.size() > 0 && pieces[i][j]->GetColour() == colour) return true;
     }
   }
@@ -259,9 +258,9 @@ bool Board::IsLegalMove(PieceColour colour)
 }
 
 // Gets the possible moves for the piece at (i, j) as a vector of coords.
-vector<Coord> Board::GetPossibleMoves(Coord p, int l)
+vector<Coord2D> Board::GetPossibleMoves(Coord2D p, int l)
 {
-  vector<Coord>* moves = new vector<Coord>();
+  vector<Coord2D>* moves = new vector<Coord2D>();
   if (p.OutOfRange()) return *moves;
 
   Piece* piece = pieces[p.x][p.y];
@@ -275,28 +274,28 @@ vector<Coord> Board::GetPossibleMoves(Coord p, int l)
   {
     case EMPTY: return *moves;
     case PAWN:    
-      if (SafeAddMovePawn(p, Coord(x, y+i), moves, l)
+      if (SafeAddMovePawn(p, Coord2D(x, y+i), moves, l)
         && ((y == 1 && col == WHITE) || (y == 6 && col == BLACK)))
       {
         // Pawns can move 2 squares only from start position
-        SafeAddMovePawn(p, Coord(x, y+2*i), moves, l);
+        SafeAddMovePawn(p, Coord2D(x, y+2*i), moves, l);
       }
 
       // Pawns take diagonally
-      SafeAddMovePawnTake(p, Coord(x+1, y+i), col, moves, l);
-      SafeAddMovePawnTake(p, Coord(x-1, y+i), col, moves, l);
+      SafeAddMovePawnTake(p, Coord2D(x+1, y+i), col, moves, l);
+      SafeAddMovePawnTake(p, Coord2D(x-1, y+i), col, moves, l);
 
       //TODO: en passent case
       break;
     case KNIGHT:
-      SafeAddMove(p, Coord(x+1, y+2), col, moves, l);
-      SafeAddMove(p, Coord(x+1, y-2), col, moves, l);
-      SafeAddMove(p, Coord(x-1, y+2), col, moves, l);
-      SafeAddMove(p, Coord(x-1, y-2), col, moves, l);
-      SafeAddMove(p, Coord(x+2, y+1), col, moves, l);
-      SafeAddMove(p, Coord(x+2, y-1), col, moves, l);
-      SafeAddMove(p, Coord(x-2, y+1), col, moves, l);
-      SafeAddMove(p, Coord(x-2, y-1), col, moves, l);
+      SafeAddMove(p, Coord2D(x+1, y+2), col, moves, l);
+      SafeAddMove(p, Coord2D(x+1, y-2), col, moves, l);
+      SafeAddMove(p, Coord2D(x-1, y+2), col, moves, l);
+      SafeAddMove(p, Coord2D(x-1, y-2), col, moves, l);
+      SafeAddMove(p, Coord2D(x+2, y+1), col, moves, l);
+      SafeAddMove(p, Coord2D(x+2, y-1), col, moves, l);
+      SafeAddMove(p, Coord2D(x-2, y+1), col, moves, l);
+      SafeAddMove(p, Coord2D(x-2, y-1), col, moves, l);
       break;
     case BISHOP:
       SafeAddMoves(p, &Add, &Add, col, moves, l);
@@ -324,14 +323,14 @@ vector<Coord> Board::GetPossibleMoves(Coord p, int l)
       //TODO: castling case -- see wiki page for condititions
       if (!piece->HasMoved()) {}
 
-      SafeAddMove(p, Coord(x+1, y+1), col, moves, l);
-      SafeAddMove(p, Coord(x+1, y-1), col, moves, l);
-      SafeAddMove(p, Coord(x-1, y+1), col, moves, l);
-      SafeAddMove(p, Coord(x-1, y-1), col, moves, l);
-      SafeAddMove(p, Coord(x,   y+1), col, moves, l);
-      SafeAddMove(p, Coord(x,   y-1), col, moves, l);
-      SafeAddMove(p, Coord(x+1, y),   col, moves, l);
-      SafeAddMove(p, Coord(x-1, y),   col, moves, l);
+      SafeAddMove(p, Coord2D(x+1, y+1), col, moves, l);
+      SafeAddMove(p, Coord2D(x+1, y-1), col, moves, l);
+      SafeAddMove(p, Coord2D(x-1, y+1), col, moves, l);
+      SafeAddMove(p, Coord2D(x-1, y-1), col, moves, l);
+      SafeAddMove(p, Coord2D(x,   y+1), col, moves, l);
+      SafeAddMove(p, Coord2D(x,   y-1), col, moves, l);
+      SafeAddMove(p, Coord2D(x+1, y),   col, moves, l);
+      SafeAddMove(p, Coord2D(x-1, y),   col, moves, l);
       break;
     default: return *moves;
   }
@@ -340,7 +339,7 @@ vector<Coord> Board::GetPossibleMoves(Coord p, int l)
 }
 
 // p = start point, m = end point
-bool Board::SafeAddMove(Coord p, Coord m, PieceColour ownColour, vector<Coord>* moves, int l)
+bool Board::SafeAddMove(Coord2D p, Coord2D m, PieceColour ownColour, vector<Coord2D>* moves, int l)
 {
   if (m.OutOfRange()) return false;
   
@@ -364,16 +363,16 @@ bool Board::SafeAddMove(Coord p, Coord m, PieceColour ownColour, vector<Coord>* 
 }
 
 // p = start point
-void Board::SafeAddMoves(Coord p, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves, int l)
+void Board::SafeAddMoves(Coord2D p, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord2D>* moves, int l)
 {
   for (int n=1; n < 8; n++)
   {
-    Coord move = Coord(fx(p.x, n), fy(p.y, n));
+    Coord2D move = Coord2D(fx(p.x, n), fy(p.y, n));
     if (!SafeAddMove(p, move, ownColour, moves, l)) break;
   }
 }
 
-bool Board::SafeAddMovePawn(Coord p, Coord m, vector<Coord>* moves, int l)
+bool Board::SafeAddMovePawn(Coord2D p, Coord2D m, vector<Coord2D>* moves, int l)
 {
   if (m.OutOfRange()) return false;
 
@@ -385,7 +384,7 @@ bool Board::SafeAddMovePawn(Coord p, Coord m, vector<Coord>* moves, int l)
   }
 }
 
-bool Board::SafeAddMovePawnTake(Coord p, Coord m, PieceColour col, vector<Coord>* moves, int l)
+bool Board::SafeAddMovePawnTake(Coord2D p, Coord2D m, PieceColour col, vector<Coord2D>* moves, int l)
 {
   if (m.OutOfRange()) return false;
 
@@ -414,7 +413,7 @@ void Board::UnhighlightPieces()
 // IN PROGRESS...
 
 // Returns the board state that would arise if the piece in location (xs, ys) was moved to (xs, ye).
-bool Board::WillMoveCauseCheck(Coord s, Coord e, int l)
+bool Board::WillMoveCauseCheck(Coord2D s, Coord2D e, int l)
 {
   // Don't care if moves more than one move ahead cause check.
   if (l > 0) return false;
@@ -441,8 +440,8 @@ bool Board::WillMoveCauseCheck(Coord s, Coord e, int l)
 bool Board::IsInCheck(PieceColour colourToCheck, int l)
 {
   int i, j;
-  Coord kingCoord = Coord(-1, -1);
-  vector<Coord> moves;
+  Coord2D kingCoord = Coord2D(-1, -1);
+  vector<Coord2D> moves;
 
   // 1. Find location of king we are checking.
   // 2. Check if moves of other pieces overlap kings coordinates.
@@ -453,19 +452,19 @@ bool Board::IsInCheck(PieceColour colourToCheck, int l)
       Piece* p = pieces[i][j];
       if (p->GetType() == KING && p->GetColour() == colourToCheck)
       {
-        kingCoord = Coord(i, j);
+        kingCoord = Coord2D(i, j);
       }
       else if (p->GetColour() == !colourToCheck)
       {
-        vector<Coord> newMoves = GetPossibleMoves(Coord(i, j), l+1);
+        vector<Coord2D> newMoves = GetPossibleMoves(Coord2D(i, j), l+1);
         moves.insert(moves.end(), newMoves.begin(), newMoves.end());
       }
     }
   }
 
-  for (vector<Coord>::iterator it = moves.begin(); it != moves.end(); ++it)
+  for (vector<Coord2D>::iterator it = moves.begin(); it != moves.end(); ++it)
   {
-    Coord m = *it;
+    Coord2D m = *it;
     if (m.Equals(kingCoord)) return true;
   }
 
