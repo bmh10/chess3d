@@ -6,7 +6,11 @@ Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour)
   this->width = width;
   this->height = height;
   this->colour = colour;
+
+  showText = false;
+
   this->texName = -1;
+  showTexture = false;
 }
 
 Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, char* text)
@@ -15,9 +19,12 @@ Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, char* t
   this->width = width;
   this->height = height;
   this->colour = colour;
+
   strcpy(this->text, text);
   showText = true;
+
   this->texName = -1;
+  showTexture = false;
 }
 
 Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, GLuint texName)
@@ -26,8 +33,11 @@ Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, GLuint 
   this->width = width;
   this->height = height;
   this->colour = colour;
+
+  showText = false;
+
   this->texName = texName;
-  //showTexture = true;
+  showTexture = true;
 }
 
 Box2d::~Box2d()

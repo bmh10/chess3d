@@ -16,9 +16,14 @@ Colour::~Colour()
 {
 }
 
-bool Colour::Equals(Colour c)
+// Diff is that allow difference between the colours.
+bool Colour::Equals(Colour c, GLfloat diff)
 {
-	return r == c.r && g == c.g && b == c.b && a == c.a;
+	bool equal = true;
+	equal &= fabs(r*a - c.r*c.a) < diff;
+	equal &= fabs(g*a - c.g*c.a) < diff;
+	equal &= fabs(b*a - c.b*c.a) < diff;
+	return equal;
 }
 
 // Switches current colour to this.

@@ -60,19 +60,12 @@ void Piece::SetHighlighted(bool highlight)
 void Piece::EnableSelectionMode(bool enable, int i, int j)
 {
   selectionMode = enable;
-  selectedColour[0] = (GLfloat)i/8.0;
-  selectedColour[1] = (GLfloat)j/8.0;
-  selectedColour[2] = 0.5;
-  selectedColour[3] = 1.0;
+  selectedColour = Colour((GLfloat)i/8.0f, (GLfloat)j/8.0f, 0.5f, 1.0f);
   Draw(i, j);
 }
 
-bool Piece::CheckIfClicked(int x, int y, GLfloat* rgba, bool in2D)
+bool Piece::CheckIfClicked(int x, int y, Colour clickedColour, bool in2D)
 {
-  bool selected = true;
-  GLfloat sa = selectedColour[3];
-  GLfloat a = rgba[3];
-
   // 2D selection - simple box check.
   if (in2D)
   {
@@ -81,12 +74,7 @@ bool Piece::CheckIfClicked(int x, int y, GLfloat* rgba, bool in2D)
   // 3D selection - check colours match.
   else
   {
-    for (int i=0; i < 3; i++)
-    {
-      selected &= Match(selectedColour[i]*sa, rgba[i]*a);
-    }
-  
-    return selected;
+    return selectedColour.Equals(clickedColour, 0.005f);
   }
 }
 
@@ -106,7 +94,7 @@ void Piece::Draw(int i, int j)
   Colour highlightedCol  = Colour(0.0, 1.0, 1.0, 0.8);
   Colour highlightedCol2 = Colour(0.0, 0.5, 1.0, 0.8);
   
-  Colour* col;
+  Colour col;
 
   if (selectionMode)
   {
@@ -128,7 +116,7 @@ void Piece::Draw(int i, int j)
   }
 
   // Draw square under this piece
-  col->Set();
+  col.Set();
   glBegin(GL_POLYGON);  
     glVertex3f(i*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
     glVertex3f((i+1)*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);

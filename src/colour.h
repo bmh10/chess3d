@@ -15,7 +15,7 @@ class Colour
     GLfloat b;
     GLfloat a;
 
-    bool Equals(Colour c);
+    bool Equals(Colour c, GLfloat diff);
     void Set();
 };
 

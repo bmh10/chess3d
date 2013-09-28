@@ -193,17 +193,18 @@ void Board::MoveSelectedPiece(int i, int j)
 
 void Board::SelectSquareAt(int x, int y)
 {
-  GLfloat rgb[4];
+  GLfloat rgba[4];
   int i, j;
   EnableSelectionMode(true);
   glReadBuffer(GL_BACK);
-  glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, rgb);
+  glReadPixels(x, y, 1, 1, GL_RGBA, GL_FLOAT, rgba);
+  Colour clickedColour = Colour(rgba[0], rgba[1], rgba[2], rgba[3]);
   
   for (i = 0; i < 8; i++)
   {
     for (j = 0; j < 8; j++)
     {
-      if (pieces[i][j]->CheckIfClicked(x, y, rgb, show2dBoard))
+      if (pieces[i][j]->CheckIfClicked(x, y, clickedColour, show2dBoard))
       {
         PieceState stateOfClickedPiece = pieces[i][j]->GetState();
         UnhighlightPieces();

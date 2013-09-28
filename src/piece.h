@@ -22,7 +22,7 @@ class Piece
     Box2d* box;
 
     bool selectionMode;
-    GLfloat selectedColour[4];
+    Colour selectedColour;
     bool hasMoved;
 
     void LoadModelAnd2dTexture(ModelManager* modelManager);
@@ -43,7 +43,7 @@ class Piece
     void SetSelected(bool selected);
     void SetHighlighted(bool highlight);
     void EnableSelectionMode(bool enable, int i, int j);
-    bool CheckIfClicked(int x, int y, GLfloat* rgba, bool in2D);
+    bool CheckIfClicked(int x, int y, Colour clickedColour, bool in2D);
     void Draw(int i, int j);
     void Draw2D(int i, int j);
 };
