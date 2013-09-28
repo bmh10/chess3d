@@ -31,6 +31,8 @@ class Board
     void UnhighlightPieces();
 
     void HighlightPossibleMoves();
+
+    // TODO: Move these functions to chess AI class.
     vector<Coord> GetPossibleMoves(Coord p, int l);
     bool SafeAddMove(Coord p, Coord m, PieceColour ownColour, vector<Coord>* moves, int l);
     void SafeAddMoves(Coord p, int (*fx)(int, int), int (*fy)(int, int), PieceColour ownColour, vector<Coord>* moves, int l);

@@ -149,6 +149,7 @@ void Game::KeyboardPress(unsigned char key)
 void Game::MousePress(int button, int state, int x, int y)
 {
   camera->MousePress(button, state, x, y);
+  hud->MousePress(button, state, x, y);
   switch(button)
   {
     case GLUT_LEFT_BUTTON:
@@ -158,4 +159,9 @@ void Game::MousePress(int button, int state, int x, int y)
       }
     break;
   }
+}
+
+void Game::MouseMotion(int x, int y)
+{
+  hud->MouseMotion(x, y);
 }

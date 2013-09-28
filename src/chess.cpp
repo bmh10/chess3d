@@ -140,7 +140,7 @@ void MouseMotion(int x, int y)
       menuManager->MouseMotion(x, WINDOW_HEIGHT-y);
     break;
     case GAME:
-      //game->MouseMotion(x, WINDOW_HEIGHT-y);
+      game->MouseMotion(x, WINDOW_HEIGHT-y);
     break;
   }
 }
