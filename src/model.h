@@ -2,6 +2,7 @@
 #define _MODEL_H
 
 #include "headers.h"
+#include "colour.h"
 
 // Holds data about a single vertex in the model
 struct Vertex
@@ -35,7 +36,7 @@ class Model
 
     string GetId();
     void PrintData();
-    void DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, GLfloat* colour);
+    void DrawAt(GLfloat i, GLfloat j, GLfloat k, GLfloat scale, Colour colour);
 };
 
 #endif

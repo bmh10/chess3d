@@ -29,29 +29,27 @@ void Hud::Init()
   selectedOption = -1;
 
   // Main HUD box.
-  GLfloat origin[] = { 0.0f, WINDOW_HEIGHT-50.0f, 0.0f };
-  GLfloat col[] = { 0.0f, 0.0f, 0.0f, 0.7f };
-  hudBox = new Box2d(origin, WINDOW_WIDTH, 50.0f, col);
+  Coord origin = Coord(0.0f, WINDOW_HEIGHT-50.0f, 0.0f);
+  hudBox = new Box2d(origin, WINDOW_WIDTH, 50.0f, COL_BLACK(0.7f));
 
   // Menu option boxes.
   for (int i = 0; i < NUM_OPTIONS; i++)
   {
-    GLfloat origin2[] = { WINDOW_WIDTH - 200.0f, WINDOW_HEIGHT-(i+1)*50.0f, 1.0f };
-    GLfloat col2[] = { 0.0f, 1.0f, 0.0f, 0.9f };
-    optionBoxes[i] = new Box2d(origin2, 200.0f, 50.0f, col2, text[6+i]);
+    Coord origin2 = Coord(WINDOW_WIDTH - 200.0f, WINDOW_HEIGHT-(i+1)*50.0f, 1.0f);
+    optionBoxes[i] = new Box2d(origin2, 200.0f, 50.0f,  COL_GREEN(0.9f), text[6+i]);
   }
 }
 
 void Hud::Draw(bool whiteToMove, BoardState boardState)
 {
-  COL_WHITE(1.0f)
+  Colour white = COL_WHITE(1.0f);
   OpenGLUtil::StartOrtho();
   
   // Draw HUD  
   hudBox->Draw();
 
   glPushMatrix();
-    glColor4fv(white);
+    white.Set();
     glTranslatef(50.0f, WINDOW_HEIGHT-40.0f, 1.0f);
     glScalef(0.25f, 0.25f, 0.5f);
     int n = (whiteToMove) ? 0 : 1;
@@ -77,9 +75,7 @@ void Hud::Draw(bool whiteToMove, BoardState boardState)
 
   for (int i = 0; i < NUM_OPTIONS; i++)
   {
-    GLfloat col2[] = { 0.0f, 1.0f, 0.0f, 0.7f };
-    GLfloat col3[] = { 1.0f, 0.0f, 0.0f, 0.7f };
-    optionBoxes[i]->SetColour(selectedOption == i ? col3 : col2);
+    optionBoxes[i]->SetColour(selectedOption == i ? COL_GREEN(0.7f) : COL_RED(0.7f));
 
     // Always show top item, but only show rest of menu if menu is open.
     if (i == 0 || menuIsOpen) optionBoxes[i]->Draw();

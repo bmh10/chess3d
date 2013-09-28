@@ -98,15 +98,15 @@ bool Piece::Match(GLfloat a, GLfloat b)
 
 void Piece::Draw(int i, int j)
 {
-  COL_RED(1.0f)
-  COL_BLUE(1.0f)
-  COL_YELLOW(1.0f)
-  COL_CYAN(1.0f)
-  GLfloat selectedCol[] = {1.0, 1.0, 0.0, 0.8};
-  GLfloat highlightedCol[] = {0.0, 1.0, 1.0, 0.8};
-  GLfloat highlightedCol2[] = {0.0, 0.5, 1.0, 0.8};
+  Colour red             = COL_RED   (1.0f);
+  Colour blue            = COL_BLUE  (1.0f);
+  Colour yellow          = COL_YELLOW(1.0f);
+  Colour cyan            = COL_CYAN  (1.0f);
+  Colour selectedCol     = Colour(1.0, 1.0, 0.0, 0.8);
+  Colour highlightedCol  = Colour(0.0, 1.0, 1.0, 0.8);
+  Colour highlightedCol2 = Colour(0.0, 0.5, 1.0, 0.8);
   
-  GLfloat* col = NULL;
+  Colour* col;
 
   if (selectionMode)
   {
@@ -128,7 +128,7 @@ void Piece::Draw(int i, int j)
   }
 
   // Draw square under this piece
-  glColor4fv(col);
+  col->Set();
   glBegin(GL_POLYGON);  
     glVertex3f(i*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
     glVertex3f((i+1)*SQUARE_SIZE, j*SQUARE_SIZE, 0.0);
@@ -148,18 +148,19 @@ void Piece::Draw(int i, int j)
   }
 }
 
+// Assumes already in ortho drawing mode.
 void Piece::Draw2D(int i, int j)
 {
-  COL_WHITE(1.0f)
-  COL_BLACK(1.0f)
-  COL_YELLOW(1.0f)
-  COL_CYAN(1.0f)
-  GLfloat navy[] = {0.0, 0.0, 0.2, 1.0};
-  GLfloat selectedCol[] = {1.0, 1.0, 0.0, 0.8};
-  GLfloat highlightedCol[] = {0.0, 1.0, 1.0, 0.8};
-  GLfloat highlightedCol2[] = {0.0, 0.5, 1.0, 0.8};
+  Colour white           = COL_WHITE (1.0f);
+  Colour black           = COL_BLACK (1.0f);
+  Colour yellow          = COL_YELLOW(1.0f);
+  Colour cyan            = COL_CYAN  (1.0f);
+  Colour navy            = Colour(0.0, 0.0, 0.2, 1.0);
+  Colour selectedCol     = Colour(1.0, 1.0, 0.0, 0.8);
+  Colour highlightedCol  = Colour(0.0, 1.0, 1.0, 0.8);
+  Colour highlightedCol2 = Colour(0.0, 0.5, 1.0, 0.8);
 
-  GLfloat* col = NULL;
+  Colour col;
   if (selectionMode)
   {
     col = selectedColour;
@@ -179,7 +180,7 @@ void Piece::Draw2D(int i, int j)
     }
   }
 
-  GLfloat origin[] = { WINDOW_WIDTH/2 - 4*50.0f + i*50.0f, WINDOW_HEIGHT - 500.0f + j*50.0f, 1.0f };
+  Coord origin = Coord(WINDOW_WIDTH/2 - 4*50.0f + i*50.0f, WINDOW_HEIGHT - 500.0f + j*50.0f, 1.0f);
   if (type == EMPTY)
     box = new Box2d(origin, 50.0f, 50.0f, col);
   else

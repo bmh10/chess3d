@@ -1,32 +1,31 @@
 #include "box2d.h"
 
-Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour)
+Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour)
 {
-  memcpy(this->origin, origin, 3*sizeof(GLfloat));
-  memcpy(this->colour, colour, 4*sizeof(GLfloat));
+  this->origin = origin;
   this->width = width;
   this->height = height;
+  this->colour = colour;
   this->texName = -1;
 }
 
-Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour, char* text)
+Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, char* text)
 {
-  memcpy(this->origin, origin, 3*sizeof(GLfloat));
-  memcpy(this->colour, colour, 4*sizeof(GLfloat));
+  this->origin = origin;
   this->width = width;
   this->height = height;
+  this->colour = colour;
   strcpy(this->text, text);
   showText = true;
   this->texName = -1;
 }
 
-Box2d::Box2d(GLfloat* origin, GLfloat width, GLfloat height, GLfloat* colour, GLuint texName)
+Box2d::Box2d(Coord origin, GLfloat width, GLfloat height, Colour colour, GLuint texName)
 {
   this->origin = origin;
-  //memcpy(this->origin, origin, 3*sizeof(GLfloat));
-  memcpy(this->colour, colour, 4*sizeof(GLfloat));
   this->width = width;
   this->height = height;
+  this->colour = colour;
   this->texName = texName;
   //showTexture = true;
 }
@@ -35,25 +34,26 @@ Box2d::~Box2d()
 {
 }
 
-GLfloat* Box2d::GetOrigin()
+Coord Box2d::GetOrigin()
 {
   return origin;
 }
 
-void Box2d::SetColour(GLfloat* colour)
+void Box2d::SetColour(Colour colour)
 {
-  memcpy(this->colour, colour, 4*sizeof(GLfloat));
+  this->colour = colour;
 }
 
 bool Box2d::IsPointInBox(int i, int j)
 {
-  return (i > origin[0] && i < origin[0]+width
-         && j > origin[1] && j < origin[1]+height);
+  return (i > origin.x && i < origin.x+width
+         && j > origin.y && j < origin.y+height);
 }
 
+// Assumes already in ortho drawing mode.
 void Box2d::Draw()
 {
-  COL_WHITE(1.0f)
+  Colour white = COL_WHITE(1.0f);
 
   if (showTexture)
   {
@@ -61,11 +61,11 @@ void Box2d::Draw()
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     glBindTexture(GL_TEXTURE_2D, texName);
     glBegin(GL_QUADS);
-      glColor4fv(colour);
-      glTexCoord2f(0.0, 1.0); glVertex3f(origin[0],       origin[1],        origin[2]);
-      glTexCoord2f(0.0, 0.0); glVertex3f(origin[0]      , origin[1]+height, origin[2]);
-      glTexCoord2f(1.0, 0.0); glVertex3f(origin[0]+width, origin[1]+height, origin[2]);
-      glTexCoord2f(1.0, 1.0); glVertex3f(origin[0]+width, origin[1],        origin[2]);
+      colour.Set();
+      glTexCoord2f(0.0, 1.0); glVertex3f(origin.x,       origin.y,        origin.z);
+      glTexCoord2f(0.0, 0.0); glVertex3f(origin.x      , origin.y+height, origin.z);
+      glTexCoord2f(1.0, 0.0); glVertex3f(origin.x+width, origin.y+height, origin.z);
+      glTexCoord2f(1.0, 1.0); glVertex3f(origin.x+width, origin.y,        origin.z);
     glEnd();
     glDisable(GL_TEXTURE_2D);
   }
@@ -74,19 +74,19 @@ void Box2d::Draw()
     if (showText)
     {
       glPushMatrix();
-        glColor4fv(white);
-        glTranslatef(origin[0], origin[1], origin[2]);
+        white.Set();
+        glTranslatef(origin.x, origin.y, origin.z);
         glScalef(0.25f, 0.25f, 0.5f);
         DrawText();
       glPopMatrix();
     }
 
     glBegin(GL_QUADS);
-      glColor4fv(colour);
-      glVertex3f(origin[0],       origin[1],        origin[2]);
-      glVertex3f(origin[0]+width, origin[1],        origin[2]);
-      glVertex3f(origin[0]+width, origin[1]+height, origin[2]);
-      glVertex3f(origin[0]      , origin[1]+height, origin[2]);
+      colour.Set();
+      glVertex3f(origin.x,       origin.y,        origin.z);
+      glVertex3f(origin.x+width, origin.y,        origin.z);
+      glVertex3f(origin.x+width, origin.y+height, origin.z);
+      glVertex3f(origin.x      , origin.y+height, origin.z);
     glEnd();
   }
 }

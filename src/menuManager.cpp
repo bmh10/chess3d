@@ -35,15 +35,13 @@ void MenuManager::Init()
   gameStarted = false;
   state = MAIN;
 
-  COL_BLACK(1.0f)
   for (int i=0; i<4; i++)
   {
-    GLfloat origin[3] = { 0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f };
-    boxes[i] = new Box2d(origin, WINDOW_WIDTH/3, 50.0f, black);
+    Coord origin = Coord(0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f);
+    boxes[i] = new Box2d(origin, WINDOW_WIDTH/3, 50.0f, COL_BLACK(1.0f));
   }
 
-  GLfloat origin[3] = { 0.0f, 0.0f, 0.0f };
-  backBox = new Box2d(origin, WINDOW_WIDTH/3, WINDOW_HEIGHT, black);
+  backBox = new Box2d(Coord(0.0f, 0.0f, 0.0f), WINDOW_WIDTH/3, WINDOW_HEIGHT, COL_BLACK(1.0f));
 }
 
 void MenuManager::Update()
@@ -83,13 +81,11 @@ void MenuManager::DrawOption(int n)
   // Draw box around option
   boxes[n]->Draw();
 
-  GLfloat normCol[3] = { 1.0f, 1.0f, 1.0f };
-  GLfloat selCol[3] = { 0.0f, 0.0f, 1.0f };
-  GLfloat* col = (n == selectedOption) ? selCol : normCol;
-  glColor3fv(col);
+  Colour col = (n == selectedOption) ? COL_BLUE(1.0f) : COL_WHITE(1.0f);
+  col.Set();
 
   int optWidth = (int)strlen(text[state][n])*15;
-  GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, boxes[n]->GetOrigin()[1]+10, 1.0f };
+  GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, boxes[n]->GetOrigin().y+10, 1.0f };
   glTranslatef(pos[0], pos[1], pos[2]);
   glScalef(0.25f, 0.25f, 0.5f);
 
