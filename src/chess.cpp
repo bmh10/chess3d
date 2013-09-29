@@ -18,7 +18,7 @@ void Init()
   Logger::Init();
   Logger::Info("Initialising.");
   
-  menuManager = MenuManager();
+  // TODO: shouldn't need this as default constructor should already get called.
   game = Game();
   
   state = MENU; 

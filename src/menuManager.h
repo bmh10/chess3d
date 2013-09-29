@@ -12,11 +12,11 @@ class MenuManager
 {
   private:
     MenuState state;
-    Box2d* boxes[4];
+    Box2d boxes[4];
     char text[3][4][25];
     int selectedOption;
     bool gameStarted;
-    Box2d* backBox;
+    Box2d backBox;
 
     void Init();
     void DrawOption(int n);

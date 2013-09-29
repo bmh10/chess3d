@@ -1,5 +1,15 @@
 #include "box2d.h"
 
+Box2d::Box2d()
+{
+  this->origin = Coord3D(0.0f, 0.0f, 0.0f);
+  this->width = 0.0f;
+  this->height = 0.0f;
+  this->colour = Colour(0.0f, 0.0f, 0.0f, 0.0f);
+  showText = false;
+  showTexture = false;
+}
+
 Box2d::Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour)
 {
   this->origin = origin;

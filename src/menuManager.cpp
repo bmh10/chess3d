@@ -38,10 +38,10 @@ void MenuManager::Init()
   for (int i=0; i<4; i++)
   {
     Coord3D origin = Coord3D(0.0f, WINDOW_HEIGHT*2/3 - 50.0f*i - 10.0f, 0.5f);
-    boxes[i] = new Box2d(origin, WINDOW_WIDTH/3, 50.0f, COL_BLACK(1.0f));
+    boxes[i] = Box2d(origin, WINDOW_WIDTH/3, 50.0f, COL_BLACK(1.0f));
   }
 
-  backBox = new Box2d(Coord3D(0.0f, 0.0f, 0.0f), WINDOW_WIDTH/3, WINDOW_HEIGHT, COL_BLACK(1.0f));
+  backBox = Box2d(Coord3D(0.0f, 0.0f, 0.0f), WINDOW_WIDTH/3, WINDOW_HEIGHT, COL_BLACK(1.0f));
 }
 
 void MenuManager::Update()
@@ -52,7 +52,7 @@ void MenuManager::Draw()
 {
   OpenGLUtil::StartOrtho();
  
-  backBox->Draw();
+  backBox.Draw();
 /*
   // Draw menu background
   glBegin(GL_QUADS);
@@ -79,13 +79,13 @@ void MenuManager::DrawOption(int n)
   glPushMatrix();
 
   // Draw box around option
-  boxes[n]->Draw();
+  boxes[n].Draw();
 
   Colour col = (n == selectedOption) ? COL_BLUE(1.0f) : COL_WHITE(1.0f);
   col.Set();
 
   int optWidth = (int)strlen(text[state][n])*15;
-  GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, boxes[n]->GetOrigin().y+10, 1.0f };
+  GLfloat pos[3] = { WINDOW_WIDTH/6 - optWidth/2, boxes[n].GetOrigin().y+10, 1.0f };
   glTranslatef(pos[0], pos[1], pos[2]);
   glScalef(0.25f, 0.25f, 0.5f);
 
@@ -193,7 +193,7 @@ void MenuManager::MouseMotion(int x, int y)
 {
   for (int i=0; i < 4; i++)
   {
-    if (boxes[i]->IsPointInBox(x, y))
+    if (boxes[i].IsPointInBox(x, y))
     {
       selectedOption = i;
       return;

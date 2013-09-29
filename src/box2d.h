@@ -18,6 +18,7 @@ class Box2d
     bool showTexture;
 
   public:
+    Box2d();
     Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour);
     Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour, char* text);
     Box2d(Coord3D origin, GLfloat width, GLfloat height, Colour colour, GLuint texName);
