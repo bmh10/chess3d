@@ -11,7 +11,7 @@
 class Hud
 {
   private:
-  	Board* board;
+  	//Board board;
     char text[10][30];
     
     bool menuIsOpen;
@@ -22,7 +22,7 @@ class Hud
     void DrawText(int n);
 
   public:
-    Hud(Board* board);
+    Hud();
     ~Hud();
 
     void Init();

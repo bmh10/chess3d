@@ -13,7 +13,7 @@ class Game
 
     Camera* camera;
     Board *board;
-    Hud *hud;
+    Hud hud;
     bool demoMode;
 
     void Init();

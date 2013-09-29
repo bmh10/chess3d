@@ -61,9 +61,10 @@ void Game::Init()
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   // Initialise game components
+
   camera = new Camera(cameraPos, 0.0f, centerBoard, CONTINOUS_ROTATE);
   board = new Board(camera);
-  hud = new Hud(board);
+  //hud = Hud();
   demoMode = true;
 }
 
@@ -122,7 +123,7 @@ void Game::Draw()
     board->Draw();
     if (!demoMode)
     {
-      hud->Draw(board->IsWhiteToMove(), board->GetBoardState());
+      hud.Draw(board->IsWhiteToMove(), board->GetBoardState());
     }
 }
 
@@ -139,7 +140,7 @@ void Game::KeyboardPress(unsigned char key)
 void Game::MousePress(int button, int state, int x, int y)
 {
   camera->MousePress(button, state, x, y);
-  hud->MousePress(button, state, x, y);
+  hud.MousePress(button, state, x, y);
   switch(button)
   {
     case GLUT_LEFT_BUTTON:
@@ -153,5 +154,5 @@ void Game::MousePress(int button, int state, int x, int y)
 
 void Game::MouseMotion(int x, int y)
 {
-  hud->MouseMotion(x, y);
+  hud.MouseMotion(x, y);
 }

@@ -1,8 +1,7 @@
 #include "hud.h"
 
-Hud::Hud(Board* board)
+Hud::Hud()
 {
-  this->board = board;
   Init();
 }
 

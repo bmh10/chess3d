@@ -10,7 +10,7 @@ enum State { MENU, GAME };
 State state;
 
 MenuManager menuManager;
-Game game;
+Game* game;
 
 void Init() 
 {
@@ -19,7 +19,7 @@ void Init()
   Logger::Info("Initialising.");
   
   // TODO: shouldn't need this as default constructor should already get called.
-  game = Game();
+  game = new Game();
   
   state = MENU; 
 }
@@ -32,12 +32,12 @@ void Display()
   switch (state)
   {
     case MENU:
-      game.Draw();
+      game->Draw();
       menuManager.Draw();
       break;
       
     case GAME:
-      game.Draw();
+      game->Draw();
       break;
   }  
   
@@ -60,17 +60,17 @@ void Update()
   switch (state)
   {
     case MENU:
-      game.Update();
+      game->Update();
       menuManager.Update();
       
       if (menuManager.GameStarted()) 
       {
         state = GAME;
-        game.SetDemoMode(false);
+        game->SetDemoMode(false);
       }
       break;
     case GAME:
-      game.Update();
+      game->Update();
       break;
   }
 
@@ -94,7 +94,7 @@ void Keyboard(unsigned char key, int x, int y)
       menuManager.KeyboardPress(key);
     break;
     case GAME:
-      game.KeyboardPress(key);
+      game->KeyboardPress(key);
     break;
   }
 }
@@ -127,7 +127,7 @@ void Mouse(int button, int mouseState, int x, int y)
       menuManager.MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
     break;
     case GAME:
-      game.MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
+      game->MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
     break;
   }
 }
@@ -140,7 +140,7 @@ void MouseMotion(int x, int y)
       menuManager.MouseMotion(x, WINDOW_HEIGHT-y);
     break;
     case GAME:
-      game.MouseMotion(x, WINDOW_HEIGHT-y);
+      game->MouseMotion(x, WINDOW_HEIGHT-y);
     break;
   }
 }
