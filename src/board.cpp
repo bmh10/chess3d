@@ -1,8 +1,5 @@
 #include "board.h"
 
-// #define PLUS std::plus<int>
-// #define MINUS std::minus<int>
-
 Board::Board(Camera* camera)
 {
   this->camera = camera;

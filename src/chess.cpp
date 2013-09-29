@@ -9,8 +9,8 @@
 enum State { MENU, GAME };
 State state;
 
-MenuManager *menuManager;
-Game *game;
+MenuManager menuManager;
+Game game;
 
 void Init() 
 {
@@ -18,8 +18,8 @@ void Init()
   Logger::Init();
   Logger::Info("Initialising.");
   
-  menuManager = new MenuManager();
-  game = new Game();
+  menuManager = MenuManager();
+  game = Game();
   
   state = MENU; 
 }
@@ -32,12 +32,12 @@ void Display()
   switch (state)
   {
     case MENU:
-      game->Draw();
-      menuManager->Draw();
+      game.Draw();
+      menuManager.Draw();
       break;
       
     case GAME:
-      game->Draw();
+      game.Draw();
       break;
   }  
   
@@ -60,17 +60,17 @@ void Update()
   switch (state)
   {
     case MENU:
-      game->Update();
-      menuManager->Update();
+      game.Update();
+      menuManager.Update();
       
-      if (menuManager != NULL && menuManager->GameStarted()) 
+      if (menuManager.GameStarted()) 
       {
         state = GAME;
-        game->SetDemoMode(false);
+        game.SetDemoMode(false);
       }
       break;
     case GAME:
-      game->Update();
+      game.Update();
       break;
   }
 
@@ -91,10 +91,10 @@ void Keyboard(unsigned char key, int x, int y)
   switch (state)
   {
     case MENU:
-      menuManager->KeyboardPress(key);
+      menuManager.KeyboardPress(key);
     break;
     case GAME:
-      game->KeyboardPress(key);
+      game.KeyboardPress(key);
     break;
   }
 }
@@ -124,10 +124,10 @@ void Mouse(int button, int mouseState, int x, int y)
   switch (state)
   {
     case MENU:
-      menuManager->MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
+      menuManager.MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
     break;
     case GAME:
-      game->MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
+      game.MousePress(button, mouseState, x, WINDOW_HEIGHT-y);
     break;
   }
 }
@@ -137,10 +137,10 @@ void MouseMotion(int x, int y)
   switch (state)
   {
     case MENU:
-      menuManager->MouseMotion(x, WINDOW_HEIGHT-y);
+      menuManager.MouseMotion(x, WINDOW_HEIGHT-y);
     break;
     case GAME:
-      game->MouseMotion(x, WINDOW_HEIGHT-y);
+      game.MouseMotion(x, WINDOW_HEIGHT-y);
     break;
   }
 }
