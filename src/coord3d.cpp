@@ -19,3 +19,10 @@ bool Coord3D::Equals(Coord3D c)
 {
 	return x == c.x && y == c.y && z == c.z;
 }
+
+GLfloat* Coord3D::ToPtr()
+{
+	GLfloat pos[] = { x, y, z };
+	GLfloat* ptr = pos;
+	return ptr;
+}

@@ -1,6 +1,6 @@
 #include "camera.h"
 
-Camera::Camera(GLfloat* cameraPos, GLfloat cameraAngle, GLfloat* lookAtPos, CameraState state)
+Camera::Camera(Coord3D cameraPos, GLfloat cameraAngle, Coord3D lookAtPos, CameraState state)
 {
   this->cameraPos = cameraPos;
   this->cameraAngle = cameraAngle;
@@ -16,7 +16,7 @@ void Camera::Init()
 {
 }
 
-GLfloat* Camera::GetCameraPos()
+Coord3D Camera::GetCameraPos()
 {
   return cameraPos;
 }
@@ -48,8 +48,8 @@ void Camera::Update()
 {
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2],
-    lookAtPos[0], lookAtPos[1], lookAtPos[2], 0.0f, 0.0f, 1.0f);
+  gluLookAt(cameraPos.x, cameraPos.y, cameraPos.z,
+    lookAtPos.x, lookAtPos.y, lookAtPos.z, 0.0f, 0.0f, 1.0f);
 
   if (state == CONTINOUS_ROTATE)
   {
@@ -72,9 +72,9 @@ void Camera::Update()
     cameraAngle = 0.0f;  
   }
 
-  glTranslatef(lookAtPos[0], lookAtPos[1], lookAtPos[2]);
+  glTranslatef(lookAtPos.x, lookAtPos.y, lookAtPos.z);
   glRotatef(cameraAngle, 0.0f, 0.0f, 1.0f);
-  glTranslatef(-lookAtPos[0], -lookAtPos[1], -lookAtPos[2]);
+  glTranslatef(-lookAtPos.x, -lookAtPos.y, -lookAtPos.z);
 }
 
 void Camera::KeyboardPress(unsigned char key)
@@ -113,12 +113,12 @@ void Camera::MousePress(int button, int state, int x, int y)
 
 void Camera::Zoom(bool zoomIn)
 {
-  if (zoomIn && cameraPos[1] < ZOOM_MAX)
+  if (zoomIn && cameraPos.y < ZOOM_MAX)
   {
-    cameraPos[1] += 0.01f;
+    cameraPos.y += 0.01f;
   }
-  else if (!zoomIn && cameraPos[1] > ZOOM_MIN)
+  else if (!zoomIn && cameraPos.y > ZOOM_MIN)
   {
-    cameraPos[1] -= 0.01f; 
+    cameraPos.y -= 0.01f; 
   }
 }

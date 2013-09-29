@@ -15,6 +15,7 @@ class Coord3D
     GLfloat z;
 
     bool Equals(Coord3D c);
+    GLfloat* ToPtr();
 };
 
 #endif

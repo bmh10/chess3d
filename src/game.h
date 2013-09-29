@@ -9,7 +9,7 @@
 class Game
 {
   private:
-    GLfloat lightPos[3];
+    Coord3D lightPos;
 
     Camera* camera;
     Board *board;

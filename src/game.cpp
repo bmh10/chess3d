@@ -19,23 +19,13 @@ void Game::Init()
 {
   Logger::Info("Initializing game.");
 
-  GLfloat* centerBoard = new GLfloat[3];
-  centerBoard[0] = SQUARE_SIZE*4.0f;
-  centerBoard[1] = SQUARE_SIZE*4.0f;
-  centerBoard[2] = 0.0f;
+  Coord3D centerBoard(SQUARE_SIZE*4.0f, SQUARE_SIZE*4.0f, 0.0f);
 
   // Set initial camera position relative to centre of board
-  GLfloat* cameraPos = new GLfloat[3];
-  for (int i=0; i < 3; i++)
-    cameraPos[i] = centerBoard[i];
-
-  cameraPos[0] += 0.0f;
-  cameraPos[1] -= 0.12f;
-  cameraPos[2] += 0.08f;
+  Coord3D cameraPos(centerBoard.x, centerBoard.y - 0.12f, centerBoard.z + 0.08f);
 
   // Put light in same place as camera
-  for (int i=0; i < 3; i++)
-    lightPos[i] = cameraPos[i];
+  lightPos = cameraPos;
 
   glShadeModel (GL_SMOOTH);
   GLfloat LightAmbient[] = {0.0, 0.0, 0.0, 1.0};
@@ -47,7 +37,7 @@ void Game::Init()
   // Enable lighting
   glEnable (GL_LIGHTING);
   glEnable (GL_LIGHT0);
-  glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+  glLightfv(GL_LIGHT0, GL_POSITION, lightPos.ToPtr());
   glLightfv(GL_LIGHT0, GL_AMBIENT,  LightAmbient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE,  LightDiffuse);
   glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);
@@ -80,7 +70,7 @@ void Game::Init()
 void Game::Update()
 {
   // Move light depending on current coords
-  glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+  glLightfv(GL_LIGHT0, GL_POSITION, lightPos.ToPtr());
   // Move camera depending on current coords
   camera->Update();
 }

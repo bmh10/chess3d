@@ -2,6 +2,7 @@
 #define _CAMERA_H
 
 #include "headers.h"
+#include "coord3d.h"
 
 #define ZOOM_MAX 0.07f
 #define ZOOM_MIN -0.07f
@@ -12,9 +13,9 @@ class Camera
 {
   private:
     CameraState state;
-    GLfloat* cameraPos;
+    Coord3D cameraPos;
     GLfloat cameraAngle;
-    GLfloat* lookAtPos;
+    Coord3D lookAtPos;
 
     GLfloat targetAngle;
     GLfloat increment;
@@ -23,10 +24,10 @@ class Camera
     void Zoom(bool zoomIn);
 
   public:
-    Camera(GLfloat* cameraPos, GLfloat cameraAngle, GLfloat* lookAtPos, CameraState state);
+    Camera(Coord3D cameraPos, GLfloat cameraAngle, Coord3D lookAtPos, CameraState state);
     ~Camera();
 
-    GLfloat* GetCameraPos();
+    Coord3D GetCameraPos();
     GLfloat GetCameraAngle();
 
     void RotateToWhite(bool whiteToMove);
