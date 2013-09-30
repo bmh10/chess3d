@@ -12,7 +12,7 @@ Game::~Game()
 void Game::SetDemoMode(bool enable)
 {
   demoMode = enable;
-  camera->RotateToWhite(true);
+  camera.RotateToWhite(true);
 }
 
 void Game::Init()
@@ -62,7 +62,7 @@ void Game::Init()
   
   // Initialise game components
 
-  camera = new Camera(cameraPos, 0.0f, centerBoard, CONTINOUS_ROTATE);
+  camera = Camera(cameraPos, 0.0f, centerBoard, CONTINOUS_ROTATE);
   board = Board(camera);
   //hud = Hud();
   demoMode = true;
@@ -73,7 +73,7 @@ void Game::Update()
   // Move light depending on current coords
   glLightfv(GL_LIGHT0, GL_POSITION, lightPos.ToPtr());
   // Move camera depending on current coords
-  camera->Update();
+  camera.Update();
 }
 
 void Game::Draw()
@@ -129,7 +129,7 @@ void Game::Draw()
 
 void Game::KeyboardPress(unsigned char key)
 {
-  camera->KeyboardPress(key);
+  camera.KeyboardPress(key);
 
   if (key == 'v')
   {
@@ -139,7 +139,7 @@ void Game::KeyboardPress(unsigned char key)
 
 void Game::MousePress(int button, int state, int x, int y)
 {
-  camera->MousePress(button, state, x, y);
+  camera.MousePress(button, state, x, y);
   hud.MousePress(button, state, x, y);
   switch(button)
   {

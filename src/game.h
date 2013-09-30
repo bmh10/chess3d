@@ -11,7 +11,7 @@ class Game
   private:
     Coord3D lightPos;
 
-    Camera* camera;
+    Camera camera;
     Board board;
     Hud hud;
     bool demoMode;

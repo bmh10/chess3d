@@ -48,7 +48,7 @@ class Board
 
   public:
     Board();
-    Board(Camera* camera);
+    Board(Camera &camera);
     ~Board();
 
     void Draw();

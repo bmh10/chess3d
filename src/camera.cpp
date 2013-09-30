@@ -1,5 +1,7 @@
 #include "camera.h"
 
+Camera::Camera() {}
+
 Camera::Camera(Coord3D cameraPos, GLfloat cameraAngle, Coord3D lookAtPos, CameraState state)
 {
   this->cameraPos = cameraPos;
@@ -41,7 +43,7 @@ void Camera::RotateTo(GLfloat angle)
   GLfloat dir = targetAngle - cameraAngle;
 
   if (dir > 0 ^ abs(dir) > 180) increment = 5.0f;
-  else increment = -5.0;;
+  else increment = -5.0;
 }
 
 void Camera::Update()

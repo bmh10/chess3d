@@ -24,6 +24,7 @@ class Camera
     void Zoom(bool zoomIn);
 
   public:
+    Camera();
     Camera(Coord3D cameraPos, GLfloat cameraAngle, Coord3D lookAtPos, CameraState state);
     ~Camera();
 

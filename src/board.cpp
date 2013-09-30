@@ -1,14 +1,10 @@
 #include "board.h"
 
-Board::Board()
-{
-  //this->camera = camera;
-  //Init();
-}
+Board::Board() {}
 
-Board::Board(Camera* camera)
+Board::Board(Camera &camera)
 {
-  this->camera = camera;
+  this->camera = &camera;
   Init();
 }
 
