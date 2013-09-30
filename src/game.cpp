@@ -63,7 +63,7 @@ void Game::Init()
   // Initialise game components
 
   camera = new Camera(cameraPos, 0.0f, centerBoard, CONTINOUS_ROTATE);
-  board = new Board(camera);
+  board = Board(camera);
   //hud = Hud();
   demoMode = true;
 }
@@ -78,53 +78,53 @@ void Game::Update()
 
 void Game::Draw()
 {
-/*
-  if (textureOn)
-    glEnable(GL_TEXTURE_2D);
-  else
-    glDisable(GL_TEXTURE_2D);
-*/
+  /*
+    if (textureOn)
+      glEnable(GL_TEXTURE_2D);
+    else
+      glDisable(GL_TEXTURE_2D);
+  */
 
-    // Draw axis
-    if (DEBUG)
-    {
-      glBegin(GL_LINES);
-      glColor3f(1.0, 0.0, 0.0);
-      glVertex3f(0.0, 0.0, 0.0); glVertex3f(100.0, 0.0, 0.0);
-      glColor3f(0.0, 1.0, 0.0);
-      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 100.0, 0.0);
-      glColor3f(0.0, 0.0, 1.0);
-      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 100.0);
-      
-      glColor3f(1.0, 1.0, 1.0);
-      glVertex3f(0.0, 0.0, 0.0); glVertex3f(-100.0, 0.0, 0.0);
-      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, -100.0, 0.0);
-      glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, 0.0, -100.0);
-      glEnd();
-
-      // Draw light source
-      /*glBegin(GL_POLYGON);
-      glVertex3f(lightPos[0], lightPos[1], lightPos[2]);
-      glVertex3f(lightPos[0], lightPos[1] + 0.1f, lightPos[2]);
-      glVertex3f(lightPos[0], lightPos[1] + 0.1f, lightPos[2] + 0.1f);
-      glEnd();*/
-    }
-
-    // Ground plane
-    GLfloat n = 100.0;
-    glBegin(GL_POLYGON);
+  // Draw axis
+  if (DEBUG)
+  {
+    glBegin(GL_LINES);
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex3f(0.0, 0.0, 0.0); glVertex3f(100.0, 0.0, 0.0);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 100.0, 0.0);
+    glColor3f(0.0, 0.0, 1.0);
+    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 100.0);
+    
     glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(-n, -n, -0.011);
-    glVertex3f(n, -n, -0.011);
-    glVertex3f(n, n, -0.011);
-    glVertex3f(-n, n, -0.011);
+    glVertex3f(0.0, 0.0, 0.0); glVertex3f(-100.0, 0.0, 0.0);
+    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, -100.0, 0.0);
+    glVertex3f(0.0, 0.0, 0.0); glVertex3f(0, 0.0, -100.0);
     glEnd();
 
-    board->Draw();
-    if (!demoMode)
-    {
-      hud.Draw(board->IsWhiteToMove(), board->GetBoardState());
-    }
+    // Draw light source
+    /*glBegin(GL_POLYGON);
+    glVertex3f(lightPos[0], lightPos[1], lightPos[2]);
+    glVertex3f(lightPos[0], lightPos[1] + 0.1f, lightPos[2]);
+    glVertex3f(lightPos[0], lightPos[1] + 0.1f, lightPos[2] + 0.1f);
+    glEnd();*/
+  }
+
+  // Ground plane
+  GLfloat n = 100.0;
+  glBegin(GL_POLYGON);
+  glColor3f(1.0, 1.0, 1.0);
+  glVertex3f(-n, -n, -0.011);
+  glVertex3f(n, -n, -0.011);
+  glVertex3f(n, n, -0.011);
+  glVertex3f(-n, n, -0.011);
+  glEnd();
+
+  board.Draw();
+  if (!demoMode)
+  {
+    hud.Draw(board.IsWhiteToMove(), board.GetBoardState());
+  }
 }
 
 void Game::KeyboardPress(unsigned char key)
@@ -133,7 +133,7 @@ void Game::KeyboardPress(unsigned char key)
 
   if (key == 'v')
   {
-    board->Toggle2dMode();
+    board.Toggle2dMode();
   }
 }
 
@@ -146,7 +146,7 @@ void Game::MousePress(int button, int state, int x, int y)
     case GLUT_LEFT_BUTTON:
       if (state == GLUT_UP)
       {
-        board->SelectSquareAt(x, y);
+        board.SelectSquareAt(x, y);
       }
     break;
   }

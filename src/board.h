@@ -47,6 +47,7 @@ class Board
     // Piece* CreateBoardClone();
 
   public:
+    Board();
     Board(Camera* camera);
     ~Board();
 

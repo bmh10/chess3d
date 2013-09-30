@@ -1,5 +1,11 @@
 #include "board.h"
 
+Board::Board()
+{
+  //this->camera = camera;
+  //Init();
+}
+
 Board::Board(Camera* camera)
 {
   this->camera = camera;

@@ -12,7 +12,7 @@ class Game
     Coord3D lightPos;
 
     Camera* camera;
-    Board *board;
+    Board board;
     Hud hud;
     bool demoMode;
 
