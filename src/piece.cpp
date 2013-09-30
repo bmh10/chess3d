@@ -1,5 +1,13 @@
 #include "piece.h"
 
+Piece::Piece()
+{
+  this->type = EMPTY;
+  selectionMode = false;
+  hasMoved = false;
+  state = NORMAL;
+}
+
 Piece::Piece(PieceType type)
 {
   this->type = type;

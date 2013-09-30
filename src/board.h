@@ -12,7 +12,7 @@ enum BoardState { STANDARD, CHECK, STALEMATE, CHECKMATE_WHITE, CHECKMATE_BLACK }
 class Board
 {
   private:
-    Piece* pieces[8][8];
+    Piece pieces[8][8];
     ModelManager* modelManager;
     Camera* camera;
     Piece* selectedPiece;

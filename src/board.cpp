@@ -31,11 +31,11 @@ void Board::Init()
   // Pawns and empty squares.
   for (x = 0; x < 8; x++)
   {
-    pieces[x][1] = new Piece(PAWN, WHITE, modelManager);
-    pieces[x][6] = new Piece(PAWN, BLACK, modelManager);
+    pieces[x][1] = Piece(PAWN, WHITE, modelManager);
+    pieces[x][6] = Piece(PAWN, BLACK, modelManager);
     for (y = 2; y < 6; y++)
     {
-      pieces[x][y] = new Piece(EMPTY);
+      pieces[x][y] = Piece(EMPTY);
     }
   }
   
@@ -44,25 +44,25 @@ void Board::Init()
   {
     if (x == 0 || x == 7)
     {
-      pieces[x][0] = new Piece(CASTLE, WHITE, modelManager);
-      pieces[x][7] = new Piece(CASTLE, BLACK, modelManager);
+      pieces[x][0] = Piece(CASTLE, WHITE, modelManager);
+      pieces[x][7] = Piece(CASTLE, BLACK, modelManager);
     }
     else if (x == 1 || x == 6)
     {
-      pieces[x][0] = new Piece(KNIGHT, WHITE, modelManager);
-      pieces[x][7] = new Piece(KNIGHT, BLACK, modelManager);
+      pieces[x][0] = Piece(KNIGHT, WHITE, modelManager);
+      pieces[x][7] = Piece(KNIGHT, BLACK, modelManager);
     }
     else if (x == 2 || x == 5)
     {
-      pieces[x][0] = new Piece(BISHOP, WHITE, modelManager);
-      pieces[x][7] = new Piece(BISHOP, BLACK, modelManager);
+      pieces[x][0] = Piece(BISHOP, WHITE, modelManager);
+      pieces[x][7] = Piece(BISHOP, BLACK, modelManager);
     }
   }
 
-  pieces[4][0] = new Piece(KING, WHITE, modelManager);
-  pieces[4][7] = new Piece(KING, BLACK, modelManager);
-  pieces[3][0] = new Piece(QUEEN, WHITE, modelManager);
-  pieces[3][7] = new Piece(QUEEN, BLACK, modelManager);
+  pieces[4][0] = Piece(KING, WHITE, modelManager);
+  pieces[4][7] = Piece(KING, BLACK, modelManager);
+  pieces[3][0] = Piece(QUEEN, WHITE, modelManager);
+  pieces[3][7] = Piece(QUEEN, BLACK, modelManager);
 }
 
 // TODO: Move these functions elsewhere.
@@ -114,7 +114,7 @@ void Board::Draw()
   {
     for (j = 0; j < 8; j++)
     {
-      pieces[i][j]->Draw(i, j);
+      pieces[i][j].Draw(i, j);
     }
   }
 
@@ -126,7 +126,7 @@ void Board::Draw()
     {
       for (j = 0; j < 8; j++)
       {
-        pieces[i][j]->Draw2D(i, j);
+        pieces[i][j].Draw2D(i, j);
       }
     }
 
@@ -151,14 +151,14 @@ void Board::EnableSelectionMode(bool enable)
   {
     for (j = 0; j < 8; j++)
     {
-      pieces[i][j]->EnableSelectionMode(enable, i, j);
+      pieces[i][j].EnableSelectionMode(enable, i, j);
     }
   }
 }
 
 void Board::SetSelectedPiece(int i, int j)
 {
-  selectedPiece = pieces[i][j];
+  selectedPiece = &pieces[i][j];
   selectedPiece->SetSelected(true);
   selCoord = Coord2D(i, j);
   
@@ -172,8 +172,8 @@ void Board::SetSelectedPiece(int i, int j)
 
 void Board::MoveSelectedPiece(int i, int j)
 {  
-  pieces[i][j] = selectedPiece;
-  pieces[selCoord.x][selCoord.y] = new Piece(EMPTY);
+  pieces[i][j] = *selectedPiece;
+  pieces[selCoord.x][selCoord.y] = Piece(EMPTY);
 
   // Switch turns
   selectedPiece->SetHasMoved();
@@ -206,9 +206,9 @@ void Board::SelectSquareAt(int x, int y)
   {
     for (j = 0; j < 8; j++)
     {
-      if (pieces[i][j]->CheckIfClicked(x, y, clickedColour, show2dBoard))
+      if (pieces[i][j].CheckIfClicked(x, y, clickedColour, show2dBoard))
       {
-        PieceState stateOfClickedPiece = pieces[i][j]->GetState();
+        PieceState stateOfClickedPiece = pieces[i][j].GetState();
         UnhighlightPieces();
         switch (stateOfClickedPiece)
         {
@@ -240,7 +240,7 @@ void Board::HighlightPossibleMoves()
   for (vector<Coord2D>::iterator it = moves.begin(); it != moves.end(); ++it)
   {
     Coord2D m = *it;
-    pieces[m.x][m.y]->SetHighlighted(true);
+    pieces[m.x][m.y].SetHighlighted(true);
   }
 }
 
@@ -253,7 +253,7 @@ bool Board::IsLegalMove(PieceColour colour)
     for (j = 0; j < 8; j++)
     {
       vector<Coord2D> moves = GetPossibleMoves(Coord2D(i, j), 0);
-      if (moves.size() > 0 && pieces[i][j]->GetColour() == colour) return true;
+      if (moves.size() > 0 && pieces[i][j].GetColour() == colour) return true;
     }
   }
 
@@ -266,14 +266,13 @@ vector<Coord2D> Board::GetPossibleMoves(Coord2D p, int l)
   vector<Coord2D>* moves = new vector<Coord2D>();
   if (p.OutOfRange()) return *moves;
 
-  Piece* piece = pieces[p.x][p.y];
-  if (piece == NULL) return *moves;
-  PieceColour col = piece->GetColour();
+  Piece piece = pieces[p.x][p.y];
+  PieceColour col = piece.GetColour();
   int x = p.x;
   int y = p.y;
   int i = (col == WHITE) ? 1 : -1;
 
-  switch (piece->GetType())
+  switch (piece.GetType())
   {
     case EMPTY: return *moves;
     case PAWN:    
@@ -324,7 +323,7 @@ vector<Coord2D> Board::GetPossibleMoves(Coord2D p, int l)
       break;
     case KING:
       //TODO: castling case -- see wiki page for condititions
-      if (!piece->HasMoved()) {}
+      if (!piece.HasMoved()) {}
 
       SafeAddMove(p, Coord2D(x+1, y+1), col, moves, l);
       SafeAddMove(p, Coord2D(x+1, y-1), col, moves, l);
@@ -346,14 +345,14 @@ bool Board::SafeAddMove(Coord2D p, Coord2D m, PieceColour ownColour, vector<Coor
 {
   if (m.OutOfRange()) return false;
   
-  if (pieces[m.x][m.y]->GetType() == EMPTY)
+  if (pieces[m.x][m.y].GetType() == EMPTY)
   {
     if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
     return true;
   }
 
   // If we hit one of our own pieces stop highlighting.
-  if (pieces[m.x][m.y]->GetColour() == ownColour)
+  if (pieces[m.x][m.y].GetColour() == ownColour)
   {
     return false;
   }
@@ -380,7 +379,7 @@ bool Board::SafeAddMovePawn(Coord2D p, Coord2D m, vector<Coord2D>* moves, int l)
   if (m.OutOfRange()) return false;
 
   // Pawns can only move forwards if the square infront is empty.
-  if (pieces[m.x][m.y]->GetType() == EMPTY)
+  if (pieces[m.x][m.y].GetType() == EMPTY)
   {
     if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
     return true;
@@ -392,7 +391,7 @@ bool Board::SafeAddMovePawnTake(Coord2D p, Coord2D m, PieceColour col, vector<Co
   if (m.OutOfRange()) return false;
 
   // Pawns can only take if diagonal square is occupied by enemy piece.
-  if (pieces[m.x][m.y]->GetType() != EMPTY && pieces[m.x][m.y]->GetColour() != col)
+  if (pieces[m.x][m.y].GetType() != EMPTY && pieces[m.x][m.y].GetColour() != col)
   {
     if (!WillMoveCauseCheck(p, m, l)) moves->push_back(m);
     return true;
@@ -406,7 +405,7 @@ void Board::UnhighlightPieces()
   {
     for (j = 0; j < 8; j++)
     {
-      pieces[i][j]->SetHighlighted(false);
+      pieces[i][j].SetHighlighted(false);
     }
   }
 }
@@ -423,11 +422,11 @@ bool Board::WillMoveCauseCheck(Coord2D s, Coord2D e, int l)
   bool isCheck;
 
   // 1. Save current board state.
-  Piece* oldEndPiece = pieces[e.x][e.y];
+  Piece oldEndPiece = pieces[e.x][e.y];
 
   // 2. Move piece to suggested location on board.
   pieces[e.x][e.y] = pieces[s.x][s.y];
-  pieces[s.x][s.y] = new Piece(EMPTY);
+  pieces[s.x][s.y] = Piece(EMPTY);
 
   // 3. If white turn and move causes white check then yes.
   // OR If black turn and move causes black check then yes.
@@ -452,12 +451,12 @@ bool Board::IsInCheck(PieceColour colourToCheck, int l)
   {
     for (j = 0; j < 8; j++) 
     {
-      Piece* p = pieces[i][j];
-      if (p->GetType() == KING && p->GetColour() == colourToCheck)
+      Piece p = pieces[i][j];
+      if (p.GetType() == KING && p.GetColour() == colourToCheck)
       {
         kingCoord = Coord2D(i, j);
       }
-      else if (p->GetColour() == !colourToCheck)
+      else if (p.GetColour() == !colourToCheck)
       {
         vector<Coord2D> newMoves = GetPossibleMoves(Coord2D(i, j), l+1);
         moves.insert(moves.end(), newMoves.begin(), newMoves.end());

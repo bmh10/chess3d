@@ -29,6 +29,7 @@ class Piece
     bool Match(GLfloat a, GLfloat b);
 
   public:
+    Piece();
     Piece(PieceType type);
     Piece(PieceType type, PieceColour colour, ModelManager* modelManager);
     ~Piece();
