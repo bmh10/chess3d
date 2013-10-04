@@ -168,6 +168,7 @@ void Board::SetSelectedPiece(int i, int j)
 
 void Board::MoveSelectedPiece(int i, int j)
 {  
+  if (selectedPiece == NULL) return;
   pieces[i][j] = *selectedPiece;
   pieces[selCoord.x][selCoord.y] = Piece(EMPTY);
 
@@ -467,6 +468,27 @@ bool Board::IsInCheck(PieceColour colourToCheck, int l)
   }
 
   return false;
+}
+
+void Board::MakeMove()
+{
+  int i = rand() % 8;
+  int j = rand() % 8;
+  // For now just get random move, don't care about which move.
+  Piece p = pieces[i][j];
+  if (p.GetType() != EMPTY && (whiteToMove && p.GetColour() == WHITE) || (!whiteToMove && p.GetColour() == BLACK))
+  {
+    vector<Coord2D> moves = GetPossibleMoves(Coord2D(i, j), 0);
+    if (moves.size() == 0) { MakeMove(); return; }
+    Coord2D move = moves.front();
+    SetSelectedPiece(i, j);
+    MoveSelectedPiece(move.x, move.y);
+    UnhighlightPieces();
+    return;
+  }
+
+  // Recursive call.
+  MakeMove();
 }
 
 // Piece* Board::CreateBoardClone()

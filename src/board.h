@@ -57,6 +57,9 @@ class Board
     bool IsWhiteToMove();
     BoardState GetBoardState();
     void Toggle2dMode();
+
+    // Computer chess AI functions
+    void MakeMove();
 };
 
 #endif

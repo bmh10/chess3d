@@ -140,6 +140,10 @@ void Game::KeyboardPress(unsigned char key)
   {
     board.Toggle2dMode();
   }
+  else if (key == 'm')
+  {
+    board.MakeMove();
+  }
 }
 
 void Game::MousePress(int button, int state, int x, int y)
