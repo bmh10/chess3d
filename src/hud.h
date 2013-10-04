@@ -11,11 +11,12 @@
 class Hud
 {
   private:
-  	//Board board;
+  	Board *board;
     char text[10][30];
     
     bool menuIsOpen;
     int selectedOption;
+    bool quitGame;
     Box2d* hudBox;
     Box2d* optionBoxes[NUM_OPTIONS];
 
@@ -23,10 +24,12 @@ class Hud
 
   public:
     Hud();
+    Hud(Board &board);
     ~Hud();
 
+    bool QuitGame();
     void Init();
-    void Draw(bool whiteToMove, BoardState boardState);
+    void Draw();
     void OptionClicked();
     void MouseMotion(int x, int y);
     void MousePress(int button, int state, int x, int y);

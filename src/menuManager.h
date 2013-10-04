@@ -15,7 +15,7 @@ class MenuManager
     Box2d boxes[4];
     char text[3][4][25];
     int selectedOption;
-    bool gameStarted;
+    bool startGame;
     Box2d backBox;
 
     void Init();
@@ -26,7 +26,7 @@ class MenuManager
     MenuManager();
     ~MenuManager();
 
-    bool GameStarted();
+    bool StartGame();
     void Update();
     void Draw();
     void KeyboardPress(unsigned char key);

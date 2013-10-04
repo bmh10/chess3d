@@ -22,6 +22,7 @@ class Game
     Game();
     ~Game();
 
+    bool QuitGame();
     void SetDemoMode(bool enable);
     void Update();
     void Draw();

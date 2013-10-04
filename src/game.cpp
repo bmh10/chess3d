@@ -9,6 +9,11 @@ Game::~Game()
 {
 }
 
+bool Game::QuitGame()
+{
+  return hud.QuitGame();
+}
+
 void Game::SetDemoMode(bool enable)
 {
   demoMode = enable;
@@ -64,7 +69,7 @@ void Game::Init()
 
   camera = Camera(cameraPos, 0.0f, centerBoard, CONTINOUS_ROTATE);
   board = Board(camera);
-  //hud = Hud();
+  hud = Hud(board);
   demoMode = true;
 }
 
@@ -123,7 +128,7 @@ void Game::Draw()
   board.Draw();
   if (!demoMode)
   {
-    hud.Draw(board.IsWhiteToMove(), board.GetBoardState());
+    hud.Draw();
   }
 }
 

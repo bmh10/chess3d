@@ -63,7 +63,7 @@ void Update()
       game->Update();
       menuManager.Update();
       
-      if (menuManager.GameStarted()) 
+      if (menuManager.StartGame()) 
       {
         state = GAME;
         game->SetDemoMode(false);
@@ -71,6 +71,12 @@ void Update()
       break;
     case GAME:
       game->Update();
+
+      if (game->QuitGame())
+      {
+        state = MENU;
+        game = new Game();
+      }
       break;
   }
 

@@ -1,7 +1,10 @@
 #include "hud.h"
 
-Hud::Hud()
+Hud::Hud() {}
+
+Hud::Hud(Board &board)
 {
+  this->board = &board;
   Init();
 }
 
@@ -26,6 +29,7 @@ void Hud::Init()
   // Init HUD components.
   menuIsOpen = false;
   selectedOption = -1;
+  quitGame = false;
 
   // Main HUD box.
   Coord3D origin = Coord3D(0.0f, WINDOW_HEIGHT-50.0f, 0.0f);
@@ -39,7 +43,14 @@ void Hud::Init()
   }
 }
 
-void Hud::Draw(bool whiteToMove, BoardState boardState)
+bool Hud::QuitGame()
+{
+  bool b = quitGame;
+  if (b) quitGame = false;
+  return b;
+}
+
+void Hud::Draw()
 {
   Colour white = COL_WHITE(1.0f);
   OpenGLUtil::StartOrtho();
@@ -52,10 +63,10 @@ void Hud::Draw(bool whiteToMove, BoardState boardState)
     white.Set();
     glTranslatef(50.0f, WINDOW_HEIGHT-40.0f, 1.0f);
     glScalef(0.25f, 0.25f, 0.5f);
-    int n = (whiteToMove) ? 0 : 1;
+    int n = (board->IsWhiteToMove()) ? 0 : 1;
     DrawText(n);
     glTranslatef(100.0f, 0.0f, 0.0f);
-    switch (boardState)
+    switch (board->GetBoardState())
     {
       case STANDARD:                     break;
       case CHECK:           DrawText(2); break;
@@ -84,6 +95,11 @@ void Hud::OptionClicked()
   {
     case -1: return;
     case 0: menuIsOpen = !menuIsOpen; break;
+    // Toggle 2D board - TODO: seg fault on first try.
+    case 1: board->Toggle2dMode(); menuIsOpen = false; break;
+    case 2: menuIsOpen = false; break;
+    // Quit to menu.
+    case 3: quitGame = true; menuIsOpen = false; break;
   }
 }
 

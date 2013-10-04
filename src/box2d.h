@@ -29,6 +29,8 @@ class Box2d
     bool IsPointInBox(int i, int j);    
     void Draw();
     void DrawText();
+    void SetTexture(GLuint texName);
+    void UnsetTexture();
 };
 
 #endif

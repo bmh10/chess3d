@@ -9,9 +9,11 @@ MenuManager::~MenuManager()
 {
 }
 
-bool MenuManager::GameStarted()
+bool MenuManager::StartGame()
 {
-  return gameStarted;
+  bool b = startGame;
+  if (b) startGame = false;
+  return b;
 }
 
 void MenuManager::Init()
@@ -32,7 +34,7 @@ void MenuManager::Init()
   strcpy(text[AREYOUSURE][2], "No");
 
   selectedOption = 0;
-  gameStarted = false;
+  startGame = false;
   state = MAIN;
 
   for (int i=0; i<4; i++)
@@ -106,10 +108,10 @@ void MenuManager::OptionClicked()
   	  {
   		// TODO: add different game started modes after implemented.
   		case 0:
-  		  gameStarted = true;
+  		  startGame = true;
   		  break;
   		case 1:
-  		  gameStarted = true;
+  		  startGame = true;
   		  break;
   		case 2:
   		  state = OPTIONS;
